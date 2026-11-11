@@ -19,13 +19,13 @@ namespace {
 // MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE / MEDIA_TYPE_VIDEO.
 constexpr char kMediaSelection[] = "media_type IN (1,3)";
 
-// Returns the content URI of all external files (MediaStore.Files "external").
+// Returns the content URI of the files on the internal shared storage ("external_primary").
 QJniObject filesUri()
 {
     return QJniObject::callStaticObjectMethod("android/provider/MediaStore$Files",
                                               "getContentUri",
                                               "(Ljava/lang/String;)Landroid/net/Uri;",
-                                              Jni::string(QStringLiteral("external"))
+                                              Jni::string(QStringLiteral("external_primary"))
                                                   .object<jstring>());
 }
 

@@ -76,7 +76,9 @@ qmake ../PicSync.pro && make -j8   # the unit tests run right after linking
 make check                         # run them again
 ```
 
-Android (arm64): Qt 6.8 for Android, JDK 17, Android SDK and NDK 26.1:
+Android (arm64): Qt 6.8 for Android, JDK 17, Android SDK and NDK 26.1, plus the
+OpenSSL libraries from [KDAB/android_openssl](https://github.com/KDAB/android_openssl)
+(`export ANDROID_OPENSSL_DIR=/path/to/android_openssl`):
 
 ```sh
 mkdir build-android && cd build-android

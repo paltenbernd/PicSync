@@ -57,6 +57,18 @@ android {
         servicerunner.cpp
 
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
+
+    # Qt does not ship OpenSSL for Android, but HTTPS needs it. The libraries
+    # come from https://github.com/KDAB/android_openssl (path in ANDROID_OPENSSL_DIR).
+    OPENSSL_DIR = $$(ANDROID_OPENSSL_DIR)
+    isEmpty(OPENSSL_DIR): OPENSSL_DIR = $$PWD/../../3rdparty/android_openssl
+    exists($$OPENSSL_DIR/ssl_3/arm64-v8a/libssl_3.so) {
+        ANDROID_EXTRA_LIBS += \
+            $$OPENSSL_DIR/ssl_3/arm64-v8a/libcrypto_3.so \
+            $$OPENSSL_DIR/ssl_3/arm64-v8a/libssl_3.so
+    } else {
+        warning("OpenSSL for Android not found - HTTPS will not work. Set ANDROID_OPENSSL_DIR.")
+    }
     ANDROID_VERSION_NAME = $$PICSYNC_VERSION
     isEmpty(ANDROID_VERSION_CODE): ANDROID_VERSION_CODE = 1
     ANDROID_MIN_SDK_VERSION = 33

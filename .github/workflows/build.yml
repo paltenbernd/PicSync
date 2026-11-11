@@ -92,6 +92,11 @@ jobs:
             "ndk;$NDK_VERSION" "platforms;$ANDROID_PLATFORM" "build-tools;34.0.0" > /dev/null
           echo "ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/$NDK_VERSION" >> "$GITHUB_ENV"
 
+      - name: Fetch OpenSSL for Android (needed for HTTPS)
+        run: |
+          git clone --depth 1 https://github.com/KDAB/android_openssl.git "$RUNNER_TEMP/android_openssl"
+          echo "ANDROID_OPENSSL_DIR=$RUNNER_TEMP/android_openssl" >> "$GITHUB_ENV"
+
       - name: Build native code
         run: |
           mkdir build-android && cd build-android
@@ -128,6 +133,8 @@ jobs:
           fi
           cp "$APK" "$GITHUB_WORKSPACE/PicSync.apk"
           ls -la "$GITHUB_WORKSPACE/PicSync.apk"
+          # Fail if HTTPS support is missing from the package.
+          unzip -l "$GITHUB_WORKSPACE/PicSync.apk" | grep -q "libssl_3.so"
 
       - name: Keep APK as build artifact
         uses: actions/upload-artifact@v4
