@@ -1,0 +1,34 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/">
+        <file alias="style.qss">resources/style.qss</file>
+        <file alias="picsync.png">resources/picsync.png</file>
+        <file alias="icons/back.png">resources/icons/back.png</file>
+        <file alias="icons/back_blue.png">resources/icons/back_blue.png</file>
+        <file alias="icons/back_white.png">resources/icons/back_white.png</file>
+        <file alias="icons/error.png">resources/icons/error.png</file>
+        <file alias="icons/folder.png">resources/icons/folder.png</file>
+        <file alias="icons/folder_blue.png">resources/icons/folder_blue.png</file>
+        <file alias="icons/folder_white.png">resources/icons/folder_white.png</file>
+        <file alias="icons/history.png">resources/icons/history.png</file>
+        <file alias="icons/history_blue.png">resources/icons/history_blue.png</file>
+        <file alias="icons/history_white.png">resources/icons/history_white.png</file>
+        <file alias="icons/ok.png">resources/icons/ok.png</file>
+        <file alias="icons/server.png">resources/icons/server.png</file>
+        <file alias="icons/server_blue.png">resources/icons/server_blue.png</file>
+        <file alias="icons/server_white.png">resources/icons/server_white.png</file>
+        <file alias="icons/settings.png">resources/icons/settings.png</file>
+        <file alias="icons/settings_blue.png">resources/icons/settings_blue.png</file>
+        <file alias="icons/settings_white.png">resources/icons/settings_white.png</file>
+        <file alias="icons/storage.png">resources/icons/storage.png</file>
+        <file alias="icons/storage_blue.png">resources/icons/storage_blue.png</file>
+        <file alias="icons/storage_white.png">resources/icons/storage_white.png</file>
+        <file alias="icons/sync.png">resources/icons/sync.png</file>
+        <file alias="icons/sync_blue.png">resources/icons/sync_blue.png</file>
+        <file alias="icons/sync_white.png">resources/icons/sync_white.png</file>
+        <file alias="icons/warn.png">resources/icons/warn.png</file>
+        <file alias="icons/wifi.png">resources/icons/wifi.png</file>
+        <file alias="icons/wifi_blue.png">resources/icons/wifi_blue.png</file>
+        <file alias="icons/wifi_white.png">resources/icons/wifi_white.png</file>
+    </qresource>
+</RCC>

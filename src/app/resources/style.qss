@@ -1,0 +1,169 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later
+   Copyright (C) 2026 Peter Altenbernd <peter.altenbernd@h-da.de>
+   Material-like look for PicSync (Qt Widgets). Nextcloud blue: #0082C9. */
+
+QWidget {
+    font-size: 16px;
+    color: #1F2933;
+}
+
+QMainWindow, QStackedWidget, QScrollArea, QScrollArea > QWidget > QWidget, #page {
+    background: #F2F5F8;
+}
+
+/* App bar */
+#header {
+    background: #0082C9;
+    min-height: 52px;
+}
+#headerTitle {
+    color: #FFFFFF;
+    font-size: 20px;
+    font-weight: 600;
+}
+#header QToolButton {
+    background: transparent;
+    border: none;
+    padding: 8px;
+    border-radius: 20px;
+}
+#header QToolButton:pressed {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Cards */
+#card {
+    background: #FFFFFF;
+    border: 1px solid #E1E6EC;
+    border-radius: 12px;
+}
+#warningCard {
+    background: #FFF6E5;
+    border: 1px solid #F2C46D;
+    border-radius: 12px;
+    padding: 6px;
+}
+#cardTitle {
+    font-size: 17px;
+    font-weight: 600;
+}
+#detail {
+    color: #5B6B7C;
+    font-size: 14px;
+}
+#warning {
+    color: #B26A00;
+    font-size: 14px;
+}
+QLabel[error="true"] {
+    color: #C62828;
+}
+#phase {
+    color: #3C4A5C;
+    font-size: 14px;
+    padding: 6px 16px 2px 16px;
+    background: #F2F5F8;
+}
+
+/* Buttons */
+QPushButton {
+    background: #FFFFFF;
+    border: 1px solid #C8D1DB;
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: #0082C9;
+    font-weight: 600;
+}
+QPushButton:pressed {
+    background: #E6F3FA;
+}
+QPushButton:disabled {
+    color: #2E9E5B;
+    border-color: #DDE3E9;
+}
+#primaryButton {
+    background: #0082C9;
+    border: none;
+    color: #FFFFFF;
+    font-size: 17px;
+    margin: 4px 14px 14px 14px;
+}
+#primaryButton:pressed {
+    background: #006AA3;
+}
+#dangerButton {
+    color: #C62828;
+}
+
+/* Inputs */
+QLineEdit, QComboBox {
+    background: #FFFFFF;
+    border: 1px solid #C8D1DB;
+    border-radius: 8px;
+    padding: 9px 10px;
+    min-height: 22px;
+    selection-background-color: #0082C9;
+}
+QLineEdit:focus, QComboBox:focus {
+    border: 2px solid #0082C9;
+}
+QComboBox::drop-down {
+    border: none;
+    width: 28px;
+}
+QComboBox QAbstractItemView {
+    background: #FFFFFF;
+    selection-background-color: #E6F3FA;
+    selection-color: #1F2933;
+}
+QCheckBox {
+    spacing: 10px;
+    padding: 6px 0;
+}
+QCheckBox::indicator {
+    width: 22px;
+    height: 22px;
+}
+
+/* Progress */
+QProgressBar {
+    background: #DDE6EE;
+    border: none;
+    border-radius: 3px;
+}
+QProgressBar::chunk {
+    background: #0082C9;
+    border-radius: 3px;
+}
+
+/* History */
+#history {
+    background: #FFFFFF;
+    border: 1px solid #E1E6EC;
+    border-radius: 12px;
+    padding: 4px;
+}
+#history::item {
+    padding: 8px 4px;
+    border-bottom: 1px solid #EEF1F4;
+}
+#history::item:selected {
+    background: #E6F3FA;
+    color: #1F2933;
+}
+
+QScrollBar:vertical {
+    width: 4px;
+    background: transparent;
+}
+QScrollBar::handle:vertical {
+    background: #B8C4D0;
+    border-radius: 2px;
+}
+QScrollBar::add-line, QScrollBar::sub-line {
+    height: 0;
+}
+
+QMessageBox {
+    background: #FFFFFF;
+}

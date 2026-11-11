@@ -1,0 +1,14 @@
+# Build output
+build*/
+*.o
+*.moc
+moc_*.cpp
+qrc_*.cpp
+Makefile*
+.qmake.stash
+*.qm
+*.pro.user*
+android-build/
+# Signing material must never be committed
+*.jks
+*.keystore

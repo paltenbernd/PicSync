@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Foreground of the adaptive launcher icon (artwork centred in the 66dp safe zone). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="162" android:viewportHeight="162">
+    <group android:translateX="16" android:translateY="16">
+        <path android:strokeColor="#FFFFFF" android:strokeWidth="5"
+            android:pathData="M46,44 H84 A6,6 0 0 1 90,50 V80 A6,6 0 0 1 84,86 H46 A6,6 0 0 1 40,80 V50 A6,6 0 0 1 46,44 Z" />
+        <path android:fillColor="#FFFFFF" android:pathData="M46,80 L58,64 L66,73 L72,66 L84,80 Z" />
+        <path android:fillColor="#FFFFFF" android:pathData="M73,55 A4,4 0 1,0 81,55 A4,4 0 1,0 73,55 Z" />
+        <path android:strokeColor="#FFFFFF" android:strokeWidth="5" android:strokeLineCap="round"
+            android:pathData="M30,50 A40,40 0 0 1 90,28" />
+        <path android:fillColor="#FFFFFF" android:pathData="M85,19 L100,29 L86,38 Z" />
+        <path android:strokeColor="#FFFFFF" android:strokeWidth="5" android:strokeLineCap="round"
+            android:pathData="M100,80 A40,40 0 0 1 40,102" />
+        <path android:fillColor="#FFFFFF" android:pathData="M45,93 L30,101 L44,111 Z" />
+    </group>
+</vector>
