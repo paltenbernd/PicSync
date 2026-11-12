@@ -75,6 +75,12 @@ int main(int argc, char *argv[])
         return runService(argc, argv);
 #endif
 
+#ifdef Q_OS_ANDROID
+    // Qt's official workaround for keyboards that ignore "no suggestions": fields
+    // with Qt::ImhNoPredictiveText are announced as "visible password", so the
+    // keyboard commits every key at once and the typed text is shown immediately.
+    qputenv("QT_ANDROID_ENABLE_WORKAROUND_TO_DISABLE_PREDICTIVE_TEXT", "1");
+#endif
     QApplication app(argc, argv);
     QTranslator translator;
     installTranslation(app, translator);
