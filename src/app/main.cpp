@@ -78,8 +78,13 @@ int main(int argc, char *argv[])
 #ifdef Q_OS_ANDROID
     // Repaint scrolled areas instead of shifting pixels in the backing store;
     // on Android the shifted pixels occasionally left stale content behind.
-    qputenv("QT_NO_FAST_SCROLL", "1");
-    qputenv("QT_NO_FAST_MOVE", "1");
+    bool fastScroll = false;
+    for (int i = 1; i < argc; ++i)
+        fastScroll = fastScroll || qstrcmp(argv[i], "--fast-scroll") == 0;
+    if (!fastScroll) {
+        qputenv("QT_NO_FAST_SCROLL", "1");
+        qputenv("QT_NO_FAST_MOVE", "1");
+    }
 #endif
     QApplication app(argc, argv);
     QTranslator translator;

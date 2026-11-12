@@ -7,8 +7,13 @@
 #include "platform/platform.h"
 #include "uihelpers.h"
 
+#include <QBackingStore>
+#include <QDateTime>
+#include <QDir>
 #include <QGuiApplication>
+#include <QImage>
 #include <QKeyEvent>
+#include <QPaintDevice>
 #include <QSettings>
 
 namespace PicSync {
@@ -89,6 +94,15 @@ MainWindow::MainWindow()
     m_refreshTimer.start(kRefreshIntervalMs);
     connect(qGuiApp, &QGuiApplication::applicationStateChanged, this,
             &MainWindow::onApplicationStateChanged);
+
+    // Repaint workarounds and diagnostics, selectable at launch (see main.cpp).
+    const QStringList arguments = QCoreApplication::arguments();
+    m_fullUpdate = arguments.contains(QStringLiteral("--full-update"));
+    m_fullFlush = arguments.contains(QStringLiteral("--full-flush"));
+    if (arguments.contains(QStringLiteral("--debug-grab"))) {
+        connect(&m_diagnosticsTimer, &QTimer::timeout, this, &MainWindow::saveDiagnostics);
+        m_diagnosticsTimer.start(1000);
+    }
 
     // Make sure the background job exists (e.g. after an app update).
     QSettings qsettings;
@@ -172,6 +186,38 @@ void MainWindow::onApplicationStateChanged(Qt::ApplicationState state)
 void MainWindow::onSettingsSaved()
 {
     showDashboard();
+}
+
+// Works around partial screen updates on Android (see repaint modes in main.cpp).
+bool MainWindow::event(QEvent *event)
+{
+    if (event->type() == QEvent::UpdateRequest && m_fullUpdate) {
+        // Widen every partial update to the whole window. update() inside the
+        // update request only extends the dirty region of this very request; the
+        // alternation guard prevents an endless chain if it posts a new request.
+        if (!m_lastUpdateForced)
+            update();
+        m_lastUpdateForced = !m_lastUpdateForced;
+    }
+    const bool handled = QMainWindow::event(event);
+    if (event->type() == QEvent::UpdateRequest && m_fullFlush && backingStore() && windowHandle())
+        backingStore()->flush(QRegion(rect()), windowHandle());
+    return handled;
+}
+
+// Saves the backing store and a fresh rendering for diagnostics (--debug-grab).
+void MainWindow::saveDiagnostics()
+{
+    const QString dir = QStringLiteral("/sdcard/Download/picsync-diag");
+    QDir().mkpath(dir);
+    const QString stamp = QString::number(QDateTime::currentMSecsSinceEpoch());
+    if (backingStore() && backingStore()->paintDevice()
+            && backingStore()->paintDevice()->devType() == QInternal::Image) {
+        const QImage &stored = static_cast<const QImage &>(*backingStore()->paintDevice());
+        stored.save(dir + QStringLiteral("/bs-") + stamp + QStringLiteral(".png"));
+    }
+    grab().save(dir + QStringLiteral("/grab-") + stamp + QStringLiteral(".png"));
+    ++m_diagnosticsCounter;
 }
 
 // Handles the Android back key (returns to the dashboard first).
