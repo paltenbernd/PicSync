@@ -117,6 +117,13 @@ QUrl davFilesRoot(const QString &serverUrl, const QString &user)
                 QUrl::StrictMode);
 }
 
+// Returns the legacy WebDAV root https://host/remote.php/webdav/ (used e.g. by MagentaCLOUD).
+QUrl davLegacyRoot(const QString &serverUrl)
+{
+    return QUrl(normalizeServerUrl(serverUrl) + QStringLiteral("/remote.php/webdav/"),
+                QUrl::StrictMode);
+}
+
 // Returns the URL of a path below the WebDAV files root.
 QUrl davUrl(const QUrl &filesRoot, const QString &relativePath)
 {

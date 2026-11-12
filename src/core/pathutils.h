@@ -40,6 +40,9 @@ QString encodePath(const QString &relativePath);
 // Returns the WebDAV files root of a user, e.g. https://host/remote.php/dav/files/user/.
 QUrl davFilesRoot(const QString &serverUrl, const QString &user);
 
+// Returns the legacy WebDAV root https://host/remote.php/webdav/ (used e.g. by MagentaCLOUD).
+QUrl davLegacyRoot(const QString &serverUrl);
+
 // Returns the URL of a path below the WebDAV files root.
 QUrl davUrl(const QUrl &filesRoot, const QString &relativePath);
 

@@ -8,7 +8,6 @@
 #include "uihelpers.h"
 
 #include <QHeaderView>
-#include <QScroller>
 
 namespace PicSync {
 
@@ -38,7 +37,7 @@ HistoryPage::HistoryPage()
     m_tree->setUniformRowHeights(false);
     m_tree->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     m_tree->header()->setStretchLastSection(true);
-    QScroller::grabGesture(m_tree->viewport(), QScroller::LeftMouseButtonGesture);
+    Ui::enableTouchScrolling(*m_tree);
     m_layout->addWidget(m_tree.get(), 1);
 
     m_clear->setText(tr("Clear history"));

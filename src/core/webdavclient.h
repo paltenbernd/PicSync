@@ -90,6 +90,12 @@ public:
     // Checks that server address and credentials are valid.
     bool testConnection(QString &error) override;
 
+    // Finds out which WebDAV address the server accepts (done once, automatically).
+    bool selectEndpoint(QString &error);
+
+    // Returns the WebDAV root that is used, e.g. for display.
+    QUrl filesRoot() const;
+
     // Sets the inactivity timeout for network transfers in milliseconds.
     void setTimeout(int milliseconds);
 
@@ -113,11 +119,16 @@ private:
     // Creates a folder below the device folder and all of its parents.
     bool ensureFolder(const QString &relativeFolder, QString &error);
 
+    // Sends a depth-0 PROPFIND to a WebDAV root and returns the result.
+    HttpResult probe(const QUrl &root);
+
     // Asks the server for the properties of one file below the device folder.
     bool statRemote(const QString &relativePath, RemoteFile &file, QString &error);
 
     std::unique_ptr<QNetworkAccessManager> m_nam;
     QUrl m_filesRoot;
+    QUrl m_legacyRoot;
+    bool m_endpointSelected = false;
     QString m_remoteFolder;
     QByteArray m_authorization;
     int m_timeoutMs = 60000;

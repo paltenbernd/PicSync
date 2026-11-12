@@ -62,6 +62,7 @@ WebDavClient::WebDavClient(const QString &serverUrl, const QString &user,
                            const QString &password, const QString &remoteFolder)
     : m_nam(std::make_unique<QNetworkAccessManager>())
     , m_filesRoot(PathUtils::davFilesRoot(serverUrl, user))
+    , m_legacyRoot(PathUtils::davLegacyRoot(serverUrl))
     , m_remoteFolder(PathUtils::normalizeRelative(remoteFolder))
 {
     const QByteArray credentials = (user + QLatin1Char(':') + password).toUtf8();
@@ -81,7 +82,11 @@ void WebDavClient::setTimeout(int milliseconds)
 // Builds a request with authentication for a path below the files root.
 QNetworkRequest WebDavClient::makeRequest(const QString &pathBelowFilesRoot) const
 {
-    QNetworkRequest request(PathUtils::davUrl(m_filesRoot, pathBelowFilesRoot));
+    QUrl url = PathUtils::davUrl(m_filesRoot, pathBelowFilesRoot);
+    // Folders (collections) are addressed with a trailing slash.
+    if (pathBelowFilesRoot.endsWith(QLatin1Char('/')) && !url.path().endsWith(QLatin1Char('/')))
+        url.setPath(url.path(QUrl::FullyEncoded) + QLatin1Char('/'), QUrl::StrictMode);
+    QNetworkRequest request(url);
     request.setRawHeader("Authorization", m_authorization);
     request.setRawHeader("User-Agent", "PicSync/" PICSYNC_VERSION " (Android)");
     request.setTransferTimeout(m_timeoutMs);
@@ -130,11 +135,14 @@ QString WebDavClient::describe(const HttpResult &result)
 {
     switch (result.status) {
     case 401:
-        return QCoreApplication::translate("WebDavClient", "Login failed. Check user name and app password.");
+        return QCoreApplication::translate("WebDavClient", "Login failed. Check user name and app password.")
+                + QStringLiteral(" (HTTP 401)");
     case 403:
-        return QCoreApplication::translate("WebDavClient", "Access denied by the server.");
+        return QCoreApplication::translate("WebDavClient", "Access denied by the server.")
+                + QStringLiteral(" (HTTP 403)");
     case 404:
-        return QCoreApplication::translate("WebDavClient", "Folder or file not found on the server.");
+        return QCoreApplication::translate("WebDavClient", "Folder or file not found on the server.")
+                + QStringLiteral(" (HTTP 404)");
     case 507:
         return QCoreApplication::translate("WebDavClient", "Not enough storage space on the server.");
     default:
@@ -154,10 +162,56 @@ QString WebDavClient::describe(const HttpResult &result)
     return QCoreApplication::translate("WebDavClient", "Server error %1").arg(result.status);
 }
 
+// Returns the WebDAV root that is used, e.g. for display.
+QUrl WebDavClient::filesRoot() const
+{
+    return m_filesRoot;
+}
+
+// Sends a depth-0 PROPFIND to a WebDAV root and returns the result.
+WebDavClient::HttpResult WebDavClient::probe(const QUrl &root)
+{
+    QNetworkRequest request(root);
+    request.setRawHeader("Authorization", m_authorization);
+    request.setRawHeader("User-Agent", "PicSync/" PICSYNC_VERSION " (Android)");
+    request.setTransferTimeout(m_timeoutMs);
+    request.setRawHeader("Depth", "0");
+    return send(request, "PROPFIND", WebDavParser::propfindBody());
+}
+
+// Finds out which WebDAV address the server accepts (done once, automatically).
+bool WebDavClient::selectEndpoint(QString &error)
+{
+    if (m_endpointSelected)
+        return true;
+    // Current Nextcloud address first: /remote.php/dav/files/<user>/. It needs the
+    // internal user id, which some providers (e.g. MagentaCLOUD) do not show.
+    const HttpResult modern = probe(m_filesRoot);
+    if (modern.status == 207) {
+        m_endpointSelected = true;
+        return true;
+    }
+    if (modern.status == 0 && modern.error != QNetworkReply::NoError) {
+        error = describe(modern);   // network problem: the other address won't help
+        return false;
+    }
+    // Legacy address /remote.php/webdav/, which works with the login name.
+    const HttpResult legacy = probe(m_legacyRoot);
+    if (legacy.status == 207) {
+        m_filesRoot = m_legacyRoot;
+        m_endpointSelected = true;
+        return true;
+    }
+    error = describe(legacy.status == 404 ? modern : legacy);
+    return false;
+}
+
 // Lists all media files below the device folder (recursively).
 RemoteStore::ListStatus WebDavClient::list(RemoteFileMap &files, QString &error)
 {
     files.clear();
+    if (!selectEndpoint(error))
+        return ListStatus::Error;
     const QString rootPath = withoutTrailingSlash(QUrl::fromPercentEncoding(
             PathUtils::davUrl(m_filesRoot, m_remoteFolder).path(QUrl::FullyEncoded).toUtf8()));
 
@@ -377,6 +431,8 @@ bool WebDavClient::remove(const QString &relativePath, QString &error)
 // Queries the storage quota of the account.
 bool WebDavClient::quota(QuotaInfo &info, QString &error)
 {
+    if (!selectEndpoint(error))
+        return false;
     QNetworkRequest request = makeRequest(QString());
     request.setRawHeader("Depth", "0");
     const HttpResult result = send(request, "PROPFIND", WebDavParser::quotaBody());
@@ -397,13 +453,8 @@ bool WebDavClient::quota(QuotaInfo &info, QString &error)
 // Checks that server address and credentials are valid.
 bool WebDavClient::testConnection(QString &error)
 {
-    QNetworkRequest request = makeRequest(QString());
-    request.setRawHeader("Depth", "0");
-    const HttpResult result = send(request, "PROPFIND", WebDavParser::propfindBody());
-    if (result.status == 207)
-        return true;
-    error = describe(result);
-    return false;
+    m_endpointSelected = false;
+    return selectEndpoint(error);
 }
 
 } // namespace PicSync

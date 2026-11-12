@@ -12,7 +12,6 @@
 #include "uihelpers.h"
 
 #include <QMap>
-#include <QScroller>
 #include <QSettings>
 #include <QStyle>
 #include <QUrl>
@@ -73,7 +72,7 @@ DashboardPage::DashboardPage()
     m_scroll->setWidgetResizable(true);
     m_scroll->setFrameShape(QFrame::NoFrame);
     m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    QScroller::grabGesture(m_scroll->viewport(), QScroller::LeftMouseButtonGesture);
+    Ui::enableTouchScrolling(*m_scroll);
     m_content->setObjectName(QStringLiteral("page"));
     m_content->setLayout(m_contentLayout.get());
     m_contentLayout->setContentsMargins(14, 14, 14, 14);

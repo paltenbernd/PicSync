@@ -11,6 +11,10 @@
 #include <QMessageBox>
 #include <QPointer>
 #include <QPushButton>
+#include <QScrollBar>
+#include <QScroller>
+#include <QScrollerProperties>
+#include <QAbstractScrollArea>
 
 namespace PicSync {
 namespace Ui {
@@ -66,6 +70,26 @@ QString timeText(qint64 secondsSinceEpoch)
 QString sizeText(qint64 bytes)
 {
     return QLocale().formattedDataSize(bytes, 1, QLocale::DataSizeSIFormat);
+}
+
+// Enables finger scrolling without delaying taps and without stale paint.
+void enableTouchScrolling(QAbstractScrollArea &area)
+{
+    const QPointer<QWidget> viewport(area.viewport());   // owned by the scroll area
+    QScroller::grabGesture(viewport.data(), QScroller::LeftMouseButtonGesture);
+    const QPointer<QScroller> scroller(QScroller::scroller(viewport.data()));   // owned by Qt
+    QScrollerProperties properties = scroller->scrollerProperties();
+    // Deliver taps immediately, so text fields get the cursor where the finger is.
+    properties.setScrollMetric(QScrollerProperties::MousePressEventDelay, 0.0);
+    properties.setScrollMetric(QScrollerProperties::DragStartDistance, 0.004);
+    const QVariant off = QVariant::fromValue(QScrollerProperties::OvershootAlwaysOff);
+    properties.setScrollMetric(QScrollerProperties::VerticalOvershootPolicy, off);
+    properties.setScrollMetric(QScrollerProperties::HorizontalOvershootPolicy, off);
+    scroller->setScrollerProperties(properties);
+    // Repaint the whole viewport on every scroll step; Android otherwise
+    // occasionally keeps old pixels (e.g. checkboxes drawn over text fields).
+    QObject::connect(area.verticalScrollBar(), &QScrollBar::valueChanged, viewport.data(),
+                     qOverload<>(&QWidget::update));
 }
 
 // Asks a yes/no question with translated buttons; returns true for "yes".

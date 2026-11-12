@@ -12,8 +12,10 @@
 #include "webdavclient.h"
 
 #include <QFile>
+#include <QApplication>
 #include <QGuiApplication>
-#include <QScroller>
+#include <QInputMethod>
+#include <QPointer>
 #include <QSettings>
 #include <QStyle>
 
@@ -69,7 +71,7 @@ SettingsPage::SettingsPage()
     m_scroll->setWidgetResizable(true);
     m_scroll->setFrameShape(QFrame::NoFrame);
     m_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    QScroller::grabGesture(m_scroll->viewport(), QScroller::LeftMouseButtonGesture);
+    Ui::enableTouchScrolling(*m_scroll);
     m_content->setObjectName(QStringLiteral("page"));
     m_content->setLayout(m_contentLayout.get());
     m_contentLayout->setContentsMargins(14, 14, 14, 14);
@@ -81,7 +83,7 @@ SettingsPage::SettingsPage()
     setupSection(*m_serverCard, *m_serverLayout, *m_serverTitle, tr("Nextcloud"));
     m_serverLayout->addLayout(m_serverForm.get());
     m_serverForm->setRowWrapPolicy(QFormLayout::WrapAllRows);
-    m_url->setPlaceholderText(QStringLiteral("cloud.example.org"));
+    m_url->setPlaceholderText(QStringLiteral("magentacloud.de"));
     m_url->setInputMethodHints(Qt::ImhUrlCharactersOnly | Qt::ImhNoAutoUppercase);
     m_user->setInputMethodHints(Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText);
     m_password->setEchoMode(QLineEdit::Password);
@@ -173,6 +175,10 @@ SettingsPage::SettingsPage()
     m_layout->addWidget(m_save.get());
     connect(m_save.get(), &QPushButton::clicked, this, &SettingsPage::onSave);
 
+    connect(qApp, &QApplication::focusChanged, this, &SettingsPage::onFocusChanged);
+    connect(QGuiApplication::inputMethod(), &QInputMethod::keyboardRectangleChanged, this,
+            &SettingsPage::ensureFocusVisible);
+
     load();
 }
 
@@ -233,6 +239,24 @@ void SettingsPage::showMessage(const QString &text, bool error)
     m_message->style()->unpolish(m_message.get());
     m_message->style()->polish(m_message.get());
     m_message->show();
+}
+
+// Scrolls the newly focused input field into view.
+void SettingsPage::onFocusChanged(QWidget *previous, QWidget *current)
+{
+    Q_UNUSED(previous)
+    const QPointer<QWidget> focused(current);
+    if (focused && m_content->isAncestorOf(focused.data()))
+        ensureFocusVisible();
+}
+
+// Keeps the focused input field visible when the keyboard opens or closes.
+void SettingsPage::ensureFocusVisible()
+{
+    const QPointer<QWidget> focused(QApplication::focusWidget());
+    if (focused && m_content->isAncestorOf(focused.data()))
+        m_scroll->ensureWidgetVisible(focused.data(), 20, 60);
+    m_scroll->viewport()->update();
 }
 
 // Puts the default folder (derived from the device name) into the folder field.

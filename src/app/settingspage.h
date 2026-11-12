@@ -64,6 +64,12 @@ private Q_SLOTS:
     // Deletes the stored login and stops the background sync.
     void onSignOut();
 
+    // Scrolls the newly focused input field into view.
+    void onFocusChanged(QWidget *previous, QWidget *current);
+
+    // Keeps the focused input field visible when the keyboard opens or closes.
+    void ensureFocusVisible();
+
     // Puts the default folder (derived from the device name) into the folder field.
     void onDefaultFolder();
 

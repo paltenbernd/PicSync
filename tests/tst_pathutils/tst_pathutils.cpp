@@ -83,6 +83,12 @@ void TestPathUtils::davUrls()
     QCOMPARE(file.toString(QUrl::FullyEncoded),
              QStringLiteral("https://cloud.example.org/remote.php/dav/files/peter%20a/"
                             "PicSync/FP6/Bild%20%231%20%C3%A4.jpg"));
+    const QUrl legacy = PathUtils::davLegacyRoot(
+        QStringLiteral("https://magentacloud.de/remote.php/webdav"));
+    QCOMPARE(legacy.toString(QUrl::FullyEncoded),
+             QStringLiteral("https://magentacloud.de/remote.php/webdav/"));
+    QCOMPARE(PathUtils::davUrl(legacy, QStringLiteral("PicSync/a b.jpg")).toString(QUrl::FullyEncoded),
+             QStringLiteral("https://magentacloud.de/remote.php/webdav/PicSync/a%20b.jpg"));
 }
 
 // Checks that user input for the server address is cleaned up.

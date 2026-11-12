@@ -8,6 +8,7 @@
 #include <QPixmap>
 #include <QString>
 
+class QAbstractScrollArea;
 class QWidget;
 
 namespace PicSync {
@@ -29,6 +30,9 @@ QString timeText(qint64 secondsSinceEpoch);
 
 // Formats a number of bytes, e.g. "7.6 GB".
 QString sizeText(qint64 bytes);
+
+// Enables finger scrolling without delaying taps and without stale paint.
+void enableTouchScrolling(QAbstractScrollArea &area);
 
 // Asks a yes/no question with translated buttons; returns true for "yes".
 bool confirm(QWidget &parent, const QString &title, const QString &text);

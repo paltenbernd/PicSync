@@ -12,4 +12,5 @@ SUBDIRS = \
     tst_statestore \
     tst_syncplanner \
     tst_synchistory \
-    tst_syncengine
+    tst_syncengine \
+    tst_webdavclient
