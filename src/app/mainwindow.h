@@ -58,8 +58,6 @@ private Q_SLOTS:
     // Returns to the dashboard after the settings were saved.
     void onSettingsSaved();
 
-    // Saves the backing store and a fresh rendering for diagnostics (--debug-grab).
-    void saveDiagnostics();
 
 private:
     // Switches the stack to a page and adapts the app bar.
@@ -68,7 +66,7 @@ private:
     // Handles the Android back key (returns to the dashboard first).
     void keyPressEvent(QKeyEvent *event) override;
 
-    // Works around partial screen updates on Android (see repaint modes in main.cpp).
+    // Shows every repaint on the whole screen (works around a Qt bug on Android).
     bool event(QEvent *event) override;
 
     // Declared parents-first, so children are destroyed before their parents.
@@ -88,11 +86,7 @@ private:
 
     SyncController m_controller;
     QTimer m_refreshTimer;
-    QTimer m_diagnosticsTimer;
-    bool m_fullUpdate = false;
     bool m_fullFlush = false;
-    bool m_lastUpdateForced = false;
-    int m_diagnosticsCounter = 0;
 };
 
 } // namespace PicSync

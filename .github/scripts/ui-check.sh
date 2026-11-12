@@ -3,9 +3,8 @@
 # Copyright (C) 2026 Peter Altenbernd <peter.altenbernd@h-da.de>
 #
 # UI smoke test on an Android emulator: installs PicSync.apk and, for each
-# repaint variant, types into the settings fields and scrolls, taking a
-# screenshot after every step. The "default" variant also stores the app's
-# own rendering (/sdcard/Download/picsync-diag) for comparison.
+# variant (with and without the full-flush repaint fix), types into the
+# settings fields and scrolls, taking a screenshot after every step.
 set -x
 PKG=de.altenbernd.picsync
 OUT=shots
@@ -34,7 +33,6 @@ run_variant() {
     shot() { sleep 2; adb exec-out screencap -p > "$D/$1.png"; echo "$1 $(adb shell date +%s%3N)" >> "$D/times.txt"; }
     adb shell am force-stop $PKG
     adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
-    adb shell rm -rf /sdcard/Download/picsync-diag
     adb shell am start -W -n $PKG/org.qtproject.qt.android.bindings.QtActivity --es applicationArguments "'$ARGS'"
     sleep 8
     shot 01-start
@@ -47,8 +45,7 @@ run_variant() {
     adb shell input tap $(at 500 343)
     adb shell input text "120049"
     shot 05-user-typed
-    adb shell input keyevent KEYCODE_BACK
-    shot 06-keyboard-hidden
+    # Keyboard stays open while scrolling (like a user who keeps typing).
     adb shell input swipe $(at 25 750) $(at 25 450) 400
     shot 07-scroll-1
     adb shell input swipe $(at 25 750) $(at 25 450) 400
@@ -58,13 +55,9 @@ run_variant() {
     adb shell input swipe $(at 25 300) $(at 25 700) 400
     shot 10-back
     adb shell dumpsys input_method | grep -o "inputType=0x[0-9a-f]*" | sort | uniq -c > "$D/ime.txt"
-    adb pull /sdcard/Download/picsync-diag "$D/diag" > /dev/null 2>&1
 }
 
-run_variant default "--debug-grab"
-run_variant fastscroll "--fast-scroll"
-run_variant fullupdate "--full-update"
-run_variant fullflush "--full-flush"
-run_variant both "--full-update --full-flush"
+run_variant fixed ""
+run_variant without-fix "--partial-flush"
 
 adb logcat -d | grep -iE "picsync|qt" | tail -300 > "$OUT/logcat.txt"
