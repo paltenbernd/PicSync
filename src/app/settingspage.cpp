@@ -84,14 +84,22 @@ SettingsPage::SettingsPage()
     m_serverLayout->addLayout(m_serverForm.get());
     m_serverForm->setRowWrapPolicy(QFormLayout::WrapAllRows);
     m_url->setPlaceholderText(QStringLiteral("magentacloud.de"));
-    m_url->setInputMethodHints(Qt::ImhUrlCharactersOnly | Qt::ImhNoAutoUppercase);
-    m_user->setInputMethodHints(Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText);
+    // Without suggestions the Android keyboard commits every key immediately;
+    // otherwise Qt Widgets show the typed text only after leaving the field.
+    const Qt::InputMethodHints plain = Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText;
+    m_url->setObjectName(QStringLiteral("serverUrl"));
+    m_url->setInputMethodHints(plain | Qt::ImhUrlCharactersOnly);
+    m_user->setObjectName(QStringLiteral("userName"));
+    m_user->setInputMethodHints(plain);
     m_password->setEchoMode(QLineEdit::Password);
-    m_password->setInputMethodHints(Qt::ImhSensitiveData | Qt::ImhNoPredictiveText);
+    m_password->setObjectName(QStringLiteral("appPassword"));
+    m_password->setInputMethodHints(plain | Qt::ImhSensitiveData);
     m_passwordHint->setObjectName(QStringLiteral("detail"));
     m_passwordHint->setWordWrap(true);
     m_passwordHint->setText(tr("Create an app password in Nextcloud under Settings > "
                                "Security > Devices & sessions."));
+    m_folder->setObjectName(QStringLiteral("remoteFolder"));
+    m_folder->setInputMethodHints(plain);
     m_folderRow->addWidget(m_folder.get(), 1);
     m_defaultFolder->setText(tr("Default"));
     m_folderRow->addWidget(m_defaultFolder.get());
@@ -165,10 +173,12 @@ SettingsPage::SettingsPage()
 
     // Bottom: status line and save button.
     m_message->setObjectName(QStringLiteral("phase"));
+    m_message->setProperty("role", QStringLiteral("message"));
     m_message->setWordWrap(true);
     m_message->setAlignment(Qt::AlignCenter);
     m_message->hide();
     m_save->setObjectName(QStringLiteral("primaryButton"));
+    m_save->setObjectName(QStringLiteral("saveButton"));
     m_save->setText(tr("Save"));
     m_save->setMinimumHeight(52);
     m_layout->addWidget(m_message.get());

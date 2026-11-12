@@ -8,7 +8,7 @@ include(../src/core/core.pri)
 
 TEMPLATE = app
 QT += testlib
-QT -= gui
+!contains(QT, widgets): QT -= gui
 CONFIG += testcase console
 CONFIG -= app_bundle
 

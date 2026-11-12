@@ -13,4 +13,5 @@ SUBDIRS = \
     tst_syncplanner \
     tst_synchistory \
     tst_syncengine \
-    tst_webdavclient
+    tst_webdavclient \
+    tst_settingspage
