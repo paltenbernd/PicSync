@@ -20,7 +20,7 @@ on:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   emulator:
@@ -62,3 +62,15 @@ jobs:
         with:
           name: ui-check-screenshots
           path: shots/
+
+      - name: Publish screenshots to the ui-check branch
+        if: always()
+        run: |
+          cd shots
+          git init -q -b ui-check
+          git config user.name "PicSync CI"
+          git config user.email "ci@users.noreply.github.com"
+          echo "UI check of ${{ github.event.inputs.tag || 'latest release' }}, run ${{ github.run_id }}" > README.txt
+          git add -A
+          git commit -q -m "UI check run ${{ github.run_id }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" ui-check
