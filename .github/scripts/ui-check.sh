@@ -16,6 +16,15 @@ W=${SIZE%x*}; H=${SIZE#*x}
 at() { echo "$(( W * $1 / 1000 )) $(( H * $2 / 1000 ))"; }
 echo "screen $W x $H, density $(adb shell wm density)"
 
+# Let the freshly booted emulator settle; its launcher often shows an
+# "isn't responding" dialog in the first minute.
+adb wait-for-device
+until [ "$(adb shell getprop sys.boot_completed | tr -d '\r')" = "1" ]; do sleep 2; done
+sleep 45
+adb shell input keyevent KEYCODE_HOME
+adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
+adb shell settings put global hide_error_dialogs 1
+
 adb install -r -g PicSync.apk
 adb shell appops set $PKG MANAGE_EXTERNAL_STORAGE allow
 
@@ -24,6 +33,7 @@ run_variant() {
     D="$OUT/$NAME"; mkdir -p "$D"
     shot() { sleep 2; adb exec-out screencap -p > "$D/$1.png"; echo "$1 $(adb shell date +%s%3N)" >> "$D/times.txt"; }
     adb shell am force-stop $PKG
+    adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
     adb shell rm -rf /sdcard/Download/picsync-diag
     adb shell am start -W -n $PKG/org.qtproject.qt.android.bindings.QtActivity --es applicationArguments "'$ARGS'"
     sleep 8
