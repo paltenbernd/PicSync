@@ -84,11 +84,13 @@ SettingsPage::SettingsPage()
     m_serverLayout->addLayout(m_serverForm.get());
     m_serverForm->setRowWrapPolicy(QFormLayout::WrapAllRows);
     m_url->setPlaceholderText(QStringLiteral("magentacloud.de"));
-    // Without suggestions the Android keyboard commits every key immediately;
-    // otherwise Qt Widgets show the typed text only after leaving the field.
-    // No ImhUrlCharactersOnly: for URL fields some keyboards (e.g. on /e/OS)
-    // ignore "no suggestions" and keep the text uncommitted.
-    const Qt::InputMethodHints plain = Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText;
+    // Android keyboards (Gboard, the /e/OS keyboard) keep typed words as an
+    // uncommitted "composition" even when suggestions are switched off; Qt Widgets
+    // then show the text late and misplace the cursor. ImhSensitiveData makes Qt
+    // announce the field as "visible password" (TYPE_TEXT_VARIATION_VISIBLE_PASSWORD),
+    // for which keyboards commit every key immediately. The text stays readable.
+    const Qt::InputMethodHints plain = Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText
+            | Qt::ImhSensitiveData;
     m_url->setObjectName(QStringLiteral("serverUrl"));
     m_url->setInputMethodHints(plain);
     m_user->setObjectName(QStringLiteral("userName"));
@@ -179,8 +181,8 @@ SettingsPage::SettingsPage()
     m_message->setWordWrap(true);
     m_message->setAlignment(Qt::AlignCenter);
     m_message->hide();
-    m_save->setObjectName(QStringLiteral("primaryButton"));
-    m_save->setObjectName(QStringLiteral("saveButton"));
+    m_save->setObjectName(QStringLiteral("primaryButton"));   // blue style, see style.qss
+    m_save->setProperty("role", QStringLiteral("save"));
     m_save->setText(tr("Save"));
     m_save->setMinimumHeight(52);
     m_layout->addWidget(m_message.get());

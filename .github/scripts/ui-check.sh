@@ -35,17 +35,28 @@ shot 05-user-focused
 adb shell input text "120049"
 shot 06-user-typed
 
-# Hide the keyboard, then scroll down and back up.
+# Hide the keyboard, then scroll down step by step and back up. The swipes
+# run along the left margin, so they do not focus any input field.
 adb shell input keyevent KEYCODE_BACK
 shot 07-keyboard-hidden
-adb shell input swipe $(at 500 750) $(at 500 350) 500
+adb shell input swipe $(at 25 750) $(at 25 450) 400
 shot 08-scrolled-1
-adb shell input swipe $(at 500 750) $(at 500 350) 500
+adb shell input swipe $(at 25 750) $(at 25 450) 400
 shot 09-scrolled-2
-adb shell input swipe $(at 500 350) $(at 500 750) 500
-shot 10-scrolled-back
-adb shell input swipe $(at 500 300) $(at 500 800) 500
-shot 11-top
+adb shell input swipe $(at 25 750) $(at 25 300) 400
+shot 10-scrolled-3
+adb shell input swipe $(at 25 750) $(at 25 300) 400
+shot 11-bottom
+adb shell input swipe $(at 25 300) $(at 25 600) 400
+shot 12-back-1
+adb shell input swipe $(at 25 300) $(at 25 800) 300
+shot 13-back-2
+
+# Type into the folder field after scrolling (field below the fold).
+adb shell input tap $(at 300 552)
+shot 14-folder-focused
+adb shell input text "Test"
+shot 15-folder-typed
 
 adb shell dumpsys input_method | grep -iE "mInputType|inputType|mCurId|imeOptions" > "$OUT/ime.txt"
 adb logcat -d > "$OUT/logcat.txt"

@@ -76,10 +76,10 @@ int main(int argc, char *argv[])
 #endif
 
 #ifdef Q_OS_ANDROID
-    // Qt's official workaround for keyboards that ignore "no suggestions": fields
-    // with Qt::ImhNoPredictiveText are announced as "visible password", so the
-    // keyboard commits every key at once and the typed text is shown immediately.
-    qputenv("QT_ANDROID_ENABLE_WORKAROUND_TO_DISABLE_PREDICTIVE_TEXT", "1");
+    // Repaint scrolled areas instead of shifting pixels in the backing store;
+    // on Android the shifted pixels occasionally left stale content behind.
+    qputenv("QT_NO_FAST_SCROLL", "1");
+    qputenv("QT_NO_FAST_MOVE", "1");
 #endif
     QApplication app(argc, argv);
     QTranslator translator;

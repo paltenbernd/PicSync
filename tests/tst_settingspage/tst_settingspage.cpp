@@ -6,6 +6,8 @@
 #include "settingspage.h"
 
 #include <QApplication>
+#include <QFile>
+#include <QImage>
 #include <QLineEdit>
 #include <QPointer>
 #include <QPushButton>
@@ -39,12 +41,16 @@ private Q_SLOTS:
     void saveAndReload();
     // Saving with missing values shows an error and stores nothing.
     void missingValuesAreRejected();
+    // The save button keeps the blue "primary" style.
+    void saveButtonIsPrimary();
 
 private:
     // Returns the line edit with the given object name.
     QPointer<QLineEdit> field(const char *name) const;
     // Returns the status line below the page.
     QPointer<QLabel> message() const;
+    // Returns the "Save" button.
+    QPointer<QPushButton> saveButton() const;
 
     std::unique_ptr<SettingsPage> m_page;
 };
@@ -86,6 +92,18 @@ QPointer<QLabel> TestSettingsPage::message() const
     return QPointer<QLabel>();
 }
 
+// Returns the "Save" button.
+QPointer<QPushButton> TestSettingsPage::saveButton() const
+{
+    const QList<QPushButton *> buttons = m_page->findChildren<QPushButton *>();
+    for (int i = 0; i < buttons.size(); ++i) {
+        const QPointer<QPushButton> button(buttons.at(i));
+        if (button->property("role").toString() == QLatin1String("save"))
+            return button;
+    }
+    return QPointer<QPushButton>();
+}
+
 // Every text field asks the keyboard to commit keys immediately (no suggestions).
 void TestSettingsPage::fieldsDisableSuggestions()
 {
@@ -96,6 +114,9 @@ void TestSettingsPage::fieldsDisableSuggestions()
         if (edit->objectName().isEmpty())
             continue;   // internal line edits of combo boxes
         QVERIFY2(edit->inputMethodHints().testFlag(Qt::ImhNoPredictiveText),
+                 qPrintable(edit->objectName()));
+        // Announced as "visible password" on Android: keyboards then commit every key.
+        QVERIFY2(edit->inputMethodHints().testFlag(Qt::ImhSensitiveData),
                  qPrintable(edit->objectName()));
         // URL/e-mail field types make some Android keyboards ignore "no suggestions".
         QVERIFY2(!edit->inputMethodHints().testFlag(Qt::ImhUrlCharactersOnly),
@@ -140,7 +161,7 @@ void TestSettingsPage::saveAndReload()
     field("userName")->setText(QStringLiteral(" 120049 "));
     field("appPassword")->setText(QStringLiteral("abcde-fghij"));
     field("remoteFolder")->setText(QStringLiteral("/PicSync/Peter Fairphone/"));
-    const QPointer<QPushButton> save(m_page->findChild<QPushButton *>(QStringLiteral("saveButton")));
+    const QPointer<QPushButton> save = saveButton();
     QVERIFY(save);
     QTest::mouseClick(save.data(), Qt::LeftButton);
 
@@ -166,7 +187,7 @@ void TestSettingsPage::missingValuesAreRejected()
 {
     field("serverUrl")->clear();
     field("userName")->setText(QStringLiteral("peter"));
-    const QPointer<QPushButton> save(m_page->findChild<QPushButton *>(QStringLiteral("saveButton")));
+    const QPointer<QPushButton> save = saveButton();
     QVERIFY(save);
     QTest::mouseClick(save.data(), Qt::LeftButton);
     QVERIFY(message());
@@ -174,6 +195,18 @@ void TestSettingsPage::missingValuesAreRejected()
     QVERIFY(message()->property("error").toBool());
     QSettings settings;
     QVERIFY(!settings.contains(QStringLiteral("server/user")));
+}
+
+// The save button keeps the blue "primary" style.
+void TestSettingsPage::saveButtonIsPrimary()
+{
+    const QPointer<QPushButton> save = saveButton();
+    QVERIFY(save);
+    QCOMPARE(save->objectName(), QStringLiteral("primaryButton"));
+    // Check the rendered colour, not just the name: the middle-left area is blue.
+    const QImage image = save->grab().toImage();
+    const QColor colour = image.pixelColor(image.width() / 10, image.height() / 2);
+    QVERIFY2(colour.blue() > 150 && colour.red() < 60, qPrintable(colour.name()));
 }
 
 // Runs the tests offscreen with private, temporary settings.
@@ -185,6 +218,9 @@ int main(int argc, char *argv[])
     if (qEnvironmentVariableIsEmpty("QT_QPA_PLATFORM"))
         qputenv("QT_QPA_PLATFORM", "offscreen");
     QApplication app(argc, argv);
+    QFile style(QStringLiteral(":/style.qss"));
+    if (style.open(QIODevice::ReadOnly))
+        app.setStyleSheet(QString::fromUtf8(style.readAll()));
     QCoreApplication::setOrganizationName(QStringLiteral("PicSyncTest"));
     QCoreApplication::setApplicationName(QStringLiteral("PicSyncTest"));
     TestSettingsPage test;
