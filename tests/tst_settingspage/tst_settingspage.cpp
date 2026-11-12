@@ -97,6 +97,11 @@ void TestSettingsPage::fieldsDisableSuggestions()
             continue;   // internal line edits of combo boxes
         QVERIFY2(edit->inputMethodHints().testFlag(Qt::ImhNoPredictiveText),
                  qPrintable(edit->objectName()));
+        // URL/e-mail field types make some Android keyboards ignore "no suggestions".
+        QVERIFY2(!edit->inputMethodHints().testFlag(Qt::ImhUrlCharactersOnly),
+                 qPrintable(edit->objectName()));
+        QVERIFY2(!edit->inputMethodHints().testFlag(Qt::ImhEmailCharactersOnly),
+                 qPrintable(edit->objectName()));
     }
 }
 

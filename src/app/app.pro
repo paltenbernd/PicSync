@@ -71,6 +71,7 @@ android {
     }
     ANDROID_VERSION_NAME = $$PICSYNC_VERSION
     isEmpty(ANDROID_VERSION_CODE): ANDROID_VERSION_CODE = 1
+    DEFINES += PICSYNC_BUILD=\\\"$$ANDROID_VERSION_CODE\\\"
     ANDROID_MIN_SDK_VERSION = 33
     ANDROID_TARGET_SDK_VERSION = 34
 
@@ -84,4 +85,5 @@ android {
         android/src/de/altenbernd/picsync/PicSyncService.java
 } else {
     SOURCES += platform/platform_desktop.cpp
+    DEFINES += PICSYNC_BUILD=\\\"dev\\\"
 }

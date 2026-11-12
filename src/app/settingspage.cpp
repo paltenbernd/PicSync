@@ -86,9 +86,11 @@ SettingsPage::SettingsPage()
     m_url->setPlaceholderText(QStringLiteral("magentacloud.de"));
     // Without suggestions the Android keyboard commits every key immediately;
     // otherwise Qt Widgets show the typed text only after leaving the field.
+    // No ImhUrlCharactersOnly: for URL fields some keyboards (e.g. on /e/OS)
+    // ignore "no suggestions" and keep the text uncommitted.
     const Qt::InputMethodHints plain = Qt::ImhNoAutoUppercase | Qt::ImhNoPredictiveText;
     m_url->setObjectName(QStringLiteral("serverUrl"));
-    m_url->setInputMethodHints(plain | Qt::ImhUrlCharactersOnly);
+    m_url->setInputMethodHints(plain);
     m_user->setObjectName(QStringLiteral("userName"));
     m_user->setInputMethodHints(plain);
     m_password->setEchoMode(QLineEdit::Password);
@@ -165,7 +167,7 @@ SettingsPage::SettingsPage()
     m_about->setOpenExternalLinks(true);
     m_about->setText(tr("Version %1<br>© 2026 Peter Altenbernd<br>"
                         "Licence: GNU General Public License v3.0 or later<br>"
-                        "Built with Qt %2.").arg(QStringLiteral(PICSYNC_VERSION),
+                        "Built with Qt %2.").arg(QStringLiteral(PICSYNC_VERSION " (Build " PICSYNC_BUILD ")"),
                                                  QString::fromLatin1(qVersion())));
     m_aboutLayout->addWidget(m_about.get());
     m_contentLayout->addWidget(m_aboutCard.get());

@@ -8,3 +8,4 @@ SOURCES += tst_settingspage.cpp \
     $$APP/settingspage.cpp $$APP/syncsession.cpp $$APP/uihelpers.cpp \
     $$APP/platform/platform_desktop.cpp
 RESOURCES += $$APP/picsync.qrc
+DEFINES += PICSYNC_BUILD=\\\"test\\\"
