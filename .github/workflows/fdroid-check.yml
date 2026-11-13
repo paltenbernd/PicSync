@@ -21,7 +21,7 @@ on:
       - '.github/workflows/fdroid-check.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   from-source:
@@ -62,7 +62,8 @@ jobs:
             build-fromsource/qt-host
             build-fromsource/qt-android
             build-fromsource/openssl
-          key: fromsource-${{ steps.subs.outputs.key }}-${{ hashFiles('tools/build-android-from-source.sh') }}
+          key: fromsource-${{ steps.subs.outputs.key }}
+          restore-keys: fromsource-${{ steps.subs.outputs.key }}
 
       - name: Build from source
         run: |
@@ -73,3 +74,39 @@ jobs:
         run: |
           ls -la build-fromsource/PicSync-release-unsigned.apk
           unzip -l build-fromsource/PicSync-release-unsigned.apk | grep -E "lib/|AndroidManifest"
+
+      - name: Sign with a throwaway key for testing
+        run: |
+          keytool -genkeypair -keystore "$RUNNER_TEMP/test.jks" -alias test -keyalg RSA \
+            -keysize 2048 -validity 1 -storepass testtest -keypass testtest -dname "CN=test"
+          "$ANDROID_SDK_ROOT/build-tools/34.0.0/apksigner" sign --ks "$RUNNER_TEMP/test.jks" \
+            --ks-pass pass:testtest --out PicSync.apk build-fromsource/PicSync-release-unsigned.apk
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run the UI check with the from-source APK
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: sh .github/scripts/ui-check.sh
+
+      - name: Publish screenshots to the ui-check-fromsource branch
+        if: always()
+        run: |
+          [ -d shots ] || exit 0
+          cd shots
+          git init -q -b ui-check-fromsource
+          git config user.name "PicSync CI"
+          git config user.email "ci@users.noreply.github.com"
+          echo "From-source UI check, run ${{ github.run_id }}" > README.txt
+          git add -A
+          git commit -q -m "From-source UI check ${{ github.run_id }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" ui-check-fromsource
