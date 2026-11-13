@@ -36,13 +36,13 @@ run_variant() {
     adb shell am start -W -n $PKG/org.qtproject.qt.android.bindings.QtActivity --es applicationArguments "'$ARGS'"
     sleep 8
     shot 01-start
-    adb shell input tap $(at 500 246)
+    adb shell input tap $(at 500 222)
     shot 02-server-focused
     adb shell input text "magentacloud"
     shot 03-server-typed
     adb shell input text ".de"
     shot 04-server-more
-    adb shell input tap $(at 500 343)
+    adb shell input tap $(at 500 309)
     adb shell input text "120049"
     shot 05-user-typed
     # Keyboard stays open while scrolling (like a user who keeps typing).
