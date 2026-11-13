@@ -12,3 +12,4 @@ android-build/
 # Signing material must never be committed
 *.jks
 *.keystore
+build-fromsource/

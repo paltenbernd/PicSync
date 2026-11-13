@@ -1,0 +1,8 @@
+[submodule "3rdparty/qtbase"]
+	path = 3rdparty/qtbase
+	url = https://github.com/qt/qtbase.git
+	shallow = true
+[submodule "3rdparty/openssl"]
+	path = 3rdparty/openssl
+	url = https://github.com/openssl/openssl.git
+	shallow = true
