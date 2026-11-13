@@ -82,16 +82,8 @@
         <translation>Letzter Sync %1 fehlgeschlagen: %2</translation>
     </message>
     <message numerus="yes">
-        <source>+ %n more</source>
-        <translation><numerusform>+ %n weiterer</numerusform><numerusform>+ %n weitere</numerusform></translation>
-    </message>
-    <message numerus="yes">
         <source>%n deletion(s) waiting</source>
         <translation><numerusform>%n Löschung wartet</numerusform><numerusform>%n Löschungen warten</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n file(s)</source>
-        <translation><numerusform>%n Datei</numerusform><numerusform>%n Dateien</numerusform></translation>
     </message>
     <message>
         <source>Folders appear after the first sync.</source>
@@ -120,6 +112,10 @@
     <message>
         <source>Stopping…</source>
         <translation>Wird gestoppt…</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n file(s) · %1</source>
+        <translation><numerusform>%n Datei · %1</numerusform><numerusform>%n Dateien · %1</numerusform></translation>
     </message>
 </context>
 <context>

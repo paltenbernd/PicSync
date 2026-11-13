@@ -82,16 +82,8 @@
         <translation>Last sync %1 failed: %2</translation>
     </message>
     <message numerus="yes">
-        <source>+ %n more</source>
-        <translation><numerusform>+ %n more</numerusform><numerusform>+ %n more</numerusform></translation>
-    </message>
-    <message numerus="yes">
         <source>%n deletion(s) waiting</source>
         <translation><numerusform>%n deletion waiting</numerusform><numerusform>%n deletions waiting</numerusform></translation>
-    </message>
-    <message numerus="yes">
-        <source>%n file(s)</source>
-        <translation><numerusform>%n file</numerusform><numerusform>%n files</numerusform></translation>
     </message>
     <message>
         <source>Folders appear after the first sync.</source>
@@ -120,6 +112,10 @@
     <message>
         <source>Stopping…</source>
         <translation>Stopping…</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n file(s) · %1</source>
+        <translation><numerusform>%n file · %1</numerusform><numerusform>%n files · %1</numerusform></translation>
     </message>
 </context>
 <context>

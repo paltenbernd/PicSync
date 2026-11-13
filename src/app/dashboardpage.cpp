@@ -24,7 +24,6 @@ namespace PicSync {
 
 namespace {
 const int kIconSize = 22;
-const int kMaxFolders = 8;
 }
 
 // Builds the page.
@@ -85,6 +84,7 @@ DashboardPage::DashboardPage()
     m_permCard->setLayout(m_permLayout.get());
     m_permIcon->setPixmap(Ui::pixmap(QStringLiteral("warn"), kIconSize));
     m_permText->setWordWrap(true);
+    Ui::allowShrink(*m_permText);
     m_permText->setText(tr("PicSync needs access to all files to synchronise the gallery."));
     m_permButton->setText(tr("Grant"));
     m_permLayout->addWidget(m_permIcon.get());
@@ -99,6 +99,7 @@ DashboardPage::DashboardPage()
     m_serverLayout->addWidget(m_serverStatus.get(), 0, 2, Qt::AlignRight);
     m_serverDetail->setObjectName(QStringLiteral("detail"));
     m_serverDetail->setWordWrap(true);
+    Ui::allowShrink(*m_serverDetail);
     m_serverLayout->addWidget(m_serverDetail.get(), 1, 1, 1, 2);
     m_contentLayout->addWidget(m_serverCard.get());
 
@@ -111,6 +112,7 @@ DashboardPage::DashboardPage()
     m_storageLayout->addWidget(m_storageBar.get(), 1, 1, 1, 2);
     m_storageDetail->setObjectName(QStringLiteral("detail"));
     m_storageDetail->setWordWrap(true);
+    Ui::allowShrink(*m_storageDetail);
     m_storageLayout->addWidget(m_storageDetail.get(), 2, 1, 1, 2);
     m_contentLayout->addWidget(m_storageCard.get());
 
@@ -126,9 +128,11 @@ DashboardPage::DashboardPage()
               QStringLiteral("wifi"), tr("Automatic sync"));
     m_conditionsDetail->setObjectName(QStringLiteral("detail"));
     m_conditionsDetail->setWordWrap(true);
+    Ui::allowShrink(*m_conditionsDetail);
     m_conditionsLayout->addWidget(m_conditionsDetail.get(), 1, 1, 1, 2);
     m_lastSync->setObjectName(QStringLiteral("detail"));
     m_lastSync->setWordWrap(true);
+    Ui::allowShrink(*m_lastSync);
     m_conditionsLayout->addWidget(m_lastSync.get(), 2, 1, 1, 2);
     m_contentLayout->addWidget(m_conditionsCard.get());
     m_contentLayout->addStretch(1);
@@ -137,6 +141,7 @@ DashboardPage::DashboardPage()
     m_phase->setObjectName(QStringLiteral("phase"));
     m_phase->setAlignment(Qt::AlignCenter);
     m_phase->setWordWrap(true);
+    Ui::allowShrink(*m_phase);
     m_progress->setTextVisible(false);
     m_progress->setFixedHeight(6);
     m_syncButton->setObjectName(QStringLiteral("primaryButton"));
@@ -205,6 +210,7 @@ void DashboardPage::refresh()
         status = QStringLiteral("warn");
     else
         status = QStringLiteral("ok");
+    Ui::allowShrink(*m_serverTitle);
     m_serverStatus->setPixmap(status.isEmpty() ? QPixmap() : Ui::pixmap(status, kIconSize));
 
     // Storage: account quota from the last run, file count from the state.
@@ -266,59 +272,69 @@ void DashboardPage::refresh()
     m_lastSync->style()->polish(m_lastSync.get());
 }
 
-// Updates the folder list of the folders card.
+// Updates the folder list of the folders card: every folder with its number of
+// files, the space they take and waiting deletions.
 void DashboardPage::refreshFolders()
 {
     StateStore state(SyncSession::stateFilePath());
     state.load();
     QMap<QString, int> counts;
+    QMap<QString, qint64> bytes;
     QMap<QString, int> pending;
-    for (auto it = state.entries().constBegin(); it != state.entries().constEnd(); ++it)
-        counts[PathUtils::parentPath(it.key())] += 1;
+    for (auto it = state.entries().constBegin(); it != state.entries().constEnd(); ++it) {
+        const QString folder = PathUtils::parentPath(it.key());
+        counts[folder] += 1;
+        bytes[folder] += it.value().localSize;
+    }
     for (auto it = state.pending().constBegin(); it != state.pending().constEnd(); ++it)
         pending[PathUtils::parentPath(it.key())] += 1;
 
-    // Biggest folders first.
+    // Short names ("Camera") unless two folders share one, e.g. two "Signal" folders.
+    QMap<QString, int> nameUses;
+    for (auto it = counts.constBegin(); it != counts.constEnd(); ++it)
+        nameUses[Ui::folderName(it.key())] += 1;
+
+    // Biggest folders (by number of files) first.
     std::vector<std::pair<int, QString>> bySize;
     for (auto it = counts.constBegin(); it != counts.constEnd(); ++it)
         bySize.emplace_back(it.value(), it.key());
     std::stable_sort(bySize.begin(), bySize.end(), std::greater<std::pair<int, QString>>());
-    QStringList folders;
-    for (const std::pair<int, QString> &entry : bySize)
-        folders << entry.second;
+
     m_folderLabels.clear();
-    m_foldersCount->setText(QString::number(folders.size()));
+    m_foldersCount->setText(QString::number(bySize.size()));
 
     int row = 1;
-    for (const QString &folder : std::as_const(folders)) {
-        if (row > kMaxFolders) {
-            auto more = std::make_unique<QLabel>(tr("+ %n more", nullptr,
-                                                    int(folders.size()) - kMaxFolders));
-            more->setObjectName(QStringLiteral("detail"));
-            m_foldersLayout->addWidget(more.get(), row, 1, 1, 2);
-            m_folderLabels.push_back(std::move(more));
-            break;
-        }
-        auto name = std::make_unique<QLabel>(Ui::folderName(folder));
+    for (const std::pair<int, QString> &entry : bySize) {
+        const QString &folder = entry.second;
+        const QString shortName = Ui::folderName(folder);
+        auto name = std::make_unique<QLabel>(nameUses.value(shortName) > 1 ? folder : shortName);
         name->setToolTip(folder);
-        auto info = std::make_unique<QLabel>();
-        if (pending.value(folder) > 0) {
-            info->setText(tr("%n deletion(s) waiting", nullptr, pending.value(folder)));
-            info->setObjectName(QStringLiteral("warning"));
-        } else {
-            info->setText(tr("%n file(s)", nullptr, counts.value(folder)));
-            info->setObjectName(QStringLiteral("detail"));
-        }
+        name->setWordWrap(true);
+        Ui::allowShrink(*name);
+        auto info = std::make_unique<QLabel>(
+            tr("%n file(s) · %1", nullptr, counts.value(folder))
+                .arg(Ui::sizeText(bytes.value(folder))));
+        info->setObjectName(QStringLiteral("detail"));
+        info->setAlignment(Qt::AlignRight | Qt::AlignVCenter);
         m_foldersLayout->addWidget(name.get(), row, 1);
         m_foldersLayout->addWidget(info.get(), row, 2, Qt::AlignRight);
         m_folderLabels.push_back(std::move(name));
         m_folderLabels.push_back(std::move(info));
         ++row;
+        if (pending.value(folder) > 0) {
+            auto waiting = std::make_unique<QLabel>(
+                tr("%n deletion(s) waiting", nullptr, pending.value(folder)));
+            waiting->setObjectName(QStringLiteral("warning"));
+            m_foldersLayout->addWidget(waiting.get(), row, 1, 1, 2);
+            m_folderLabels.push_back(std::move(waiting));
+            ++row;
+        }
     }
-    if (folders.isEmpty()) {
+    if (bySize.empty()) {
         auto empty = std::make_unique<QLabel>(tr("Folders appear after the first sync."));
         empty->setObjectName(QStringLiteral("detail"));
         empty->setWordWrap(true);
+        Ui::allowShrink(*empty);
         m_foldersLayout->addWidget(empty.get(), 1, 1, 1, 2);
         m_folderLabels.push_back(std::move(empty));
     }
@@ -344,10 +360,14 @@ void DashboardPage::setProgress(int done, int total, const QString &currentFile)
         return;
     m_progress->setRange(0, total);
     m_progress->setValue(done);
-    m_phase->setText(currentFile.isEmpty()
-                     ? tr("%1 of %2 files").arg(done).arg(total)
-                     : tr("%1 of %2: %3").arg(done + 1).arg(total)
-                           .arg(currentFile.section(QLatin1Char('/'), -1)));
+    const QString text = currentFile.isEmpty()
+            ? tr("%1 of %2 files").arg(done).arg(total)
+            : tr("%1 of %2: %3").arg(done + 1).arg(total)
+                  .arg(currentFile.section(QLatin1Char('/'), -1));
+    // Long file names have no spaces to wrap at: shorten them in the middle.
+    const int available = qMax(120, width() - 40);
+    m_phase->setText(m_phase->fontMetrics().elidedText(text, Qt::ElideMiddle, available));
+    m_phase->setToolTip(text);
 }
 
 // Shows the current phase of a running synchronisation.

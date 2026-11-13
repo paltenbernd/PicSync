@@ -179,6 +179,7 @@ SettingsPage::SettingsPage()
     m_message->setObjectName(QStringLiteral("phase"));
     m_message->setProperty("role", QStringLiteral("message"));
     m_message->setWordWrap(true);
+    Ui::allowShrink(*m_message);
     m_message->setAlignment(Qt::AlignCenter);
     m_message->hide();
     m_save->setObjectName(QStringLiteral("primaryButton"));   // blue style, see style.qss

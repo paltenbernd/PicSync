@@ -9,6 +9,7 @@
 #include <QString>
 
 class QAbstractScrollArea;
+class QLabel;
 class QWidget;
 
 namespace PicSync {
@@ -33,6 +34,10 @@ QString sizeText(qint64 bytes);
 
 // Enables finger scrolling without delaying taps and without stale paint.
 void enableTouchScrolling(QAbstractScrollArea &area);
+
+// Lets a text label shrink below the width of its longest word, so long file
+// names or paths never widen the window beyond the screen.
+void allowShrink(QLabel &label);
 
 // Asks a yes/no question with translated buttons; returns true for "yes".
 bool confirm(QWidget &parent, const QString &title, const QString &text);

@@ -7,6 +7,7 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QGuiApplication>
+#include <QLabel>
 #include <QLocale>
 #include <QMessageBox>
 #include <QPointer>
@@ -90,6 +91,16 @@ void enableTouchScrolling(QAbstractScrollArea &area)
     // occasionally keeps old pixels (e.g. checkboxes drawn over text fields).
     QObject::connect(area.verticalScrollBar(), &QScrollBar::valueChanged, viewport.data(),
                      qOverload<>(&QWidget::update));
+}
+
+// Lets a text label shrink below the width of its longest word, so long file
+// names or paths never widen the window beyond the screen.
+void allowShrink(QLabel &label)
+{
+    QSizePolicy policy = label.sizePolicy();
+    policy.setHorizontalPolicy(QSizePolicy::Ignored);
+    label.setSizePolicy(policy);
+    label.setMinimumWidth(0);
 }
 
 // Asks a yes/no question with translated buttons; returns true for "yes".

@@ -15,6 +15,7 @@
 #include <QApplication>
 #include <QFile>
 #include <QLocale>
+#include <QScreen>
 #include <QTranslator>
 
 #ifdef Q_OS_ANDROID
@@ -89,6 +90,9 @@ int main(int argc, char *argv[])
 
     PicSync::MainWindow window;
 #ifdef Q_OS_ANDROID
+    // Never wider than the screen, whatever a label asks for.
+    if (window.screen())
+        window.setMaximumWidth(window.screen()->availableGeometry().width());
     window.showMaximized();
 #else
     window.resize(420, 820);
