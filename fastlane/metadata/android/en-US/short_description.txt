@@ -1,0 +1,1 @@
+Two-way sync of all gallery folders with your Nextcloud, including deletions

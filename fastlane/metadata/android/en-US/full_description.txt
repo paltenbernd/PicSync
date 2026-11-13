@@ -1,0 +1,23 @@
+<p>PicSync keeps the photos and videos of your phone's gallery and a folder in your <b>Nextcloud</b> in sync – in <b>both directions</b> and <b>including deletions</b>. It was written for /e/OS on the Fairphone and works with any Nextcloud server (including MagentaCLOUD).</p>
+
+<p><b>Features</b></p>
+<ul>
+<li>Synchronises every folder the gallery shows (camera, screenshots, messengers, …)</li>
+<li>The server mirrors the phone: <i>PicSync/&lt;device name&gt;/DCIM/Camera/…</i></li>
+<li>Photos and videos added on either side appear on the other side</li>
+<li><b>Safe deletions:</b> a deletion is passed on only at the next sync. Until then the file is locked on the other side, so a photo deleted by mistake can still be restored. Deleted files go to the Nextcloud trash bin and, where Android allows it, to the gallery trash.</li>
+<li><b>Conflicts keep both versions</b> instead of overwriting one</li>
+<li>Automatic sync every 15 minutes up to once a day, optionally only on Wi-Fi and/or while charging</li>
+<li>"Sync now" button, progress notification, history of the last runs, storage usage of your account and of each folder</li>
+<li>Login with an app password, stored encrypted with the Android Keystore</li>
+<li>English and German</li>
+</ul>
+
+<p><b>Permissions</b></p>
+<ul>
+<li><i>All files access</i>: needed to read, write and delete the gallery's photos and videos without asking for every single file</li>
+<li><i>Internet</i>: to talk to your Nextcloud</li>
+<li><i>Notifications</i>: progress and errors of the synchronisation</li>
+</ul>
+
+<p>No tracking, no ads, no Google services. Source code: GNU GPL v3 or later.</p>

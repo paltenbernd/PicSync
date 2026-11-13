@@ -1,0 +1,1 @@
+First release: two-way sync of the gallery with Nextcloud, delayed deletions, conflict copies, background sync, history.

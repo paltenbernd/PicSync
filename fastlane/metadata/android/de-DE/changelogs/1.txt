@@ -1,0 +1,1 @@
+Erste Version: Galerie und Nextcloud in beide Richtungen synchronisieren, verzögerte Löschungen, Konfliktkopien, Hintergrund-Sync, Verlauf.

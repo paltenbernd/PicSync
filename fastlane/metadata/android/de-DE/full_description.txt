@@ -1,0 +1,23 @@
+<p>PicSync hält die Fotos und Videos der Galerie deines Handys und einen Ordner in deiner <b>Nextcloud</b> synchron – <b>in beide Richtungen</b> und <b>einschließlich Löschungen</b>. Die App wurde für /e/OS auf dem Fairphone geschrieben und funktioniert mit jedem Nextcloud-Server (auch MagentaCLOUD).</p>
+
+<p><b>Funktionen</b></p>
+<ul>
+<li>Synchronisiert alle Ordner, die die Galerie anzeigt (Kamera, Screenshots, Messenger, …)</li>
+<li>Der Server spiegelt das Handy: <i>PicSync/&lt;Gerätename&gt;/DCIM/Camera/…</i></li>
+<li>Neue Fotos und Videos von einer Seite erscheinen auf der anderen</li>
+<li><b>Sichere Löschungen:</b> Eine Löschung wird erst beim nächsten Sync übertragen. Bis dahin ist die Datei auf der anderen Seite gesperrt, ein versehentlich gelöschtes Foto lässt sich also noch retten. Gelöschte Dateien landen im Papierkorb der Nextcloud und, wo Android es zulässt, im Papierkorb der Galerie.</li>
+<li><b>Konflikte behalten beide Versionen</b>, statt eine zu überschreiben</li>
+<li>Automatischer Sync alle 15 Minuten bis einmal täglich, wahlweise nur im WLAN und/oder beim Laden</li>
+<li>„Jetzt synchronisieren“, Fortschrittsanzeige, Verlauf der letzten Läufe, Speicherbelegung des Kontos und je Ordner</li>
+<li>Anmeldung mit App-Passwort, verschlüsselt im Android Keystore gespeichert</li>
+<li>Deutsch und Englisch</li>
+</ul>
+
+<p><b>Berechtigungen</b></p>
+<ul>
+<li><i>Zugriff auf alle Dateien</i>: nötig, um Fotos und Videos der Galerie zu lesen, zu schreiben und zu löschen, ohne bei jeder Datei nachzufragen</li>
+<li><i>Internet</i>: für die Verbindung zur Nextcloud</li>
+<li><i>Benachrichtigungen</i>: Fortschritt und Fehler der Synchronisation</li>
+</ul>
+
+<p>Kein Tracking, keine Werbung, keine Google-Dienste. Quellcode unter GNU GPL v3 oder später.</p>
