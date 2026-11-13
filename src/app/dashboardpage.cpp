@@ -11,7 +11,9 @@
 #include "syncsession.h"
 #include "uihelpers.h"
 
+#include <QEvent>
 #include <QMap>
+#include <QMouseEvent>
 #include <QSettings>
 #include <QStyle>
 #include <QUrl>
@@ -43,6 +45,7 @@ DashboardPage::DashboardPage()
     , m_serverTitle(std::make_unique<QLabel>())
     , m_serverStatus(std::make_unique<QLabel>())
     , m_serverDetail(std::make_unique<QLabel>())
+    , m_serverState(std::make_unique<QLabel>())
     , m_storageCard(std::make_unique<QFrame>())
     , m_storageLayout(std::make_unique<QGridLayout>())
     , m_storageIcon(std::make_unique<QLabel>())
@@ -101,6 +104,11 @@ DashboardPage::DashboardPage()
     m_serverDetail->setWordWrap(true);
     Ui::allowShrink(*m_serverDetail);
     m_serverLayout->addWidget(m_serverDetail.get(), 1, 1, 1, 2);
+    m_serverState->setWordWrap(true);
+    Ui::allowShrink(*m_serverState);
+    m_serverLayout->addWidget(m_serverState.get(), 2, 1, 1, 2);
+    // Tapping the card (or the folders card) explains the status icon.
+    m_serverCard->installEventFilter(this);
     m_contentLayout->addWidget(m_serverCard.get());
 
     // Storage card.
@@ -121,6 +129,7 @@ DashboardPage::DashboardPage()
               QStringLiteral("folder"), tr("Folders"));
     m_foldersCount->setObjectName(QStringLiteral("detail"));
     m_foldersLayout->addWidget(m_foldersCount.get(), 0, 2, Qt::AlignRight);
+    m_foldersCard->installEventFilter(this);
     m_contentLayout->addWidget(m_foldersCard.get());
 
     // Conditions card.
@@ -212,6 +221,12 @@ void DashboardPage::refresh()
         status = QStringLiteral("ok");
     Ui::allowShrink(*m_serverTitle);
     m_serverStatus->setPixmap(status.isEmpty() ? QPixmap() : Ui::pixmap(status, kIconSize));
+    m_serverState->setText(statusLine());
+    m_serverState->setObjectName(status == QLatin1String("error") ? QStringLiteral("errorText")
+                                 : status == QLatin1String("warn") ? QStringLiteral("warning")
+                                                                   : QStringLiteral("detail"));
+    m_serverState->style()->unpolish(m_serverState.get());
+    m_serverState->style()->polish(m_serverState.get());
 
     // Storage: account quota from the last run, file count from the state.
     StateStore state(SyncSession::stateFilePath());
@@ -338,6 +353,98 @@ void DashboardPage::refreshFolders()
         m_foldersLayout->addWidget(empty.get(), 1, 1, 1, 2);
         m_folderLabels.push_back(std::move(empty));
     }
+}
+
+// Returns the short status line shown below the connection (e.g. "1 deletion waiting").
+QString DashboardPage::statusLine() const
+{
+    SyncHistory history(SyncSession::historyFilePath());
+    history.load();
+    if (history.entries().isEmpty())
+        return tr("Not synchronised yet.");
+    const SyncResult &last = history.entries().first();
+    if (!last.success)
+        return tr("Last sync failed. Tap for details.");
+    StateStore state(SyncSession::stateFilePath());
+    state.load();
+    const int waiting = int(state.pending().size());
+    if (waiting > 0)
+        return tr("%n deletion(s) waiting for the next sync. Tap for details.", nullptr, waiting);
+    return tr("Everything is synchronised.");
+}
+
+// Returns the explanation shown when the user taps the connection or folders card.
+QString DashboardPage::statusDetails() const
+{
+    SyncHistory history(SyncSession::historyFilePath());
+    history.load();
+    StateStore state(SyncSession::stateFilePath());
+    state.load();
+    QStringList parts;
+
+    if (history.entries().isEmpty()) {
+        parts << tr("PicSync has not synchronised yet. Tap \"Sync now\" to start.");
+    } else {
+        const SyncResult &last = history.entries().first();
+        if (!last.success) {
+            parts << tr("The last sync (%1) failed:").arg(Ui::timeText(last.finishedAt))
+                  << last.errorMessage
+                  << tr("PicSync tries again at the next sync. Nothing was deleted because of "
+                        "the error.");
+        } else {
+            parts << tr("Last sync %1: %2 up, %3 down, %4 deleted.")
+                         .arg(Ui::timeText(last.finishedAt)).arg(last.uploaded)
+                         .arg(last.downloaded).arg(last.deletedLocal + last.deletedRemote);
+        }
+    }
+
+    if (!state.pending().isEmpty()) {
+        parts << tr("Waiting deletions (warning sign):")
+              << tr("These files were deleted on one side. PicSync passes deletions on only at "
+                    "the next sync, so that a file deleted by mistake can still be restored. "
+                    "Until then the copy on the other side is locked. If you restore the file "
+                    "before the next sync (gallery trash or Nextcloud trash bin), the deletion "
+                    "is cancelled.");
+        QStringList paths = state.pending().keys();
+        paths.sort();
+        const int maxListed = 15;
+        QStringList lines;
+        for (int i = 0; i < paths.size() && i < maxListed; ++i) {
+            const PendingDeletion p = state.pending().value(paths.at(i));
+            const QString where = p.deletedOn == Side::Local
+                    ? tr("deleted on the phone, will be deleted in Nextcloud")
+                    : tr("deleted in Nextcloud, will be deleted on the phone");
+            lines << QStringLiteral("• ") + paths.at(i) + QStringLiteral("\n   ") + where;
+        }
+        if (paths.size() > maxListed)
+            lines << tr("… and %n more", nullptr, int(paths.size()) - maxListed);
+        parts << lines.join(QLatin1Char('\n'));
+    }
+    return parts.join(QStringLiteral("\n\n"));
+}
+
+// Opens the status explanation when the connection or folders card is tapped.
+bool DashboardPage::eventFilter(QObject *watched, QEvent *event)
+{
+    const bool card = watched == m_serverCard.get() || watched == m_foldersCard.get();
+    if (card && event->type() == QEvent::MouseButtonPress) {
+        m_pressPosition = static_cast<const QMouseEvent &>(*event).globalPosition().toPoint();
+    } else if (card && event->type() == QEvent::MouseButtonRelease) {
+        // A swipe that scrolls the page must not open the dialog.
+        const QPoint moved = static_cast<const QMouseEvent &>(*event).globalPosition().toPoint()
+                - m_pressPosition;
+        if (moved.manhattanLength() < 24) {
+            showStatusDetails();
+            return true;
+        }
+    }
+    return QWidget::eventFilter(watched, event);
+}
+
+// Shows the status explanation in a dialog.
+void DashboardPage::showStatusDetails()
+{
+    Ui::inform(*this, tr("Synchronisation status"), statusDetails());
 }
 
 // Switches between the idle and the running look.

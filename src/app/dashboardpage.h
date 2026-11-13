@@ -5,6 +5,7 @@
 #pragma once
 
 #include <QFrame>
+#include <QPoint>
 #include <QGridLayout>
 #include <QHBoxLayout>
 #include <QLabel>
@@ -37,6 +38,12 @@ public:
     // Switches between the idle and the running look.
     void setRunning(bool running);
 
+    // Returns the short status line shown below the connection (e.g. "1 deletion waiting").
+    QString statusLine() const;
+
+    // Returns the explanation shown when the user taps the connection or folders card.
+    QString statusDetails() const;
+
 public Q_SLOTS:
     // Shows the progress of a running synchronisation.
     void setProgress(int done, int total, const QString &currentFile);
@@ -51,7 +58,14 @@ Q_SIGNALS:
     // The user wants to stop the running synchronisation.
     void stopRequested();
 
+protected:
+    // Opens the status explanation when the connection or folders card is tapped.
+    bool eventFilter(QObject *watched, QEvent *event) override;
+
 private Q_SLOTS:
+    // Shows the status explanation in a dialog.
+    void showStatusDetails();
+
     // Starts or stops a synchronisation, depending on the current state.
     void onSyncButton();
 
@@ -67,6 +81,7 @@ private:
     void refreshFolders();
 
     bool m_running = false;
+    QPoint m_pressPosition;   ///< Where a tap on a card started (to tell taps from swipes).
 
     // Declared parents-first, so children are destroyed before their parents.
     std::unique_ptr<QVBoxLayout> m_layout;
@@ -86,6 +101,7 @@ private:
     std::unique_ptr<QLabel> m_serverTitle;
     std::unique_ptr<QLabel> m_serverStatus;
     std::unique_ptr<QLabel> m_serverDetail;
+    std::unique_ptr<QLabel> m_serverState;
 
     std::unique_ptr<QFrame> m_storageCard;
     std::unique_ptr<QGridLayout> m_storageLayout;

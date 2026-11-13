@@ -3,6 +3,7 @@
 // This file is part of PicSync.
 
 #include "dashboardpage.h"
+#include "syncmodel.h"
 #include "statestore.h"
 #include "synchistory.h"
 #include "syncsession.h"
@@ -39,6 +40,10 @@ private Q_SLOTS:
     void listsAllFoldersWithSizes();
     // Two folders with the same last name are shown with their full path.
     void duplicateFolderNamesAreDisambiguated();
+    // The warning sign comes with a status line and a tap explanation listing the files.
+    void waitingDeletionsAreExplained();
+    // A failed sync shows the error in the explanation.
+    void failedSyncIsExplained();
 
 private:
     // Writes a sync state with the given number of files per folder (1 MB each).
@@ -155,6 +160,47 @@ void TestDashboardPage::duplicateFolderNamesAreDisambiguated()
     QVERIFY(texts.contains(QStringLiteral("Pictures/Signal")));
     QVERIFY(texts.contains(QStringLiteral("Movies/Signal")));
     QVERIFY(texts.contains(QStringLiteral("Camera")));
+}
+
+// The warning sign comes with a status line and a tap explanation listing the files.
+void TestDashboardPage::waitingDeletionsAreExplained()
+{
+    writeState({ { QStringLiteral("Pictures/eBay"), 3 } });
+    StateStore state(SyncSession::stateFilePath());
+    QVERIFY(state.load());
+    PendingDeletion p;
+    p.relativePath = QStringLiteral("Pictures/eBay/IMG_1.jpg");
+    p.deletedOn = Side::Local;
+    state.setPending(p);
+    QVERIFY(state.save());
+    SyncHistory history(SyncSession::historyFilePath());
+    SyncResult ok;
+    ok.success = true;
+    ok.pendingDeletions = 1;
+    QVERIFY(history.append(ok));
+
+    DashboardPage page;
+    page.refresh();
+    QVERIFY2(page.statusLine().contains(QLatin1String("waiting for the next sync")),
+             qPrintable(page.statusLine()));
+    QVERIFY(labelTexts(page).contains(page.statusLine()));
+    const QString details = page.statusDetails();
+    QVERIFY(details.contains(QLatin1String("Pictures/eBay/IMG_1.jpg")));
+    QVERIFY(details.contains(QLatin1String("deleted on the phone, will be deleted in Nextcloud")));
+    QVERIFY(details.contains(QLatin1String("restore")));
+}
+
+// A failed sync shows the error in the explanation.
+void TestDashboardPage::failedSyncIsExplained()
+{
+    SyncHistory history(SyncSession::historyFilePath());
+    SyncResult failed;
+    failed.errorMessage = QStringLiteral("Server not found.");
+    QVERIFY(history.append(failed));
+    DashboardPage page;
+    page.refresh();
+    QVERIFY(page.statusLine().contains(QLatin1String("failed")));
+    QVERIFY(page.statusDetails().contains(QLatin1String("Server not found.")));
 }
 
 // Runs the tests offscreen with private, temporary settings and data.

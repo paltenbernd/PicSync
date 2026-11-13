@@ -117,6 +117,58 @@
         <source>%n file(s) · %1</source>
         <translation><numerusform>%n Datei · %1</numerusform><numerusform>%n Dateien · %1</numerusform></translation>
     </message>
+    <message>
+        <source>Last sync failed. Tap for details.</source>
+        <translation>Letzter Sync fehlgeschlagen. Für Details antippen.</translation>
+    </message>
+    <message numerus="yes">
+        <source>%n deletion(s) waiting for the next sync. Tap for details.</source>
+        <translation><numerusform>%n Löschung wartet auf den nächsten Sync. Für Details antippen.</numerusform><numerusform>%n Löschungen warten auf den nächsten Sync. Für Details antippen.</numerusform></translation>
+    </message>
+    <message>
+        <source>Everything is synchronised.</source>
+        <translation>Alles ist synchronisiert.</translation>
+    </message>
+    <message>
+        <source>PicSync has not synchronised yet. Tap "Sync now" to start.</source>
+        <translation>PicSync hat noch nicht synchronisiert. Tippe auf „Jetzt synchronisieren“, um zu starten.</translation>
+    </message>
+    <message>
+        <source>The last sync (%1) failed:</source>
+        <translation>Der letzte Sync (%1) ist fehlgeschlagen:</translation>
+    </message>
+    <message>
+        <source>PicSync tries again at the next sync. Nothing was deleted because of the error.</source>
+        <translation>PicSync versucht es beim nächsten Sync erneut. Wegen des Fehlers wurde nichts gelöscht.</translation>
+    </message>
+    <message>
+        <source>Last sync %1: %2 up, %3 down, %4 deleted.</source>
+        <translation>Letzter Sync %1: %2 hoch, %3 runter, %4 gelöscht.</translation>
+    </message>
+    <message>
+        <source>Waiting deletions (warning sign):</source>
+        <translation>Wartende Löschungen (Warndreieck):</translation>
+    </message>
+    <message>
+        <source>These files were deleted on one side. PicSync passes deletions on only at the next sync, so that a file deleted by mistake can still be restored. Until then the copy on the other side is locked. If you restore the file before the next sync (gallery trash or Nextcloud trash bin), the deletion is cancelled.</source>
+        <translation>Diese Dateien wurden auf einer Seite gelöscht. PicSync überträgt Löschungen erst beim nächsten Sync, damit du versehentlich gelöschte Dateien noch retten kannst. Bis dahin ist die Kopie auf der anderen Seite gesperrt. Stellst du die Datei vorher wieder her (Papierkorb der Galerie oder der Nextcloud), wird die Löschung abgebrochen.</translation>
+    </message>
+    <message>
+        <source>deleted on the phone, will be deleted in Nextcloud</source>
+        <translation>auf dem Handy gelöscht, wird in der Nextcloud gelöscht</translation>
+    </message>
+    <message>
+        <source>deleted in Nextcloud, will be deleted on the phone</source>
+        <translation>in der Nextcloud gelöscht, wird auf dem Handy gelöscht</translation>
+    </message>
+    <message numerus="yes">
+        <source>… and %n more</source>
+        <translation><numerusform>… und %n weitere</numerusform><numerusform>… und %n weitere</numerusform></translation>
+    </message>
+    <message>
+        <source>Synchronisation status</source>
+        <translation>Status der Synchronisation</translation>
+    </message>
 </context>
 <context>
     <name>PicSync::HistoryPage</name>
@@ -453,6 +505,10 @@
     <message numerus="yes">
         <source>every %n hour(s)</source>
         <translation><numerusform>stündlich</numerusform><numerusform>alle %n Stunden</numerusform></translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation>OK</translation>
     </message>
 </context>
 <context>

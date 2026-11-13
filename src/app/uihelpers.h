@@ -42,6 +42,9 @@ void allowShrink(QLabel &label);
 // Asks a yes/no question with translated buttons; returns true for "yes".
 bool confirm(QWidget &parent, const QString &title, const QString &text);
 
+// Shows an information message with a translated OK button.
+void inform(QWidget &parent, const QString &title, const QString &text);
+
 // Returns the "pretty" name of a gallery folder, e.g. "Camera" for "DCIM/Camera".
 QString folderName(const QString &relativeFolder);
 
