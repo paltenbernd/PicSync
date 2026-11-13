@@ -120,7 +120,9 @@ step "Building PicSync"
 rm -rf "$WORK/picsync"
 mkdir -p "$WORK/picsync"
 cd "$WORK/picsync"
-ANDROID_OPENSSL_DIR="$SSL_OUT" "$QT_ANDROID/bin/qmake" "$ROOT/PicSync.pro" \
+# Exported, because qmake reads it again when make creates the sub-Makefiles.
+export ANDROID_OPENSSL_DIR="$SSL_OUT"
+"$QT_ANDROID/bin/qmake" "$ROOT/PicSync.pro" \
     -spec android-clang ANDROID_ABIS="$ABI" CONFIG+=release \
     QT_TOOL.lrelease.binary="$LRELEASE"
 make -j"$JOBS"
