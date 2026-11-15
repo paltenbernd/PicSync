@@ -78,7 +78,7 @@ done
 adb shell am start -n $PKG/org.qtproject.qt.android.bindings.QtActivity > /dev/null
 sleep 6
 shot 03-back-in-app
-adb logcat -d | grep -iE "picsync|qt|ActivityManager.*picsync" | tail -400 > "$OUT/logcat.txt"
+adb logcat -d | tail -4000 > "$OUT/logcat.txt"
 
 FINAL=$(server_count)
 echo "final: $FINAL / $EXPECTED" | tee -a "$OUT/counts.txt"

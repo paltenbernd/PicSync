@@ -3,6 +3,8 @@
 // This file is part of PicSync.
 
 #include "servicerunner.h"
+
+#include <QDebug>
 #include "platform/platform.h"
 
 #include <QDateTime>
@@ -43,6 +45,7 @@ void ServiceRunner::start()
 // Starts one synchronisation; manual runs put the service in the foreground.
 void ServiceRunner::runOnce(bool manual)
 {
+    qInfo("PicSync: service run %d (%s)", m_runs + 1, manual ? "manual" : "scheduled");
     if (manual && !m_foreground) {
         Platform::enterForeground();
         m_foreground = true;

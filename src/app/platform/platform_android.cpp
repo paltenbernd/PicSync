@@ -13,6 +13,7 @@
 #include "syncprogress.h"
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QDir>
 #include <QJniObject>
 #include <QSettings>
@@ -325,9 +326,11 @@ bool requestManualSync()
         "startForegroundService", "(Landroid/content/Intent;)Landroid/content/ComponentName;",
         intent.object());
     if (!started.isValid()) {
+        qWarning("PicSync: startForegroundService failed, syncing in the app");
         SyncProgress::take(SyncProgress::manualRequestPath());
         return false;
     }
+    qInfo("PicSync: sync service requested");
     return true;
 }
 
@@ -352,6 +355,8 @@ void enterForeground()
     Jni::context().callMethod<void>("startForeground", "(ILandroid/app/Notification;I)V",
                                     kProgressNotificationId, notification.object(),
                                     kForegroundTypeDataSync);
+    qInfo("PicSync: sync service in the foreground (notification %s)",
+          notification.isValid() ? "ok" : "invalid");
 }
 
 // Ends the foreground state and stops the manually started sync service.
