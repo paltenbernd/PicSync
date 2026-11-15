@@ -73,6 +73,15 @@ jobs:
         with:
           name: test-apk
 
+      - name: Free disk space (the emulator needs 7.4 GB)
+        run: |
+          df -h / | tail -1
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/.ghcup /usr/local/share/boost \
+                      /usr/local/lib/node_modules /opt/hostedtoolcache/CodeQL \
+                      /usr/share/swift /usr/local/share/powershell /usr/local/julia* || true
+          docker image prune -af > /dev/null 2>&1 || true
+          df -h / | tail -1
+
       - name: Start Nextcloud
         run: |
           docker run -d --name nextcloud -p 8080:80 \
