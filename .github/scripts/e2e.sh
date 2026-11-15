@@ -27,6 +27,8 @@ sleep 45
 adb shell input keyevent KEYCODE_HOME
 adb shell am broadcast -a android.intent.action.CLOSE_SYSTEM_DIALOGS
 adb shell settings put global hide_error_dialogs 1
+adb logcat -G 16M || true
+adb logcat -c
 
 # Test photos in the camera folder, indexed by the media scanner.
 adb shell mkdir -p /sdcard/DCIM/Camera
@@ -63,6 +65,11 @@ sleep 5
 adb shell dumpsys activity services $PKG > "$OUT/services-while-background.txt"
 adb shell dumpsys activity processes > "$OUT/processes-while-background.txt"
 shot 02-other-app
+for t in 20 40; do
+    sleep 10
+    adb shell dumpsys activity services $PKG | grep -E "ServiceRecord|isForeground|startRequested" \
+        > "$OUT/services-t$t.txt"
+done
 FOREGROUND=$(grep -c "isForeground=true" "$OUT/services-while-background.txt")
 BOUND_BY_JOB=$(grep -c "PicSyncJobService" "$OUT/services-while-background.txt")
 echo "foreground service: $FOREGROUND, job service present: $BOUND_BY_JOB" | tee -a "$OUT/counts.txt"
@@ -78,7 +85,8 @@ done
 adb shell am start -n $PKG/org.qtproject.qt.android.bindings.QtActivity > /dev/null
 sleep 6
 shot 03-back-in-app
-adb logcat -d | tail -4000 > "$OUT/logcat.txt"
+adb logcat -d -s default:* ActivityManager:* AndroidRuntime:* System.err:* JobScheduler:* \
+    | grep -v "AiAi" > "$OUT/logcat.txt"
 
 FINAL=$(server_count)
 echo "final: $FINAL / $EXPECTED" | tee -a "$OUT/counts.txt"
