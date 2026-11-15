@@ -102,6 +102,7 @@ private:
     QElapsedTimer m_requestedAt;     ///< When "Sync now" handed work to the service.
     bool m_serviceSync = false;      ///< The dashboard shows a service run.
     bool m_serviceSeenRunning = false;
+    bool m_promoteRequested = false; ///< A scheduled service run was asked to go foreground.
 };
 
 } // namespace PicSync

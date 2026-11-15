@@ -150,7 +150,12 @@ void MainWindow::showHistory()
 // Starts a synchronisation: in the background service on Android, else here.
 void MainWindow::startSync()
 {
-    if (m_controller.isRunning() || m_serviceSync)
+    if (m_controller.isRunning())
+        return;
+    // A scheduled run in the service is turned into a manual one (foreground,
+    // keeps running in the background); a running manual run is left alone.
+    const SyncProgressInfo info = SyncProgress::read();
+    if (SyncProgress::isActive(info, QDateTime::currentMSecsSinceEpoch()) && info.manual)
         return;
     if (Platform::requestManualSync()) {
         // The service runs independently of this window, also when the app is
@@ -178,6 +183,8 @@ void MainWindow::pollServiceProgress()
 {
     if (m_controller.isRunning())
         return;   // the app is syncing itself (desktop)
+    if (QGuiApplication::applicationState() != Qt::ApplicationActive)
+        return;   // nothing to draw while the app is in the background
     const SyncProgressInfo info = SyncProgress::read();
     const bool active = SyncProgress::isActive(info, QDateTime::currentMSecsSinceEpoch());
     if (active) {
@@ -187,6 +194,10 @@ void MainWindow::pollServiceProgress()
             m_dashboard->setRunning(true);
         }
         m_serviceSeenRunning = true;
+        // The user has seen the scheduled run: keep it alive when they leave
+        // the app, as a foreground service (only possible while we are visible).
+        if (!info.manual && !m_promoteRequested)
+            m_promoteRequested = Platform::requestManualSync();
         if (!info.phase.isEmpty())
             m_dashboard->setPhase(info.phase);
         if (info.total > 0)
@@ -198,6 +209,7 @@ void MainWindow::pollServiceProgress()
     // Finished, or the service never came up (give it 30 seconds to start).
     if (m_serviceSeenRunning || !m_requestedAt.isValid() || m_requestedAt.elapsed() > 30000) {
         m_serviceSync = false;
+        m_promoteRequested = false;
         m_requestedAt.invalidate();
         m_dashboard->setRunning(false);
         refreshVisible();

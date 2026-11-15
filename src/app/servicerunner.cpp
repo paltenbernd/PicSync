@@ -66,9 +66,17 @@ void ServiceRunner::poll()
     if (SyncProgress::take(SyncProgress::stopRequestPath()))
         m_controller.stop();
     // Android expects startForeground() soon after the app started the service.
-    if (!m_foreground && QFile::exists(SyncProgress::manualRequestPath())) {
-        Platform::enterForeground();
-        m_foreground = true;
+    if (QFile::exists(SyncProgress::manualRequestPath())) {
+        if (!m_foreground) {
+            Platform::enterForeground();
+            m_foreground = true;
+        }
+        // The running (scheduled) run becomes the manual run the user asked for.
+        if (m_controller.isRunning() && SyncProgress::take(SyncProgress::manualRequestPath())) {
+            qInfo("PicSync: service run %d continues as manual run", m_runs);
+            m_info.manual = true;
+            publish(true);
+        }
     }
     if (m_controller.isRunning())
         publish(false);   // keeps the progress file fresh during long transfers

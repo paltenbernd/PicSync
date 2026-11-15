@@ -50,11 +50,9 @@ adb shell appops set $PKG MANAGE_EXTERNAL_STORAGE allow
 adb shell pm revoke $PKG android.permission.POST_NOTIFICATIONS
 
 adb shell "am start -W -n $PKG/org.qtproject.qt.android.bindings.QtActivity --es applicationArguments '--test-config=http://10.0.2.2:8080|$NC_USER|$NC_PASS|$FOLDER --test-sync'"
-# Cancel the periodic job (the app schedules it at start), so only the manual
-# "Sync now" (test hook after 4 s) runs: it must survive on its own.
-sleep 1
-adb shell cmd jobscheduler cancel $PKG
-sleep 11
+# The periodic job (scheduled at start) usually runs at once; the "Sync now"
+# of the test hook (after 4 s) must turn it into a foreground run.
+sleep 12
 shot 01-sync-started
 echo "server after start: $(server_count)" | tee -a "$OUT/counts.txt"
 

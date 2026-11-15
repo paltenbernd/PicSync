@@ -39,14 +39,14 @@ public Q_SLOTS:
     // Starts the first synchronisation (manual if requested, else scheduled).
     void start();
 
+    // Looks for new manual or stop requests from the app (every 500 ms).
+    void poll();
+
 Q_SIGNALS:
     // Emitted when no synchronisation is left to do.
     void allDone();
 
 private Q_SLOTS:
-    // Looks for new manual or stop requests from the app.
-    void poll();
-
     // Records that a synchronisation has started.
     void onStarted();
 

@@ -25,8 +25,10 @@ private Q_SLOTS:
     void scheduledRun();
     // A manual request is consumed and marks the run as manual.
     void manualRequest();
-    // "Sync now" while a run is going on leads to a second run afterwards.
+    // "Sync now" while a scheduled run is going on turns it into the manual run.
     void requestDuringRun();
+    // A request that arrives just as a run ends leads to a second (manual) run.
+    void requestAtEndOfRun();
     // An old stop request does not cancel a new run.
     void staleStopRequestIsIgnored();
 };
@@ -67,8 +69,24 @@ void TestServiceRunner::manualRequest()
     QVERIFY(SyncProgress::read().manual);
 }
 
-// "Sync now" while a run is going on leads to a second run afterwards.
+// "Sync now" while a scheduled run is going on turns it into the manual run.
 void TestServiceRunner::requestDuringRun()
+{
+    ServiceRunner runner;
+    QSignalSpy done(&runner, &ServiceRunner::allDone);
+    runner.start();
+    QVERIFY(runner.isRunning());
+    QVERIFY(SyncProgress::touch(SyncProgress::manualRequestPath()));
+    runner.poll();
+    QVERIFY(done.wait(10000));
+    QCOMPARE(runner.runsStarted(), 1);   // the running run became the manual one
+    QVERIFY(!QFile::exists(SyncProgress::manualRequestPath()));
+    QVERIFY(SyncProgress::read().manual);
+    QCOMPARE(done.count(), 1);
+}
+
+// A request that arrives just as a run ends leads to a second (manual) run.
+void TestServiceRunner::requestAtEndOfRun()
 {
     ServiceRunner runner;
     QSignalSpy done(&runner, &ServiceRunner::allDone);
@@ -76,7 +94,7 @@ void TestServiceRunner::requestDuringRun()
     QVERIFY(SyncProgress::touch(SyncProgress::manualRequestPath()));
     QVERIFY(done.wait(10000));
     QCOMPARE(runner.runsStarted(), 2);
-    QVERIFY(!QFile::exists(SyncProgress::manualRequestPath()));
+    QVERIFY(SyncProgress::read().manual);
     QCOMPARE(done.count(), 1);
 }
 
