@@ -48,7 +48,11 @@ adb shell appops set $PKG MANAGE_EXTERNAL_STORAGE allow
 adb shell pm revoke $PKG android.permission.POST_NOTIFICATIONS
 
 adb shell "am start -W -n $PKG/org.qtproject.qt.android.bindings.QtActivity --es applicationArguments '--test-config=http://10.0.2.2:8080|$NC_USER|$NC_PASS|$FOLDER --test-sync'"
-sleep 12
+# Cancel the periodic job (the app schedules it at start), so only the manual
+# "Sync now" (test hook after 4 s) runs: it must survive on its own.
+sleep 1
+adb shell cmd jobscheduler cancel $PKG
+sleep 11
 shot 01-sync-started
 echo "server after start: $(server_count)" | tee -a "$OUT/counts.txt"
 
@@ -57,7 +61,11 @@ adb shell input keyevent KEYCODE_HOME
 adb shell am start -a android.settings.SETTINGS > /dev/null
 sleep 5
 adb shell dumpsys activity services $PKG > "$OUT/services-while-background.txt"
+adb shell dumpsys activity processes > "$OUT/processes-while-background.txt"
 shot 02-other-app
+FOREGROUND=$(grep -c "isForeground=true" "$OUT/services-while-background.txt")
+BOUND_BY_JOB=$(grep -c "PicSyncJobService" "$OUT/services-while-background.txt")
+echo "foreground service: $FOREGROUND, job service present: $BOUND_BY_JOB" | tee -a "$OUT/counts.txt"
 
 EXPECTED=$((INDEXED + 1))   # +1: the folder itself is a <d:response> too
 for i in $(seq 1 60); do
@@ -74,4 +82,4 @@ adb logcat -d | grep -iE "picsync|qt|ActivityManager.*picsync" | tail -400 > "$O
 
 FINAL=$(server_count)
 echo "final: $FINAL / $EXPECTED" | tee -a "$OUT/counts.txt"
-[ "$INDEXED" -gt 0 ] && [ "$FINAL" -ge "$EXPECTED" ]
+[ "$INDEXED" -gt 0 ] && [ "$FINAL" -ge "$EXPECTED" ] && [ "$FOREGROUND" -gt 0 ]
