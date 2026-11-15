@@ -28,13 +28,28 @@ bool SyncController::isRunning() const
 // Starts a manual synchronisation unless one is already running.
 void SyncController::start()
 {
+    begin(true);
+}
+
+// Starts a background (scheduled) synchronisation unless one is already running.
+void SyncController::startScheduled()
+{
+    begin(false);
+}
+
+// Starts a synchronisation in the worker thread.
+void SyncController::begin(bool manual)
+{
     if (isRunning())
         return;
     m_thread = std::make_unique<QThread>();
     m_session = std::make_unique<SyncSession>();
     m_session->moveToThread(m_thread.get());
 
-    connect(m_thread.get(), &QThread::started, m_session.get(), &SyncSession::runManual);
+    if (manual)
+        connect(m_thread.get(), &QThread::started, m_session.get(), &SyncSession::runManual);
+    else
+        connect(m_thread.get(), &QThread::started, m_session.get(), &SyncSession::runScheduled);
     connect(m_session.get(), &SyncSession::progress, this, &SyncController::progress);
     connect(m_session.get(), &SyncSession::phaseChanged, this, &SyncController::phaseChanged);
     connect(m_session.get(), &SyncSession::finished, this, &SyncController::onSessionFinished);

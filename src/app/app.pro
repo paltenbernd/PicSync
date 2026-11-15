@@ -19,7 +19,9 @@ HEADERS += \
     mainwindow.h \
     platform/platform.h \
     settingspage.h \
+    servicerunner.h \
     synccontroller.h \
+    syncprogress.h \
     syncsession.h \
     uihelpers.h
 
@@ -29,7 +31,9 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     settingspage.cpp \
+    servicerunner.cpp \
     synccontroller.cpp \
+    syncprogress.cpp \
     syncsession.cpp \
     uihelpers.cpp
 
@@ -47,14 +51,12 @@ android {
     HEADERS += \
         platform/androidcredentialstore.h \
         platform/androidmediastore.h \
-        platform/jniutils.h \
-        servicerunner.h
+        platform/jniutils.h
     SOURCES += \
         platform/androidcredentialstore.cpp \
         platform/androidmediastore.cpp \
         platform/jniutils.cpp \
-        platform/platform_android.cpp \
-        servicerunner.cpp
+        platform/platform_android.cpp
 
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
@@ -87,3 +89,7 @@ android {
     SOURCES += platform/platform_desktop.cpp
     DEFINES += PICSYNC_BUILD=\\\"dev\\\"
 }
+
+# Test hooks for the end-to-end check on the emulator (never in releases):
+# qmake CONFIG+=picsync_testhooks
+picsync_testhooks: DEFINES += PICSYNC_TEST_HOOKS

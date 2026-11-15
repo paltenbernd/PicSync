@@ -43,10 +43,12 @@ SettingsPage::SettingsPage()
     , m_syncLayout(std::make_unique<QVBoxLayout>())
     , m_syncTitle(std::make_unique<QLabel>())
     , m_syncForm(std::make_unique<QFormLayout>())
-    , m_interval(std::make_unique<QComboBox>())
+    , m_intervalLayout(std::make_unique<QVBoxLayout>())
+    , m_interval(std::make_unique<QButtonGroup>())
     , m_wifiOnly(std::make_unique<QCheckBox>())
     , m_chargingOnly(std::make_unique<QCheckBox>())
     , m_notifications(std::make_unique<QCheckBox>())
+    , m_notifyHint(std::make_unique<QLabel>())
     , m_deleteHint(std::make_unique<QLabel>())
     , m_permCard(std::make_unique<QFrame>())
     , m_permLayout(std::make_unique<QVBoxLayout>())
@@ -123,15 +125,34 @@ SettingsPage::SettingsPage()
     m_syncLayout->addLayout(m_syncForm.get());
     m_syncForm->setRowWrapPolicy(QFormLayout::WrapAllRows);
     const QList<int> choices = AppSettings::intervalChoices();
-    for (int minutes : choices)
-        m_interval->addItem(Ui::intervalText(minutes), minutes);
-    m_syncForm->addRow(tr("Interval"), m_interval.get());
+    // Radio buttons instead of a drop-down list: the list of a QComboBox opens
+    // in a separate window, which Android did not draw (the choice was stuck).
+    m_intervalLayout->setSpacing(0);
+    for (int minutes : choices) {
+        auto button = std::make_unique<QRadioButton>(Ui::intervalText(minutes));
+        button->setProperty("minutes", minutes);
+        m_interval->addButton(button.get(), minutes);
+        m_intervalLayout->addWidget(button.get());
+        m_intervalButtons.push_back(std::move(button));
+    }
+    m_syncForm->addRow(tr("Interval"), m_intervalLayout.get());
     m_wifiOnly->setText(tr("Only via Wi-Fi"));
     m_chargingOnly->setText(tr("Only while charging"));
     m_notifications->setText(tr("Show notifications"));
     m_syncForm->addRow(m_wifiOnly.get());
     m_syncForm->addRow(m_chargingOnly.get());
     m_syncForm->addRow(m_notifications.get());
+    // Synchronising never needs notifications; the hint explains the mismatch
+    // between the switch here and the Android permission.
+    m_notifyHint->setObjectName(QStringLiteral("warning"));
+    m_notifyHint->setWordWrap(true);
+    Ui::allowShrink(*m_notifyHint);
+    m_notifyHint->setText(tr("Android does not allow PicSync to show notifications. "
+                             "Synchronisation still works, but without progress and error "
+                             "messages. Allow them under \"Permissions\" below."));
+    m_syncForm->addRow(m_notifyHint.get());
+    connect(m_notifications.get(), &QCheckBox::toggled, this,
+            &SettingsPage::onNotificationsToggled);
     m_deleteHint->setObjectName(QStringLiteral("detail"));
     m_deleteHint->setWordWrap(true);
     m_deleteHint->setText(tr("Deletions are passed on one sync later. Until then the file is "
@@ -227,7 +248,8 @@ void SettingsPage::load()
     const bool hasPassword = !s.user.isEmpty() && credentials->load(s.user, stored);
     m_password->setPlaceholderText(hasPassword ? tr("stored – leave empty to keep")
                                                : tr("app password"));
-    m_interval->setCurrentIndex(qMax(0, m_interval->findData(s.intervalMinutes)));
+    for (const std::unique_ptr<QRadioButton> &button : m_intervalButtons)
+        button->setChecked(button->property("minutes").toInt() == s.intervalMinutes);
     m_wifiOnly->setChecked(s.wifiOnly);
     m_chargingOnly->setChecked(s.chargingOnly);
     m_notifications->setChecked(s.notifications);
@@ -244,6 +266,7 @@ void SettingsPage::refreshPermissions()
     const bool notify = Platform::hasNotificationPermission();
     m_notifyButton->setText(notify ? tr("Granted") : tr("Allow"));
     m_notifyButton->setEnabled(!notify);
+    m_notifyHint->setVisible(m_notifications->isChecked() && !notify);
 }
 
 // Shows a status line below the buttons (success or error).
@@ -274,6 +297,14 @@ void SettingsPage::ensureFocusVisible()
     m_scroll->viewport()->update();
 }
 
+// Asks Android for the notification permission when notifications are switched on.
+void SettingsPage::onNotificationsToggled(bool checked)
+{
+    if (checked && isVisible() && !Platform::hasNotificationPermission())
+        Platform::requestNotificationPermission();
+    refreshPermissions();
+}
+
 // Puts the default folder (derived from the device name) into the folder field.
 void SettingsPage::onDefaultFolder()
 {
@@ -287,7 +318,7 @@ void SettingsPage::onSave()
     s.serverUrl = PathUtils::normalizeServerUrl(m_url->text());
     s.user = m_user->text().trimmed();
     s.remoteFolder = PathUtils::normalizeRelative(m_folder->text());
-    s.intervalMinutes = m_interval->currentData().toInt();
+    s.intervalMinutes = m_interval->checkedId() > 0 ? m_interval->checkedId() : 60;
     s.wifiOnly = m_wifiOnly->isChecked();
     s.chargingOnly = m_chargingOnly->isChecked();
     s.notifications = m_notifications->isChecked();
@@ -311,8 +342,6 @@ void SettingsPage::onSave()
     QSettings qsettings;
     s.save(qsettings);
     Platform::scheduleSync(s);
-    if (s.notifications && !Platform::hasNotificationPermission())
-        Platform::requestNotificationPermission();
     load();
     showMessage(tr("Settings saved."), false);
     Q_EMIT saved();

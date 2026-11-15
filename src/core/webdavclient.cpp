@@ -35,6 +35,21 @@ bool isSuccess(int status)
 
 } // namespace
 
+// Returns no cookies for any URL.
+QList<QNetworkCookie> NoCookieJar::cookiesForUrl(const QUrl &url) const
+{
+    Q_UNUSED(url)
+    return QList<QNetworkCookie>();
+}
+
+// Ignores all cookies sent by the server.
+bool NoCookieJar::setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url)
+{
+    Q_UNUSED(cookieList)
+    Q_UNUSED(url)
+    return false;
+}
+
 // Connects to the reply; data is written to the (already open) file.
 ReplyFileWriter::ReplyFileWriter(QNetworkReply &reply, QFile &file)
     : m_reply(reply)
@@ -68,6 +83,8 @@ WebDavClient::WebDavClient(const QString &serverUrl, const QString &user,
     const QByteArray credentials = (user + QLatin1Char(':') + password).toUtf8();
     m_authorization = QByteArrayLiteral("Basic ") + credentials.toBase64();
     m_nam->setRedirectPolicy(QNetworkRequest::NoLessSafeRedirectPolicy);
+    // The network manager takes ownership of the jar (Qt API); no session cookies.
+    m_nam->setCookieJar(std::make_unique<NoCookieJar>().release());
 }
 
 // Destroys the client and its network manager.

@@ -9,6 +9,7 @@
 // Software Foundation, either version 3 of the License, or (at your option)
 // any later version. See the file LICENSE for details.
 
+#include "appsettings.h"
 #include "mainwindow.h"
 #include "platform/platform.h"
 
@@ -16,6 +17,8 @@
 #include <QFile>
 #include <QLocale>
 #include <QScreen>
+#include <QSettings>
+#include <QTimer>
 #include <QTranslator>
 
 #ifdef Q_OS_ANDROID
@@ -52,6 +55,29 @@ QString styleSheet()
     return QString::fromUtf8(file.readAll());
 }
 
+#ifdef PICSYNC_TEST_HOOKS
+// Test builds only: "--test-config=<server>|<user>|<password>|<folder>" stores a
+// complete configuration, so the emulator check can run without typing.
+void applyTestConfiguration()
+{
+    const QStringList arguments = QCoreApplication::arguments();
+    for (const QString &argument : arguments) {
+        if (!argument.startsWith(QLatin1String("--test-config=")))
+            continue;
+        const QStringList parts = argument.mid(14).split(QLatin1Char('|'));
+        if (parts.size() != 4)
+            continue;
+        QSettings qsettings;
+        PicSync::AppSettings settings = PicSync::AppSettings::load(qsettings, QString());
+        settings.serverUrl = parts.at(0);
+        settings.user = parts.at(1);
+        settings.remoteFolder = parts.at(3);
+        settings.save(qsettings);
+        PicSync::Platform::createCredentialStore()->save(parts.at(1), parts.at(2));
+    }
+}
+#endif
+
 #ifdef Q_OS_ANDROID
 // Runs the headless background synchronisation in the ":sync" service process.
 int runService(int argc, char **argv)
@@ -60,7 +86,7 @@ int runService(int argc, char **argv)
     QTranslator translator;
     installTranslation(app, translator);
     PicSync::ServiceRunner runner;
-    QTimer::singleShot(0, &runner, &PicSync::ServiceRunner::run);
+    QTimer::singleShot(0, &runner, &PicSync::ServiceRunner::start);
     return app.exec();
 }
 #endif
@@ -88,7 +114,14 @@ int main(int argc, char *argv[])
     app.setStyle(QStringLiteral("Fusion"));
     app.setStyleSheet(styleSheet());
 
+#ifdef PICSYNC_TEST_HOOKS
+    applyTestConfiguration();
+#endif
     PicSync::MainWindow window;
+#ifdef PICSYNC_TEST_HOOKS
+    if (QCoreApplication::arguments().contains(QStringLiteral("--test-sync")))
+        QTimer::singleShot(4000, &window, &PicSync::MainWindow::startSync);
+#endif
 #ifdef Q_OS_ANDROID
     // Never wider than the screen, whatever a label asks for.
     if (window.screen())

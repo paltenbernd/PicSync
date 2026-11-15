@@ -63,6 +63,20 @@ void clearProgress();
 // Tells the background job that the sync service has finished its work.
 void signalServiceFinished();
 
+// Asks the sync service to run a manual synchronisation in the background.
+// Returns false if there is no such service (desktop): the app syncs itself.
+bool requestManualSync();
+
+// Asks the running synchronisation (in the app or in the service) to stop.
+void requestStopSync();
+
+// Turns the running sync service into a foreground service (manual runs),
+// so Android does not freeze it while the user uses other apps.
+void enterForeground();
+
+// Ends the foreground state and stops the manually started sync service.
+void leaveForeground();
+
 // Returns true if this process was started as the background sync service.
 bool isServiceProcess(int argc, char **argv);
 

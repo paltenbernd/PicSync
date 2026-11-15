@@ -145,6 +145,27 @@ void signalServiceFinished()
 {
 }
 
+// There is no sync service on desktop: the app synchronises itself.
+bool requestManualSync()
+{
+    return false;
+}
+
+// Leaves a stop request (only used by the service, harmless on desktop).
+void requestStopSync()
+{
+}
+
+// No foreground services on desktop.
+void enterForeground()
+{
+}
+
+// No foreground services on desktop.
+void leaveForeground()
+{
+}
+
 // Desktop builds never run as a service.
 bool isServiceProcess(int argc, char **argv)
 {

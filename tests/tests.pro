@@ -15,4 +15,5 @@ SUBDIRS = \
     tst_syncengine \
     tst_webdavclient \
     tst_settingspage \
-    tst_dashboardpage
+    tst_dashboardpage \
+    tst_servicerunner

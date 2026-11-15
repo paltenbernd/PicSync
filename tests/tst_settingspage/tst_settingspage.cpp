@@ -6,11 +6,13 @@
 #include "settingspage.h"
 
 #include <QApplication>
+#include <QCheckBox>
 #include <QFile>
 #include <QImage>
 #include <QLineEdit>
 #include <QPointer>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QScrollArea>
 #include <QScroller>
 #include <QSettings>
@@ -43,6 +45,10 @@ private Q_SLOTS:
     void missingValuesAreRejected();
     // The save button keeps the blue "primary" style.
     void saveButtonIsPrimary();
+    // The interval is chosen with radio buttons on the page and stored.
+    void intervalCanBeChanged();
+    // Unticking notifications saves fine and needs no permission.
+    void notificationsCanBeOff();
 
 private:
     // Returns the line edit with the given object name.
@@ -207,6 +213,58 @@ void TestSettingsPage::saveButtonIsPrimary()
     const QImage image = save->grab().toImage();
     const QColor colour = image.pixelColor(image.width() / 10, image.height() / 2);
     QVERIFY2(colour.blue() > 150 && colour.red() < 60, qPrintable(colour.name()));
+}
+
+// The interval is chosen with radio buttons on the page and stored.
+void TestSettingsPage::intervalCanBeChanged()
+{
+    field("serverUrl")->setText(QStringLiteral("cloud.example.org"));
+    field("userName")->setText(QStringLiteral("peter"));
+    field("appPassword")->setText(QStringLiteral("pw"));
+    const QList<QRadioButton *> buttons = m_page->findChildren<QRadioButton *>();
+    QCOMPARE(buttons.size(), AppSettings::intervalChoices().size());
+    QPointer<QRadioButton> sixHours;
+    for (int i = 0; i < buttons.size(); ++i) {
+        const QPointer<QRadioButton> button(buttons.at(i));
+        QVERIFY(button->isVisibleTo(m_page.get()));
+        if (button->property("minutes").toInt() == 360)
+            sixHours = button;
+    }
+    QVERIFY(sixHours);
+    QTest::mouseClick(sixHours.data(), Qt::LeftButton, Qt::NoModifier, QPoint(12, 12));
+    QVERIFY(sixHours->isChecked());
+    QTest::mouseClick(saveButton().data(), Qt::LeftButton);
+    QSettings settings;
+    QCOMPARE(AppSettings::load(settings, QString()).intervalMinutes, 360);
+
+    // Reloading the page selects the stored interval again.
+    m_page = std::make_unique<SettingsPage>();
+    const QList<QRadioButton *> reloaded = m_page->findChildren<QRadioButton *>();
+    for (int i = 0; i < reloaded.size(); ++i) {
+        const QPointer<QRadioButton> button(reloaded.at(i));
+        QCOMPARE(button->isChecked(), button->property("minutes").toInt() == 360);
+    }
+}
+
+// Unticking notifications saves fine and needs no permission.
+void TestSettingsPage::notificationsCanBeOff()
+{
+    field("serverUrl")->setText(QStringLiteral("cloud.example.org"));
+    field("userName")->setText(QStringLiteral("peter"));
+    field("appPassword")->setText(QStringLiteral("pw"));
+    const QList<QCheckBox *> boxes = m_page->findChildren<QCheckBox *>();
+    QPointer<QCheckBox> notifications;
+    for (int i = 0; i < boxes.size(); ++i) {
+        const QPointer<QCheckBox> box(boxes.at(i));
+        if (box->text().contains(QLatin1String("notification"), Qt::CaseInsensitive))
+            notifications = box;
+    }
+    QVERIFY(notifications);
+    notifications->setChecked(false);
+    QTest::mouseClick(saveButton().data(), Qt::LeftButton);
+    QVERIFY(!message()->property("error").toBool());
+    QSettings settings;
+    QVERIFY(!AppSettings::load(settings, QString()).notifications);
 }
 
 // Runs the tests offscreen with private, temporary settings.

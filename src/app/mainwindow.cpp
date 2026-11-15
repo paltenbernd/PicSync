@@ -5,9 +5,11 @@
 #include "mainwindow.h"
 #include "appsettings.h"
 #include "platform/platform.h"
+#include "syncprogress.h"
 #include "uihelpers.h"
 
 #include <QBackingStore>
+#include <QDateTime>
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QSettings>
@@ -73,10 +75,11 @@ MainWindow::MainWindow()
     connect(m_historyButton.get(), &QToolButton::clicked, this, &MainWindow::showHistory);
     connect(m_settingsButton.get(), &QToolButton::clicked, this, &MainWindow::showSettings);
 
-    connect(m_dashboard.get(), &DashboardPage::syncRequested, &m_controller,
-            &SyncController::start);
-    connect(m_dashboard.get(), &DashboardPage::stopRequested, &m_controller,
-            &SyncController::stop);
+    connect(m_dashboard.get(), &DashboardPage::syncRequested, this, &MainWindow::startSync);
+    connect(m_dashboard.get(), &DashboardPage::stopRequested, this, &MainWindow::stopSync);
+    // Progress of runs in the background sync service (Android).
+    connect(&m_progressTimer, &QTimer::timeout, this, &MainWindow::pollServiceProgress);
+    m_progressTimer.start(700);
     connect(&m_controller, &SyncController::started, this, &MainWindow::onSyncStarted);
     connect(&m_controller, &SyncController::progress, m_dashboard.get(),
             &DashboardPage::setProgress);
@@ -142,6 +145,63 @@ void MainWindow::showHistory()
 {
     m_history->refresh();
     showPage(*m_history, tr("History"), false);
+}
+
+// Starts a synchronisation: in the background service on Android, else here.
+void MainWindow::startSync()
+{
+    if (m_controller.isRunning() || m_serviceSync)
+        return;
+    if (Platform::requestManualSync()) {
+        // The service runs independently of this window, also when the app is
+        // in the background; the progress file tells us what it is doing.
+        m_serviceSync = true;
+        m_serviceSeenRunning = false;
+        m_requestedAt.start();
+        m_dashboard->setRunning(true);
+        return;
+    }
+    m_controller.start();
+}
+
+// Asks the running synchronisation to stop.
+void MainWindow::stopSync()
+{
+    if (m_controller.isRunning())
+        m_controller.stop();
+    else
+        Platform::requestStopSync();
+}
+
+// Shows the progress of a synchronisation running in the sync service.
+void MainWindow::pollServiceProgress()
+{
+    if (m_controller.isRunning())
+        return;   // the app is syncing itself (desktop)
+    const SyncProgressInfo info = SyncProgress::read();
+    const bool active = SyncProgress::isActive(info, QDateTime::currentMSecsSinceEpoch());
+    if (active) {
+        // Also shows background (scheduled) runs that started without us.
+        if (!m_serviceSync) {
+            m_serviceSync = true;
+            m_dashboard->setRunning(true);
+        }
+        m_serviceSeenRunning = true;
+        if (!info.phase.isEmpty())
+            m_dashboard->setPhase(info.phase);
+        if (info.total > 0)
+            m_dashboard->setProgress(info.done, info.total, info.currentFile);
+        return;
+    }
+    if (!m_serviceSync)
+        return;
+    // Finished, or the service never came up (give it 30 seconds to start).
+    if (m_serviceSeenRunning || !m_requestedAt.isValid() || m_requestedAt.elapsed() > 30000) {
+        m_serviceSync = false;
+        m_requestedAt.invalidate();
+        m_dashboard->setRunning(false);
+        refreshVisible();
+    }
 }
 
 // Updates the UI when a synchronisation starts.

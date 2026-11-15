@@ -7,6 +7,8 @@
 #include "interfaces.h"
 
 #include <QByteArray>
+#include <QNetworkCookie>
+#include <QNetworkCookieJar>
 #include <QNetworkReply>
 #include <QObject>
 #include <QSet>
@@ -39,6 +41,23 @@ private:
     QNetworkReply &m_reply;
     QFile &m_file;
     bool m_failed = false;
+};
+
+/// Cookie jar that never stores or sends cookies.
+///
+/// Nextcloud answers the first authenticated request with a session cookie.
+/// Once that session expires on the server (e.g. while Android has frozen the
+/// app in the background), requests carrying the old cookie are rejected with
+/// 401 even though the app password is valid. PicSync authenticates every
+/// request with the app password and therefore needs no session at all.
+class NoCookieJar : public QNetworkCookieJar
+{
+public:
+    // Returns no cookies for any URL.
+    QList<QNetworkCookie> cookiesForUrl(const QUrl &url) const override;
+
+    // Ignores all cookies sent by the server.
+    bool setCookiesFromUrl(const QList<QNetworkCookie> &cookieList, const QUrl &url) override;
 };
 
 /// RemoteStore talking to Nextcloud through its WebDAV interface.

@@ -18,6 +18,9 @@
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- "Sync now" keeps running in the background as a data-sync foreground service. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <!-- Keeps the periodic sync job scheduled after a reboot. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <!-- %%INSERT_FEATURES -->
@@ -67,6 +70,7 @@
         <service
             android:name="de.altenbernd.picsync.PicSyncService"
             android:process=":sync"
+            android:foregroundServiceType="dataSync"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

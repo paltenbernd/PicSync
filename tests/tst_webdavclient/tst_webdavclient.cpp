@@ -33,6 +33,9 @@ public:
     // Requests received so far ("METHOD path").
     QStringList requests;
 
+    // Number of requests that carried a cookie.
+    int requestsWithCookie = 0;
+
 private Q_SLOTS:
     // Accepts a new client connection.
     void onConnection()
@@ -69,6 +72,14 @@ private Q_SLOTS:
 
         QByteArray status = "404 Not Found";
         QByteArray body;
+        // Like an expired Nextcloud session: a request that sends the session
+        // cookie back is refused, even with a valid password.
+        if (header.toLower().contains("\r\ncookie:")) {
+            requestsWithCookie += 1;
+            socket->write("HTTP/1.1 401 Unauthorized\r\nContent-Length: 0\r\n\r\n");
+            socket->flush();
+            return;
+        }
         if (path.startsWith("/remote.php/dav/")) {
             status = "401 Unauthorized";
         } else if (method == "PROPFIND" && path == "/remote.php/webdav/") {
@@ -82,6 +93,7 @@ private Q_SLOTS:
                          .replace("<d:multistatus xmlns:d=\"DAV:\">", "");
         }
         socket->write("HTTP/1.1 " + status + "\r\nContent-Type: application/xml\r\n"
+                      "Set-Cookie: nc_session_id=abc123; path=/; HttpOnly\r\n"
                       "Content-Length: " + QByteArray::number(body.size()) + "\r\n\r\n" + body);
         socket->flush();
     }
@@ -131,6 +143,10 @@ void TestWebDavClient::fallsBackToLegacyAddress()
     QCOMPARE(files.size(), 1);
     QCOMPARE(files.value(QStringLiteral("a.jpg")).etag, QStringLiteral("e1"));
     QVERIFY(server.requests.contains(QStringLiteral("PROPFIND /remote.php/dav/files/120049/")));
+
+    // The server set a session cookie on every answer; it must never come back.
+    QCOMPARE(client.list(files, error), RemoteStore::ListStatus::Ok);
+    QCOMPARE(server.requestsWithCookie, 0);
 }
 
 // Reports a readable error when the server cannot be reached.

@@ -5,18 +5,20 @@
 #pragma once
 
 #include <QCheckBox>
-#include <QComboBox>
+#include <QButtonGroup>
 #include <QFormLayout>
 #include <QFrame>
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QLineEdit>
 #include <QPushButton>
+#include <QRadioButton>
 #include <QScrollArea>
 #include <QVBoxLayout>
 #include <QWidget>
 
 #include <memory>
+#include <vector>
 
 namespace PicSync {
 
@@ -70,6 +72,9 @@ private Q_SLOTS:
     // Keeps the focused input field visible when the keyboard opens or closes.
     void ensureFocusVisible();
 
+    // Asks Android for the notification permission when notifications are switched on.
+    void onNotificationsToggled(bool checked);
+
     // Puts the default folder (derived from the device name) into the folder field.
     void onDefaultFolder();
 
@@ -104,10 +109,13 @@ private:
     std::unique_ptr<QVBoxLayout> m_syncLayout;
     std::unique_ptr<QLabel> m_syncTitle;
     std::unique_ptr<QFormLayout> m_syncForm;
-    std::unique_ptr<QComboBox> m_interval;
+    std::unique_ptr<QVBoxLayout> m_intervalLayout;
+    std::unique_ptr<QButtonGroup> m_interval;
+    std::vector<std::unique_ptr<QRadioButton>> m_intervalButtons;
     std::unique_ptr<QCheckBox> m_wifiOnly;
     std::unique_ptr<QCheckBox> m_chargingOnly;
     std::unique_ptr<QCheckBox> m_notifications;
+    std::unique_ptr<QLabel> m_notifyHint;
     std::unique_ptr<QLabel> m_deleteHint;
 
     std::unique_ptr<QFrame> m_permCard;

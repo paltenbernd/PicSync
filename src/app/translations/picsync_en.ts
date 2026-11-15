@@ -382,6 +382,10 @@
         <source>Signed out.</source>
         <translation>Signed out.</translation>
     </message>
+    <message>
+        <source>Android does not allow PicSync to show notifications. Synchronisation still works, but without progress and error messages. Allow them under "Permissions" below.</source>
+        <translation>Android does not allow PicSync to show notifications. Synchronisation still works, but without progress and error messages. Allow them under "Permissions" below.</translation>
+    </message>
 </context>
 <context>
     <name>PicSync::SyncSession</name>
@@ -427,6 +431,14 @@
     <message>
         <source>Synchronisation failed</source>
         <translation>Synchronisation failed</translation>
+    </message>
+    <message>
+        <source>Synchronising</source>
+        <translation>Synchronising</translation>
+    </message>
+    <message>
+        <source>PicSync is synchronising your gallery.</source>
+        <translation>PicSync is synchronising your gallery.</translation>
     </message>
 </context>
 <context>

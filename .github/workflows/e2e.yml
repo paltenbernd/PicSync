@@ -1,0 +1,134 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# Copyright (C) 2026 Peter Altenbernd
+#
+# End-to-end test: a test build of PicSync (with test hooks) synchronises 150
+# photos from an Android emulator to a real Nextcloud running in Docker,
+# while the app is in the background and notifications are not allowed.
+# The network to Nextcloud is throttled so that the sync takes minutes.
+
+name: End-to-end test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'src/**'
+      - '.github/scripts/e2e.sh'
+      - '.github/workflows/e2e.yml'
+
+permissions:
+  contents: write
+
+env:
+  QT_VERSION: 6.8.3
+
+jobs:
+  test-apk:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          host: all_os
+          target: android
+          arch: android_arm64_v8a
+          cache: true
+      - name: Android NDK and OpenSSL
+        run: |
+          yes | "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" \
+            "ndk;26.1.10909125" "platforms;android-34" "build-tools;34.0.0" > /dev/null
+          echo "ANDROID_NDK_ROOT=$ANDROID_SDK_ROOT/ndk/26.1.10909125" >> "$GITHUB_ENV"
+          git clone --depth 1 https://github.com/KDAB/android_openssl.git "$RUNNER_TEMP/android_openssl"
+          echo "ANDROID_OPENSSL_DIR=$RUNNER_TEMP/android_openssl" >> "$GITHUB_ENV"
+      - name: Build test APK (with test hooks, debug-signed)
+        run: |
+          mkdir build-android && cd build-android
+          "$QT_ROOT_DIR/bin/qmake" ../PicSync.pro -spec android-clang \
+              ANDROID_ABIS=arm64-v8a CONFIG+=release CONFIG+=picsync_testhooks
+          make -j"$(nproc)"
+          make -C src/app INSTALL_ROOT="$PWD/android-build" install
+          "$(dirname "$QT_ROOT_DIR")/gcc_64/bin/androiddeployqt" \
+              --input src/app/android-PicSync-deployment-settings.json \
+              --output "$PWD/android-build" --android-platform android-34 \
+              --jdk "$JAVA_HOME" --gradle
+          cp android-build/build/outputs/apk/debug/*.apk "$GITHUB_WORKSPACE/PicSync.apk"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: test-apk
+          path: PicSync.apk
+          retention-days: 3
+
+  e2e:
+    needs: test-apk
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v8
+        with:
+          name: test-apk
+
+      - name: Start Nextcloud
+        run: |
+          docker run -d --name nextcloud -p 8080:80 \
+            -e SQLITE_DATABASE=nextcloud \
+            -e NEXTCLOUD_ADMIN_USER=testuser -e NEXTCLOUD_ADMIN_PASSWORD=Secret-Pass-123 \
+            -e NEXTCLOUD_TRUSTED_DOMAINS="10.0.2.2 localhost" \
+            nextcloud:31-apache
+          for i in $(seq 1 90); do
+            curl -s http://localhost:8080/status.php | grep -q '"installed":true' && break
+            sleep 5
+          done
+          curl -s http://localhost:8080/status.php
+
+      - name: Create 150 test photos (about 1 MB each)
+        run: |
+          sudo apt-get install -y -q imagemagick > /dev/null
+          mkdir photos
+          for i in $(seq -w 1 150); do
+            convert -size 1200x900 xc: +noise Random -quality 85 "photos/IMG_20261115_${i}.jpg"
+          done
+          du -sh photos
+
+      - name: Throttle the network to Nextcloud (16 Mbit/s, 80 ms)
+        run: |
+          sudo tc qdisc add dev docker0 root netem delay 80ms rate 16mbit
+          for IF in $(ip -o link | awk -F': ' '/veth/{print $2}' | cut -d@ -f1); do
+            sudo tc qdisc add dev "$IF" root netem delay 80ms rate 16mbit || true
+          done
+          tc qdisc show
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run end-to-end test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          target: google_apis
+          arch: x86_64
+          profile: pixel_6
+          disable-animations: true
+          script: sh .github/scripts/e2e.sh
+
+      - name: Publish results to the e2e-results branch
+        if: always()
+        run: |
+          [ -d e2e ] || exit 0
+          docker logs nextcloud 2>&1 | tail -200 > e2e/nextcloud.log || true
+          cd e2e
+          git init -q -b e2e-results
+          git config user.name "PicSync CI"
+          git config user.email "ci@users.noreply.github.com"
+          echo "End-to-end test, run ${{ github.run_id }}" > README.txt
+          git add -A
+          git commit -q -m "E2E run ${{ github.run_id }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${GITHUB_REPOSITORY}.git" e2e-results

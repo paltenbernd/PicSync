@@ -31,6 +31,9 @@ public Q_SLOTS:
     // Starts a manual synchronisation unless one is already running.
     void start();
 
+    // Starts a background (scheduled) synchronisation unless one is already running.
+    void startScheduled();
+
     // Asks the running synchronisation to stop after the current file.
     void stop();
 
@@ -52,6 +55,9 @@ private Q_SLOTS:
     void onSessionFinished(const PicSync::SyncResult &result);
 
 private:
+    // Starts a synchronisation in the worker thread.
+    void begin(bool manual);
+
     // Ends the worker thread and releases the session.
     void shutdown();
 

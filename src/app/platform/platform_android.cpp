@@ -10,6 +10,7 @@
 #include "androidcredentialstore.h"
 #include "androidmediastore.h"
 #include "jniutils.h"
+#include "syncprogress.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -32,6 +33,9 @@ constexpr jint kFlagImmutable = 0x04000000;   // PendingIntent.FLAG_IMMUTABLE
 constexpr char kChannelId[] = "picsync_sync";
 constexpr char kJobServiceClass[] = "de.altenbernd.picsync.PicSyncJobService";
 constexpr char kFinishedAction[] = "de.altenbernd.picsync.SYNC_FINISHED";
+constexpr char kSyncServiceClass[] = "de.altenbernd.picsync.PicSyncService";
+constexpr jint kForegroundTypeDataSync = 1;   // ServiceInfo.FOREGROUND_SERVICE_TYPE_DATA_SYNC
+constexpr jint kStopForegroundRemove = 1;     // Service.STOP_FOREGROUND_REMOVE
 
 // Returns the notification manager, creating the PicSync channel on first use.
 QJniObject notificationManager()
@@ -183,16 +187,33 @@ bool hasNotificationPermission()
     return granted == 0;   // PackageManager.PERMISSION_GRANTED
 }
 
-// Asks the user for permission to show notifications.
+// Asks the user for permission to show notifications. Android shows its
+// dialog at most twice; after that PicSync opens the app's notification settings.
 void requestNotificationPermission()
 {
     QJniObject activity = Jni::activity();
     if (!activity.isValid())
         return;
-    const QJniObject permissions =
-        Jni::stringArray({ QStringLiteral("android.permission.POST_NOTIFICATIONS") });
-    activity.callMethod<void>("requestPermissions", "([Ljava/lang/String;I)V",
-                              permissions.object(), jint(42));
+    QSettings settings;
+    const QString askedKey = QStringLiteral("permissions/notificationRequests");
+    const int asked = settings.value(askedKey, 0).toInt();
+    if (asked < 2) {
+        settings.setValue(askedKey, asked + 1);
+        const QJniObject permissions =
+            Jni::stringArray({ QStringLiteral("android.permission.POST_NOTIFICATIONS") });
+        activity.callMethod<void>("requestPermissions", "([Ljava/lang/String;I)V",
+                                  permissions.object(), jint(42));
+        return;
+    }
+    QJniObject intent("android/content/Intent", "(Ljava/lang/String;)V",
+                      Jni::string(QStringLiteral("android.settings.APP_NOTIFICATION_SETTINGS"))
+                          .object<jstring>());
+    intent.callObjectMethod("putExtra",
+                            "(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;",
+                            Jni::string(QStringLiteral("android.provider.extra.APP_PACKAGE"))
+                                .object<jstring>(),
+                            Jni::string(Jni::packageName()).object<jstring>());
+    activity.callMethod<void>("startActivity", "(Landroid/content/Intent;)V", intent.object());
 }
 
 // Registers (or replaces) the periodic background synchronisation.
@@ -288,6 +309,57 @@ void signalServiceFinished()
                             Jni::string(Jni::packageName()).object<jstring>());
     Jni::context().callMethod<void>("sendBroadcast", "(Landroid/content/Intent;)V",
                                     intent.object());
+}
+
+// Asks the sync service to run a manual synchronisation in the background.
+bool requestManualSync()
+{
+    if (!SyncProgress::touch(SyncProgress::manualRequestPath()))
+        return false;
+    QJniObject intent("android/content/Intent", "()V");
+    intent.callObjectMethod("setClassName",
+                            "(Ljava/lang/String;Ljava/lang/String;)Landroid/content/Intent;",
+                            Jni::string(Jni::packageName()).object<jstring>(),
+                            Jni::string(QString::fromLatin1(kSyncServiceClass)).object<jstring>());
+    const QJniObject started = Jni::context().callObjectMethod(
+        "startForegroundService", "(Landroid/content/Intent;)Landroid/content/ComponentName;",
+        intent.object());
+    if (!started.isValid()) {
+        SyncProgress::take(SyncProgress::manualRequestPath());
+        return false;
+    }
+    return true;
+}
+
+// Asks the running synchronisation (in the app or in the service) to stop.
+void requestStopSync()
+{
+    SyncProgress::touch(SyncProgress::stopRequestPath());
+}
+
+// Turns the running sync service into a foreground service (manual runs).
+void enterForeground()
+{
+    notificationManager();   // makes sure the channel exists
+    QJniObject builder = notificationBuilder(
+        QCoreApplication::translate("Platform", "Synchronising"),
+        QCoreApplication::translate("Platform", "PicSync is synchronising your gallery."));
+    builder.callObjectMethod("setOngoing", "(Z)Landroid/app/Notification$Builder;",
+                             jboolean(true));
+    const QJniObject notification = builder.callObjectMethod("build",
+                                                             "()Landroid/app/Notification;");
+    // Jni::context() is the Service object in the ":sync" process.
+    Jni::context().callMethod<void>("startForeground", "(ILandroid/app/Notification;I)V",
+                                    kProgressNotificationId, notification.object(),
+                                    kForegroundTypeDataSync);
+}
+
+// Ends the foreground state and stops the manually started sync service.
+void leaveForeground()
+{
+    QJniObject service = Jni::context();
+    service.callMethod<void>("stopForeground", "(I)V", kStopForegroundRemove);
+    service.callMethod<void>("stopSelf", "()V");
 }
 
 // Returns true if this process was started as the background sync service.

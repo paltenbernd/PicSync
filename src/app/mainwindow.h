@@ -14,6 +14,7 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QStackedWidget>
+#include <QElapsedTimer>
 #include <QTimer>
 #include <QToolButton>
 #include <QVBoxLayout>
@@ -33,7 +34,17 @@ public:
     // Stops a running synchronisation and destroys the window.
     ~MainWindow() override;
 
+public Q_SLOTS:
+    // Starts a synchronisation: in the background service on Android, else here.
+    void startSync();
+
+    // Asks the running synchronisation to stop.
+    void stopSync();
+
 private Q_SLOTS:
+    // Shows the progress of a synchronisation running in the sync service.
+    void pollServiceProgress();
+
     // Shows the dashboard.
     void showDashboard();
 
@@ -87,6 +98,10 @@ private:
     SyncController m_controller;
     QTimer m_refreshTimer;
     bool m_fullFlush = false;
+    QTimer m_progressTimer;
+    QElapsedTimer m_requestedAt;     ///< When "Sync now" handed work to the service.
+    bool m_serviceSync = false;      ///< The dashboard shows a service run.
+    bool m_serviceSeenRunning = false;
 };
 
 } // namespace PicSync

@@ -12,11 +12,11 @@
 #include <QEvent>
 #include <QLabel>
 #include <QScrollArea>
+#include <QHBoxLayout>
 #include <QVBoxLayout>
 
 #include <memory>
 #include <QLocale>
-#include <QMessageBox>
 #include <QPointer>
 #include <QPushButton>
 #include <QScrollBar>
@@ -135,20 +135,13 @@ void allowShrink(QLabel &label)
     label.setMinimumWidth(0);
 }
 
-// Asks a yes/no question with translated buttons; returns true for "yes".
-bool confirm(QWidget &parent, const QString &title, const QString &text)
-{
-    QMessageBox box(QMessageBox::Question, title, text, QMessageBox::NoButton, &parent);
-    const QPointer<QPushButton> yes(box.addButton(QCoreApplication::translate("Ui", "Yes"),
-                                                  QMessageBox::YesRole));
-    box.addButton(QCoreApplication::translate("Ui", "No"), QMessageBox::NoRole);
-    box.exec();
-    return box.clickedButton() == yes.data();
-}
+namespace {
 
-// Shows an information message with a translated OK button. The dialog uses
-// almost the full window width and scrolls long texts.
-void inform(QWidget &parent, const QString &title, const QString &text)
+// Shows a dialog with title, (scrollable) text and one or two buttons; returns
+// true if the primary button was pressed. Uses no QMessageBox, because extra
+// windows of Qt Widgets need the full-flush workaround on Android.
+bool runDialog(QWidget &parent, const QString &title, const QString &text,
+               const QString &primaryText, const QString &secondaryText)
 {
     FullFlushDialog dialog(parent);
     dialog.setWindowTitle(title);
@@ -158,7 +151,9 @@ void inform(QWidget &parent, const QString &title, const QString &text)
     auto heading = std::make_unique<QLabel>(title);
     auto scroll = std::make_unique<QScrollArea>();
     auto body = std::make_unique<QLabel>(text);
-    auto ok = std::make_unique<QPushButton>(QCoreApplication::translate("Ui", "OK"));
+    auto buttons = std::make_unique<QHBoxLayout>();
+    auto secondary = std::make_unique<QPushButton>(secondaryText);
+    auto primary = std::make_unique<QPushButton>(primaryText);
 
     dialog.setLayout(layout.get());
     layout->setContentsMargins(18, 16, 18, 14);
@@ -175,18 +170,41 @@ void inform(QWidget &parent, const QString &title, const QString &text)
     scroll->setFrameShape(QFrame::NoFrame);
     scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     enableTouchScrolling(*scroll);
-    ok->setObjectName(QStringLiteral("primaryButton"));
-    QObject::connect(ok.get(), &QPushButton::clicked, &dialog, &QDialog::accept);
+    primary->setObjectName(QStringLiteral("primaryButton"));
+    primary->setProperty("role", QStringLiteral("dialogPrimary"));
+    secondary->setProperty("role", QStringLiteral("dialogSecondary"));
+    QObject::connect(primary.get(), &QPushButton::clicked, &dialog, &QDialog::accept);
+    QObject::connect(secondary.get(), &QPushButton::clicked, &dialog, &QDialog::reject);
+    secondary->setVisible(!secondaryText.isEmpty());
+    buttons->setSpacing(10);
+    buttons->addWidget(secondary.get(), 1);
+    buttons->addWidget(primary.get(), 1);
     layout->addWidget(heading.get());
     layout->addWidget(scroll.get(), 1);
-    layout->addWidget(ok.get());
+    layout->addLayout(buttons.get());
 
     const QSize area = parent.window()->size();
     const int width = qMax(260, area.width() - 32);
     const int bodyHeight = body->heightForWidth(width - 40);
     const int height = qMin(area.height() * 4 / 5, bodyHeight + 170);
     dialog.resize(width, height);
-    dialog.exec();
+    return dialog.exec() == QDialog::Accepted;
+}
+
+} // namespace
+
+// Asks a yes/no question with translated buttons; returns true for "yes".
+bool confirm(QWidget &parent, const QString &title, const QString &text)
+{
+    return runDialog(parent, title, text, QCoreApplication::translate("Ui", "Yes"),
+                     QCoreApplication::translate("Ui", "No"));
+}
+
+// Shows an information message with a translated OK button. The dialog uses
+// almost the full window width and scrolls long texts.
+void inform(QWidget &parent, const QString &title, const QString &text)
+{
+    runDialog(parent, title, text, QCoreApplication::translate("Ui", "OK"), QString());
 }
 
 // Returns the "pretty" name of a gallery folder, e.g. "Camera" for "DCIM/Camera".
