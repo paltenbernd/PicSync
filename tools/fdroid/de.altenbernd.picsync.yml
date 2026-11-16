@@ -13,7 +13,7 @@ Repo: https://github.com/paltenbernd/PicSync.git
 Builds:
   - versionName: 1.0.0
     versionCode: 1
-    commit: v1.0.0
+    commit: 20e77e7680e40f223bd4ff57fc705e361314c895
     submodules: true
     sudo:
       - apt-get update
