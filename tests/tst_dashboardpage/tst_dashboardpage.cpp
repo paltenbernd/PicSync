@@ -7,14 +7,17 @@
 #include "statestore.h"
 #include "synchistory.h"
 #include "syncsession.h"
+#include "uihelpers.h"
 
 #include <QApplication>
 #include <QFile>
 #include <QLabel>
 #include <QPointer>
+#include <QPushButton>
 #include <QSettings>
 #include <QTemporaryDir>
 #include <QTest>
+#include <QTimer>
 
 #include <memory>
 
@@ -46,8 +49,25 @@ private Q_SLOTS:
     void failedSyncIsExplained();
 
 private:
-    // Writes a sync state with the given number of files per folder (1 MB each).
-    static void writeState(const QList<std::pair<QString, int>> &folders);
+    // Folders are sorted by storage space, not by number of files.
+    void foldersSortedBySize();
+    // Messages appear inside the main window (no separate window) and react to taps.
+    void dialogIsOverlayInWindow();
+    // The back key closes a message like "No".
+    void dialogClosesWithBackKey();
+
+public Q_SLOTS:
+    // Taps the "yes"/"OK" button of the open message (called by a timer).
+    void tapPrimary();
+    // Presses the back key in the open message (called by a timer).
+    void pressBack();
+
+private:
+    // Writes a sync state with the given number of files per folder.
+    static void writeState(const QList<std::pair<QString, int>> &folders,
+                           qint64 fileSize = 1000000);
+    // Returns the open message overlay, if there is one.
+    static QWidget *openOverlay();
     // Returns the texts of all labels on the page.
     static QStringList labelTexts(const QWidget &page);
 };
@@ -61,15 +81,16 @@ void TestDashboardPage::init()
     settings.clear();
 }
 
-// Writes a sync state with the given number of files per folder (1 MB each).
-void TestDashboardPage::writeState(const QList<std::pair<QString, int>> &folders)
+// Writes a sync state with the given number of files per folder.
+void TestDashboardPage::writeState(const QList<std::pair<QString, int>> &folders,
+                                   qint64 fileSize)
 {
     StateStore state(SyncSession::stateFilePath());
     for (const std::pair<QString, int> &folder : folders) {
         for (int i = 0; i < folder.second; ++i) {
             StateEntry e;
             e.relativePath = folder.first + QStringLiteral("/IMG_%1.jpg").arg(i);
-            e.localSize = 1000000;
+            e.localSize = fileSize;
             state.setEntry(e);
         }
     }
@@ -146,6 +167,88 @@ void TestDashboardPage::listsAllFoldersWithSizes()
     QVERIFY(texts.contains(QStringLiteral("1 file(s) · 1.0 MB")));
     for (const QString &text : texts)
         QVERIFY2(!text.contains(QLatin1String("more")), qPrintable(text));
+}
+
+// Folders are sorted by storage space, not by number of files.
+void TestDashboardPage::foldersSortedBySize()
+{
+    writeState({ { QStringLiteral("Pictures/ManySmall"), 20 } }, 1000);
+    StateStore state(SyncSession::stateFilePath());
+    QVERIFY(state.load());
+    for (int i = 0; i < 2; ++i) {
+        StateEntry e;
+        e.relativePath = QStringLiteral("Movies/FewBig/VID_%1.mp4").arg(i);
+        e.localSize = 50000000;
+        state.setEntry(e);
+    }
+    QVERIFY(state.save());
+
+    DashboardPage page;
+    page.refresh();
+    const QStringList texts = labelTexts(page);
+    const int big = texts.indexOf(QStringLiteral("FewBig"));
+    const int small = texts.indexOf(QStringLiteral("ManySmall"));
+    QVERIFY(big >= 0 && small >= 0);
+    QVERIFY2(big < small, qPrintable(texts.join(QLatin1Char('|'))));
+}
+
+// Returns the open message overlay, if there is one.
+QWidget *TestDashboardPage::openOverlay()
+{
+    const QList<QWidget *> windows = QApplication::topLevelWidgets();
+    for (int i = 0; i < windows.size(); ++i) {
+        const QPointer<QWidget> window(windows.at(i));
+        const QPointer<QWidget> overlay(
+            window->findChild<QWidget *>(QStringLiteral("dialogOverlay")));
+        if (overlay && overlay->isVisible())
+            return overlay.data();
+    }
+    return nullptr;
+}
+
+// Taps the "yes"/"OK" button of the open message (called by a timer).
+void TestDashboardPage::tapPrimary()
+{
+    const QPointer<QWidget> overlay(openOverlay());
+    QVERIFY(overlay);
+    QVERIFY(!overlay->isWindow());
+    const QPointer<QPushButton> button(
+        overlay->findChild<QPushButton *>(QStringLiteral("primaryButton")));
+    QVERIFY(button);
+    QTest::mouseClick(button.data(), Qt::LeftButton);
+}
+
+// Presses the back key in the open message (called by a timer).
+void TestDashboardPage::pressBack()
+{
+    const QPointer<QWidget> overlay(openOverlay());
+    QVERIFY(overlay);
+    QTest::keyClick(overlay.data(), Qt::Key_Back);
+}
+
+// Messages appear inside the main window (no separate window) and react to taps.
+void TestDashboardPage::dialogIsOverlayInWindow()
+{
+    DashboardPage page;
+    page.resize(kPhoneWidth, 800);
+    page.show();
+    QVERIFY(QTest::qWaitForWindowExposed(&page));
+    const int windows = QApplication::topLevelWidgets().size();
+    QTimer::singleShot(200, this, &TestDashboardPage::tapPrimary);
+    QVERIFY(Ui::confirm(page, QStringLiteral("Title"), QStringLiteral("Question?")));
+    QCOMPARE(QApplication::topLevelWidgets().size(), windows);
+    QVERIFY(!openOverlay());
+}
+
+// The back key closes a message like "No".
+void TestDashboardPage::dialogClosesWithBackKey()
+{
+    DashboardPage page;
+    page.resize(kPhoneWidth, 800);
+    page.show();
+    QVERIFY(QTest::qWaitForWindowExposed(&page));
+    QTimer::singleShot(200, this, &TestDashboardPage::pressBack);
+    QVERIFY(!Ui::confirm(page, QStringLiteral("Title"), QStringLiteral("Question?")));
 }
 
 // Two folders with the same last name are shown with their full path.

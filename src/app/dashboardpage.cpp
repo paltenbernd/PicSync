@@ -134,7 +134,7 @@ DashboardPage::DashboardPage()
 
     // Conditions card.
     setupCard(*m_conditionsCard, *m_conditionsLayout, *m_conditionsIcon, *m_conditionsTitle,
-              QStringLiteral("wifi"), tr("Automatic sync"));
+              QStringLiteral("sync"), tr("Automatic sync"));
     m_conditionsDetail->setObjectName(QStringLiteral("detail"));
     m_conditionsDetail->setWordWrap(true);
     Ui::allowShrink(*m_conditionsDetail);
@@ -309,17 +309,17 @@ void DashboardPage::refreshFolders()
     for (auto it = counts.constBegin(); it != counts.constEnd(); ++it)
         nameUses[Ui::folderName(it.key())] += 1;
 
-    // Biggest folders (by number of files) first.
-    std::vector<std::pair<int, QString>> bySize;
+    // Biggest folders (by storage space) first.
+    std::vector<std::pair<qint64, QString>> bySize;
     for (auto it = counts.constBegin(); it != counts.constEnd(); ++it)
-        bySize.emplace_back(it.value(), it.key());
-    std::stable_sort(bySize.begin(), bySize.end(), std::greater<std::pair<int, QString>>());
+        bySize.emplace_back(bytes.value(it.key()), it.key());
+    std::stable_sort(bySize.begin(), bySize.end(), std::greater<std::pair<qint64, QString>>());
 
     m_folderLabels.clear();
     m_foldersCount->setText(QString::number(bySize.size()));
 
     int row = 1;
-    for (const std::pair<int, QString> &entry : bySize) {
+    for (const std::pair<qint64, QString> &entry : bySize) {
         const QString &folder = entry.second;
         const QString shortName = Ui::folderName(folder);
         auto name = std::make_unique<QLabel>(nameUses.value(shortName) > 1 ? folder : shortName);

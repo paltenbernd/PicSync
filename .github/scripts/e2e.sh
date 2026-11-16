@@ -83,6 +83,22 @@ done
 adb shell am start -n $PKG/org.qtproject.qt.android.bindings.QtActivity > /dev/null
 sleep 6
 shot 03-back-in-app
+
+# The status message must stay usable after the app was in the background.
+adb shell input tap 540 450
+sleep 2
+shot 04-status-message
+adb shell input keyevent KEYCODE_HOME
+sleep 3
+adb shell am start -n $PKG/org.qtproject.qt.android.bindings.QtActivity > /dev/null
+sleep 4
+shot 05-message-after-resume
+adb shell input tap 540 1380
+sleep 2
+shot 06-after-ok-tap
+adb shell input keyevent KEYCODE_BACK
+sleep 2
+shot 07-after-back
 adb logcat -d -s default:* ActivityManager:* AndroidRuntime:* System.err:* JobScheduler:* \
     | grep -v "AiAi" > "$OUT/logcat.txt"
 

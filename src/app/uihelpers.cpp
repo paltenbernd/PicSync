@@ -7,9 +7,11 @@
 #include <QCoreApplication>
 #include <QDateTime>
 #include <QGuiApplication>
-#include <QBackingStore>
-#include <QDialog>
+#include <QEventLoop>
+#include <QKeyEvent>
+#include <QMouseEvent>
 #include <QEvent>
+#include <QFrame>
 #include <QLabel>
 #include <QScrollArea>
 #include <QHBoxLayout>
@@ -29,25 +31,72 @@ namespace Ui {
 
 namespace {
 
-/// Dialog that, on Android, re-sends its complete image after every update
-/// (same workaround for QTBUG-135011 as in MainWindow::event).
-class FullFlushDialog : public QDialog
+/// Modal message shown inside the main window instead of in a window of its
+/// own: separate Android windows of Qt Widgets could stay on screen without
+/// reacting to taps (e.g. after the app had been in the background).
+class OverlayDialog : public QWidget
 {
 public:
-    // Creates the dialog above the given parent.
-    explicit FullFlushDialog(QWidget &parent) : QDialog(&parent) {}
+    // Creates the dimmed overlay covering the whole window of the parent.
+    explicit OverlayDialog(QWidget &parent) : QWidget(parent.window())
+    {
+        setObjectName(QStringLiteral("dialogOverlay"));
+        setAttribute(Qt::WA_StyledBackground);
+        setFocusPolicy(Qt::StrongFocus);
+        parentWidget()->installEventFilter(this);
+        setGeometry(parentWidget()->rect());
+    }
+
+    // Shows the overlay and waits until a button (or back) was pressed.
+    bool exec()
+    {
+        show();
+        raise();
+        setFocus();
+        m_loop.exec();
+        hide();
+        return m_accepted;
+    }
+
+    // Ends the dialog with the given result.
+    void finish(bool accepted)
+    {
+        m_accepted = accepted;
+        m_loop.quit();
+    }
+
+    // Ends the dialog with "yes"/"OK".
+    void accept() { finish(true); }
+
+    // Ends the dialog with "no" (also the back key).
+    void reject() { finish(false); }
 
 protected:
-    // Flushes the whole window after each repaint on Android.
-    bool event(QEvent *event) override
+    // Keeps the overlay as large as the window.
+    bool eventFilter(QObject *watched, QEvent *event) override
     {
-        const bool handled = QDialog::event(event);
-#ifdef Q_OS_ANDROID
-        if (event->type() == QEvent::UpdateRequest && backingStore() && windowHandle())
-            backingStore()->flush(QRegion(rect()), windowHandle());
-#endif
-        return handled;
+        if (watched == parentWidget() && event->type() == QEvent::Resize)
+            setGeometry(parentWidget()->rect());
+        return QWidget::eventFilter(watched, event);
     }
+
+    // Closes the dialog with the Android back key.
+    void keyPressEvent(QKeyEvent *event) override
+    {
+        if (event->key() == Qt::Key_Back || event->key() == Qt::Key_Escape) {
+            event->accept();
+            reject();
+            return;
+        }
+        QWidget::keyPressEvent(event);
+    }
+
+    // Taps beside the message do nothing (but never reach the page below).
+    void mousePressEvent(QMouseEvent *event) override { event->accept(); }
+
+private:
+    QEventLoop m_loop;
+    bool m_accepted = false;
 };
 
 } // namespace
@@ -143,9 +192,11 @@ namespace {
 bool runDialog(QWidget &parent, const QString &title, const QString &text,
                const QString &primaryText, const QString &secondaryText)
 {
-    FullFlushDialog dialog(parent);
-    dialog.setWindowTitle(title);
-    dialog.setObjectName(QStringLiteral("infoDialog"));
+    OverlayDialog overlay(parent);
+    // The white message card in the middle of the dimmed overlay.
+    auto outer = std::make_unique<QVBoxLayout>();
+    auto dialog = std::make_unique<QFrame>();
+    dialog->setObjectName(QStringLiteral("infoDialog"));
     // Declared parents-first, so children are destroyed before their parents.
     auto layout = std::make_unique<QVBoxLayout>();
     auto heading = std::make_unique<QLabel>(title);
@@ -155,7 +206,7 @@ bool runDialog(QWidget &parent, const QString &title, const QString &text,
     auto secondary = std::make_unique<QPushButton>(secondaryText);
     auto primary = std::make_unique<QPushButton>(primaryText);
 
-    dialog.setLayout(layout.get());
+    dialog->setLayout(layout.get());
     layout->setContentsMargins(18, 16, 18, 14);
     layout->setSpacing(10);
     heading->setObjectName(QStringLiteral("cardTitle"));
@@ -173,8 +224,8 @@ bool runDialog(QWidget &parent, const QString &title, const QString &text,
     primary->setObjectName(QStringLiteral("primaryButton"));
     primary->setProperty("role", QStringLiteral("dialogPrimary"));
     secondary->setProperty("role", QStringLiteral("dialogSecondary"));
-    QObject::connect(primary.get(), &QPushButton::clicked, &dialog, &QDialog::accept);
-    QObject::connect(secondary.get(), &QPushButton::clicked, &dialog, &QDialog::reject);
+    QObject::connect(primary.get(), &QPushButton::clicked, &overlay, &OverlayDialog::accept);
+    QObject::connect(secondary.get(), &QPushButton::clicked, &overlay, &OverlayDialog::reject);
     secondary->setVisible(!secondaryText.isEmpty());
     buttons->setSpacing(10);
     buttons->addWidget(secondary.get(), 1);
@@ -186,9 +237,11 @@ bool runDialog(QWidget &parent, const QString &title, const QString &text,
     const QSize area = parent.window()->size();
     const int width = qMax(260, area.width() - 32);
     const int bodyHeight = body->heightForWidth(width - 40);
-    const int height = qMin(area.height() * 4 / 5, bodyHeight + 170);
-    dialog.resize(width, height);
-    return dialog.exec() == QDialog::Accepted;
+    const int height = qMin(area.height() * 4 / 5, bodyHeight + 150);
+    dialog->setFixedSize(width, height);
+    overlay.setLayout(outer.get());
+    outer->addWidget(dialog.get(), 0, Qt::AlignCenter);
+    return overlay.exec();
 }
 
 } // namespace
