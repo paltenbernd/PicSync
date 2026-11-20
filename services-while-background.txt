@@ -1,0 +1,67 @@
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  User 0 active services:
+  * ServiceRecord{3d88653 u0 de.altenbernd.picsync/.PicSyncJobService}
+    intent={cmp=de.altenbernd.picsync/.PicSyncJobService}
+    packageName=de.altenbernd.picsync
+    processName=de.altenbernd.picsync
+    permission=android.permission.BIND_JOB_SERVICE
+    baseDir=/data/app/~~zDHvpiapS8gjFQwLKTC_uA==/de.altenbernd.picsync-2UEBsXGfjgDH7twdMVf23g==/base.apk
+    dataDir=/data/user/0/de.altenbernd.picsync
+    app=ProcessRecord{88fe85b 6536:de.altenbernd.picsync/u0a192}
+    mAllowWhileInUsePermissionInFgsReason=PROC_STATE_PERSISTENT
+    allowUiJobScheduling=false
+    recentCallingPackage=android
+    recentCallingUid=1000
+    allowStartForeground=PROC_STATE_PERSISTENT
+    startForegroundCount=0
+    infoAllowStartForeground=[callingPackage: android; callingUid: 1000; uidState: PER ; uidBFSL: [BFSL]; intent: Intent { flg=0x4 cmp=de.altenbernd.picsync/.PicSyncJobService }; code:PROC_STATE_PERSISTENT; tempAllowListReason:<null>; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null: isBindService:true]
+    createTime=-18s506ms startingBgTimeout=--
+    lastActivity=-18s505ms restartTime=-18s505ms createdFromFg=true
+    Bindings:
+    * IntentBindRecord{5f880ac CREATE}:
+      intent={flg=0x4 cmp=de.altenbernd.picsync/.PicSyncJobService}
+      binder=android.os.BinderProxy@30b6175
+      requested=true received=true hasBound=true doRebind=false
+      * Client AppBindRecord{908550a ProcessRecord{9c47c43 525:system/1000}}
+        Per-process Connections:
+          ConnectionRecord{2dd642 u0 CR !FG !PRCP de.altenbernd.picsync/.PicSyncJobService:@3edc48d flags=0x8105}
+    All Connections:
+      ConnectionRecord{2dd642 u0 CR !FG !PRCP de.altenbernd.picsync/.PicSyncJobService:@3edc48d flags=0x8105}
+
+  * ServiceRecord{b6c53f2 u0 de.altenbernd.picsync/.PicSyncService}
+    intent={cmp=de.altenbernd.picsync/.PicSyncService}
+    packageName=de.altenbernd.picsync
+    processName=de.altenbernd.picsync:sync
+    baseDir=/data/app/~~zDHvpiapS8gjFQwLKTC_uA==/de.altenbernd.picsync-2UEBsXGfjgDH7twdMVf23g==/base.apk
+    dataDir=/data/user/0/de.altenbernd.picsync
+    app=ProcessRecord{f20d3c1 6601:de.altenbernd.picsync:sync/u0a192}
+    mAllowWhileInUsePermissionInFgsReason=PROC_STATE_TOP
+    allowUiJobScheduling=true
+    recentCallingPackage=de.altenbernd.picsync
+    recentCallingUid=10192
+    allowStartForeground=PROC_STATE_TOP
+    startForegroundCount=1
+    infoAllowStartForeground=[callingPackage: de.altenbernd.picsync; callingUid: 10192; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { cmp=de.altenbernd.picsync/.PicSyncService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null: isBindService:true]
+    isForeground=true foregroundId=1 types=00000001 foregroundNoti=Notification(channel=picsync_sync shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x4a color=0x00000000 vis=PRIVATE)
+    createTime=-18s500ms startingBgTimeout=--
+    lastActivity=-17s96ms restartTime=-18s232ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=1
+ startCommandResult=1
+    Bindings:
+    * IntentBindRecord{231717b CREATE}:
+      intent={cmp=de.altenbernd.picsync/.PicSyncService}
+      binder=null
+      requested=true received=true hasBound=true doRebind=false
+      * Client AppBindRecord{fc2fb98 ProcessRecord{88fe85b 6536:de.altenbernd.picsync/u0a192}}
+        Per-process Connections:
+          ConnectionRecord{b465ca8 u0 CR de.altenbernd.picsync/.PicSyncService:@bb06ccb flags=0x1}
+    All Connections:
+      ConnectionRecord{b465ca8 u0 CR de.altenbernd.picsync/.PicSyncService:@bb06ccb flags=0x1}
+
+  Connection bindings to services:
+  * ConnectionRecord{2dd642 u0 CR !FG !PRCP de.altenbernd.picsync/.PicSyncJobService:@3edc48d flags=0x8105}
+    binding=AppBindRecord{908550a de.altenbernd.picsync/.PicSyncJobService:system}
+    conn=android.app.LoadedApk$ServiceDispatcher$InnerConnection@3edc48d flags=0x8105
+  * ConnectionRecord{b465ca8 u0 CR de.altenbernd.picsync/.PicSyncService:@bb06ccb flags=0x1}
+    binding=AppBindRecord{fc2fb98 de.altenbernd.picsync/.PicSyncService:de.altenbernd.picsync}
+    conn=android.os.BinderProxy@bb06ccb flags=0x1

@@ -1,0 +1,11 @@
+local photos: 150, indexed: 150
+server after start: 10
+foreground service: 1, job service present: 8
+t=10s server responses: 50 / 151
+t=20s server responses: 67 / 151
+t=30s server responses: 84 / 151
+t=40s server responses: 100 / 151
+t=50s server responses: 118 / 151
+t=60s server responses: 136 / 151
+t=70s server responses: 151 / 151
+final: 151 / 151
