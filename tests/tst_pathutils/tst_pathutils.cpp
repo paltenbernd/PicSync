@@ -29,6 +29,9 @@ private Q_SLOTS:
     void conflictNames();
     // Checks ETag normalisation.
     void etags();
+    // Folders are grouped into albums for the folder overview.
+    void galleryGroups_data();
+    void galleryGroups();
 };
 
 // Checks which file names count as gallery media.
@@ -119,6 +122,32 @@ void TestPathUtils::etags()
     QCOMPARE(PathUtils::normalizeEtag(QStringLiteral("\"abc\"")), QStringLiteral("abc"));
     QCOMPARE(PathUtils::normalizeEtag(QStringLiteral("W/\"abc\"")), QStringLiteral("abc"));
     QCOMPARE(PathUtils::normalizeEtag(QStringLiteral("abc")), QStringLiteral("abc"));
+}
+
+// Folders are grouped into albums for the folder overview (test data).
+void TestPathUtils::galleryGroups_data()
+{
+    QTest::addColumn<QString>("folder");
+    QTest::addColumn<QString>("group");
+    QTest::newRow("camera") << "DCIM/Camera" << "DCIM/Camera";
+    QTest::newRow("dcim root") << "DCIM" << "DCIM";
+    QTest::newRow("dated") << "apple/2026/09" << "apple";
+    QTest::newRow("top level") << "apple" << "apple";
+    QTest::newRow("pictures sub") << "Pictures/Signal/2024/02" << "Pictures/Signal";
+    QTest::newRow("screenshots") << "Pictures/Screenshots" << "Pictures/Screenshots";
+    QTest::newRow("lower case") << "pictures/x/y" << "pictures/x";
+    QTest::newRow("whatsapp") << "Android/media/com.whatsapp/WhatsApp/Media/WhatsApp Images"
+                              << "Android/media/com.whatsapp/WhatsApp";
+    QTest::newRow("main folder") << "" << "";
+    QTest::newRow("trailing slash") << "Movies/Holiday/" << "Movies/Holiday";
+}
+
+// Folders are grouped into albums for the folder overview.
+void TestPathUtils::galleryGroups()
+{
+    QFETCH(QString, folder);
+    QFETCH(QString, group);
+    QCOMPARE(PathUtils::galleryGroup(folder), group);
 }
 
 QTEST_GUILESS_MAIN(TestPathUtils)

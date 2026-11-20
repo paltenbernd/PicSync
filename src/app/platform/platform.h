@@ -27,6 +27,9 @@ QString deviceName();
 // Returns the private directory for state, history and lock files.
 QString dataDirectory();
 
+// Returns the root of the phone's shared storage (where the gallery lives).
+QString sharedStorageRoot();
+
 // Creates the access object for the gallery media.
 std::unique_ptr<LocalMediaStore> createMediaStore();
 

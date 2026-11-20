@@ -51,6 +51,11 @@ QMainWindow, QStackedWidget, QScrollArea, QScrollArea > QWidget > QWidget, #page
     color: #5B6B7C;
     font-size: 14px;
 }
+#subTitle {
+    font-size: 14px;
+    font-weight: 600;
+    padding-top: 4px;
+}
 #warning {
     color: #B26A00;
     font-size: 14px;

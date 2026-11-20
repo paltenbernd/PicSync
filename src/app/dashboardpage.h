@@ -107,8 +107,13 @@ private:
     std::unique_ptr<QGridLayout> m_storageLayout;
     std::unique_ptr<QLabel> m_storageIcon;
     std::unique_ptr<QLabel> m_storageTitle;
+    std::unique_ptr<QLabel> m_serverSpaceTitle;
     std::unique_ptr<QProgressBar> m_storageBar;
     std::unique_ptr<QLabel> m_storageDetail;
+    std::unique_ptr<QLabel> m_phoneSpaceTitle;
+    std::unique_ptr<QProgressBar> m_phoneBar;
+    std::unique_ptr<QLabel> m_phoneDetail;
+    std::unique_ptr<QLabel> m_syncedDetail;
 
     std::unique_ptr<QFrame> m_foldersCard;
     std::unique_ptr<QGridLayout> m_foldersLayout;

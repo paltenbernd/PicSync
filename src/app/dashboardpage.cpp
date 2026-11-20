@@ -15,6 +15,7 @@
 #include <QMap>
 #include <QMouseEvent>
 #include <QSettings>
+#include <QStorageInfo>
 #include <QStyle>
 #include <QUrl>
 
@@ -50,8 +51,13 @@ DashboardPage::DashboardPage()
     , m_storageLayout(std::make_unique<QGridLayout>())
     , m_storageIcon(std::make_unique<QLabel>())
     , m_storageTitle(std::make_unique<QLabel>())
+    , m_serverSpaceTitle(std::make_unique<QLabel>())
     , m_storageBar(std::make_unique<QProgressBar>())
     , m_storageDetail(std::make_unique<QLabel>())
+    , m_phoneSpaceTitle(std::make_unique<QLabel>())
+    , m_phoneBar(std::make_unique<QProgressBar>())
+    , m_phoneDetail(std::make_unique<QLabel>())
+    , m_syncedDetail(std::make_unique<QLabel>())
     , m_foldersCard(std::make_unique<QFrame>())
     , m_foldersLayout(std::make_unique<QGridLayout>())
     , m_foldersIcon(std::make_unique<QLabel>())
@@ -114,14 +120,33 @@ DashboardPage::DashboardPage()
     // Storage card.
     setupCard(*m_storageCard, *m_storageLayout, *m_storageIcon, *m_storageTitle,
               QStringLiteral("storage"), tr("Storage"));
-    m_storageBar->setRange(0, 1000);
-    m_storageBar->setTextVisible(false);
-    m_storageBar->setFixedHeight(8);
-    m_storageLayout->addWidget(m_storageBar.get(), 1, 1, 1, 2);
-    m_storageDetail->setObjectName(QStringLiteral("detail"));
-    m_storageDetail->setWordWrap(true);
-    Ui::allowShrink(*m_storageDetail);
-    m_storageLayout->addWidget(m_storageDetail.get(), 2, 1, 1, 2);
+    // Server space, phone space, then what PicSync has synchronised.
+    QLabel *const titles[] = { m_serverSpaceTitle.get(), m_phoneSpaceTitle.get() };
+    QProgressBar *const bars[] = { m_storageBar.get(), m_phoneBar.get() };
+    QLabel *const details[] = { m_storageDetail.get(), m_phoneDetail.get(),
+                                m_syncedDetail.get() };
+    for (QLabel *title : titles) {
+        title->setObjectName(QStringLiteral("subTitle"));
+        title->setWordWrap(true);
+        Ui::allowShrink(*title);
+    }
+    for (QProgressBar *bar : bars) {
+        bar->setRange(0, 1000);
+        bar->setTextVisible(false);
+        bar->setFixedHeight(8);
+    }
+    for (QLabel *detail : details) {
+        detail->setObjectName(QStringLiteral("detail"));
+        detail->setWordWrap(true);
+        Ui::allowShrink(*detail);
+    }
+    m_storageLayout->addWidget(m_serverSpaceTitle.get(), 1, 1, 1, 2);
+    m_storageLayout->addWidget(m_storageBar.get(), 2, 1, 1, 2);
+    m_storageLayout->addWidget(m_storageDetail.get(), 3, 1, 1, 2);
+    m_storageLayout->addWidget(m_phoneSpaceTitle.get(), 4, 1, 1, 2);
+    m_storageLayout->addWidget(m_phoneBar.get(), 5, 1, 1, 2);
+    m_storageLayout->addWidget(m_phoneDetail.get(), 6, 1, 1, 2);
+    m_storageLayout->addWidget(m_syncedDetail.get(), 7, 1, 1, 2);
     m_contentLayout->addWidget(m_storageCard.get());
 
     // Folders card.
@@ -243,21 +268,40 @@ void DashboardPage::refresh()
             break;
         }
     }
+    m_serverSpaceTitle->setText(QUrl(settings.serverUrl).host().isEmpty()
+                                    ? tr("Server")
+                                    : QUrl(settings.serverUrl).host());
+    m_serverSpaceTitle->setVisible(quota.valid);
+    m_storageDetail->setVisible(quota.valid);
     if (quota.valid && quota.availableBytes >= 0) {
         const qint64 total = quota.usedBytes + quota.availableBytes;
         m_storageBar->setValue(total > 0 ? int(quota.usedBytes * 1000 / total) : 0);
         m_storageBar->setVisible(true);
-        m_storageDetail->setText(tr("%1 of %2 used").arg(Ui::sizeText(quota.usedBytes),
-                                                         Ui::sizeText(total))
-                                 + QStringLiteral("\n") + files);
-    } else if (quota.valid) {
-        m_storageBar->setVisible(false);
-        m_storageDetail->setText(tr("%1 used (no limit)").arg(Ui::sizeText(quota.usedBytes))
-                                 + QStringLiteral("\n") + files);
+        m_storageDetail->setText(tr("%1 of %2 used · %3 free")
+                                     .arg(Ui::sizeText(quota.usedBytes), Ui::sizeText(total),
+                                          Ui::sizeText(quota.availableBytes)));
     } else {
         m_storageBar->setVisible(false);
-        m_storageDetail->setText(files);
+        m_storageDetail->setText(tr("%1 used (no limit)").arg(Ui::sizeText(quota.usedBytes)));
     }
+
+    // Space on the phone itself.
+    const QStorageInfo phone(Platform::sharedStorageRoot());
+    const bool phoneKnown = phone.isValid() && phone.bytesTotal() > 0;
+    m_phoneSpaceTitle->setText(Platform::deviceName());
+    m_phoneSpaceTitle->setVisible(phoneKnown);
+    m_phoneBar->setVisible(phoneKnown);
+    m_phoneDetail->setVisible(phoneKnown);
+    if (phoneKnown) {
+        const qint64 total = phone.bytesTotal();
+        const qint64 free = phone.bytesAvailable();
+        const qint64 used = qMax<qint64>(0, total - free);
+        m_phoneBar->setValue(int(used * 1000 / total));
+        m_phoneDetail->setText(tr("%1 of %2 used · %3 free")
+                                   .arg(Ui::sizeText(used), Ui::sizeText(total),
+                                        Ui::sizeText(free)));
+    }
+    m_syncedDetail->setText(files);
 
     refreshFolders();
 
@@ -287,8 +331,9 @@ void DashboardPage::refresh()
     m_lastSync->style()->polish(m_lastSync.get());
 }
 
-// Updates the folder list of the folders card: every folder with its number of
-// files, the space they take and waiting deletions.
+// Updates the folder list of the folders card: every album (folders grouped
+// by PathUtils::galleryGroup) with its number of files, the space they take
+// and waiting deletions.
 void DashboardPage::refreshFolders()
 {
     StateStore state(SyncSession::stateFilePath());
@@ -297,12 +342,12 @@ void DashboardPage::refreshFolders()
     QMap<QString, qint64> bytes;
     QMap<QString, int> pending;
     for (auto it = state.entries().constBegin(); it != state.entries().constEnd(); ++it) {
-        const QString folder = PathUtils::parentPath(it.key());
+        const QString folder = PathUtils::galleryGroup(PathUtils::parentPath(it.key()));
         counts[folder] += 1;
         bytes[folder] += it.value().localSize;
     }
     for (auto it = state.pending().constBegin(); it != state.pending().constEnd(); ++it)
-        pending[PathUtils::parentPath(it.key())] += 1;
+        pending[PathUtils::galleryGroup(PathUtils::parentPath(it.key()))] += 1;
 
     // Short names ("Camera") unless two folders share one, e.g. two "Signal" folders.
     QMap<QString, int> nameUses;

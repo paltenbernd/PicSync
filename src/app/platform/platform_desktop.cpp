@@ -66,6 +66,12 @@ QString deviceName()
     return QSysInfo::machineHostName();
 }
 
+// Returns the root of the phone's shared storage (the home folder on a PC).
+QString sharedStorageRoot()
+{
+    return QDir::homePath();
+}
+
 // Returns the private directory for state, history and lock files.
 QString dataDirectory()
 {

@@ -6,6 +6,7 @@
 #include "syncmodel.h"
 #include "statestore.h"
 #include "synchistory.h"
+#include "platform/platform.h"
 #include "syncsession.h"
 #include "uihelpers.h"
 
@@ -47,10 +48,12 @@ private Q_SLOTS:
     void waitingDeletionsAreExplained();
     // A failed sync shows the error in the explanation.
     void failedSyncIsExplained();
-
-private:
     // Folders are sorted by storage space, not by number of files.
     void foldersSortedBySize();
+    // Dated sub-folders are combined into one album entry.
+    void datedFoldersAreGrouped();
+    // The storage card shows the space on the phone.
+    void phoneSpaceIsShown();
     // Messages appear inside the main window (no separate window) and react to taps.
     void dialogIsOverlayInWindow();
     // The back key closes a message like "No".
@@ -190,6 +193,34 @@ void TestDashboardPage::foldersSortedBySize()
     const int small = texts.indexOf(QStringLiteral("ManySmall"));
     QVERIFY(big >= 0 && small >= 0);
     QVERIFY2(big < small, qPrintable(texts.join(QLatin1Char('|'))));
+}
+
+// Dated sub-folders are combined into one album entry.
+void TestDashboardPage::datedFoldersAreGrouped()
+{
+    writeState({ { QStringLiteral("apple/2026/09"), 2 }, { QStringLiteral("apple/2025/07"), 3 },
+                 { QStringLiteral("DCIM/Camera"), 1 } });
+    DashboardPage page;
+    page.refresh();
+    const QStringList texts = labelTexts(page);
+    QVERIFY2(texts.contains(QStringLiteral("apple")), qPrintable(texts.join(QLatin1Char('|'))));
+    QVERIFY(!texts.contains(QStringLiteral("apple/2026/09")));
+    QVERIFY(texts.contains(QStringLiteral("5 file(s) · 5.0 MB")));
+    QVERIFY(texts.contains(QStringLiteral("2")));   // two albums
+}
+
+// The storage card shows the space on the phone.
+void TestDashboardPage::phoneSpaceIsShown()
+{
+    writeState({ { QStringLiteral("DCIM/Camera"), 1 } });
+    DashboardPage page;
+    page.refresh();
+    const QStringList texts = labelTexts(page);
+    QVERIFY(texts.contains(Platform::deviceName()));
+    bool free = false;
+    for (const QString &text : texts)
+        free = free || text.endsWith(QStringLiteral(" free"));
+    QVERIFY2(free, qPrintable(texts.join(QLatin1Char('|'))));
 }
 
 // Returns the open message overlay, if there is one.

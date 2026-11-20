@@ -89,6 +89,29 @@ QString join(const QString &a, const QString &b)
     return na + QLatin1Char('/') + nb;
 }
 
+// Returns the gallery album a folder belongs to (see header).
+QString galleryGroup(const QString &relativeFolder)
+{
+    const QStringList parts = normalizeRelative(relativeFolder)
+                                  .split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    if (parts.isEmpty())
+        return QString();
+    // Standard top-level folders of Android: the album is the folder below.
+    static const QStringList standard = {
+        QStringLiteral("DCIM"), QStringLiteral("Pictures"), QStringLiteral("Movies"),
+        QStringLiteral("Download"), QStringLiteral("Downloads"), QStringLiteral("Documents"),
+        QStringLiteral("Music"), QStringLiteral("Recordings"), QStringLiteral("Podcasts")
+    };
+    int depth = 1;
+    if (parts.size() >= 4 && parts.at(0) == QLatin1String("Android")
+        && parts.at(1) == QLatin1String("media")) {
+        depth = 4;   // Android/media/<app package>/<app folder>
+    } else if (standard.contains(parts.at(0), Qt::CaseInsensitive)) {
+        depth = 2;
+    }
+    return parts.mid(0, qMin(depth, int(parts.size()))).join(QLatin1Char('/'));
+}
+
 // Returns the parent folder of a relative path ("" for top-level entries).
 QString parentPath(const QString &relativePath)
 {

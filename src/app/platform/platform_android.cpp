@@ -118,6 +118,16 @@ bool notificationsWanted()
 
 } // namespace
 
+// Returns the root of the phone's shared storage (where the gallery lives).
+QString sharedStorageRoot()
+{
+    const QJniObject dir = QJniObject::callStaticObjectMethod(
+        "android/os/Environment", "getExternalStorageDirectory", "()Ljava/io/File;");
+    return dir.isValid() ? dir.callObjectMethod("getAbsolutePath", "()Ljava/lang/String;")
+                               .toString()
+                         : QStringLiteral("/storage/emulated/0");
+}
+
 // Returns the user-visible name of the phone (Settings > About phone > Device name).
 QString deviceName()
 {

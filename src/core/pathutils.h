@@ -34,6 +34,13 @@ QString join(const QString &a, const QString &b);
 // Returns the parent folder of a relative path ("" for top-level entries).
 QString parentPath(const QString &relativePath);
 
+// Returns the gallery album a folder belongs to, for the folder overview:
+// the first folder below the standard Android folders (DCIM, Pictures, ...),
+// otherwise the top-level folder. "DCIM/Camera" -> "DCIM/Camera",
+// "apple/2026/09" -> "apple", "Pictures/Signal/2024" -> "Pictures/Signal",
+// "Android/media/com.whatsapp/WhatsApp/Media/..." -> ".../com.whatsapp/WhatsApp".
+QString galleryGroup(const QString &relativeFolder);
+
 // Percent-encodes every segment of a relative path for use in a URL.
 QString encodePath(const QString &relativePath);
 
