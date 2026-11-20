@@ -1,0 +1,2 @@
+      6 inputType=0x0
+      8 inputType=0x80091
