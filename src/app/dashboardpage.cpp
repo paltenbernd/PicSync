@@ -127,6 +127,7 @@ DashboardPage::DashboardPage()
                                 m_syncedDetail.get() };
     for (QLabel *title : titles) {
         title->setObjectName(QStringLiteral("subTitle"));
+        title->setIndent(0);
         title->setWordWrap(true);
         Ui::allowShrink(*title);
     }
