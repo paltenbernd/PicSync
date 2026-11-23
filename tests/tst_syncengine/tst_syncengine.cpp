@@ -61,8 +61,12 @@ private Q_SLOTS:
     void statePersists();
     // A file missing from the media index but present on disk is not "deleted".
     void unindexedFileIsKept();
-    // Server files with names Android does not accept are skipped, not errors.
-    void unstorableNamesAreSkipped();
+    // Server files with names Android does not accept are renamed on the server.
+    void unstorableNamesAreRenamed();
+    // A renamed file does not overwrite one that already has the new name.
+    void renameAvoidsExistingNames();
+    // If the server refuses the rename, the file is skipped (no error).
+    void failedRenameIsSkipped();
 
 private:
     // Writes a file into the phone's gallery.
@@ -431,28 +435,57 @@ void TestSyncEngine::unindexedFileIsKept()
     QVERIFY(m_remote->exists(QStringLiteral("DCIM/a.jpg")));
 }
 
-// Server files with names Android does not accept are skipped, not errors.
-void TestSyncEngine::unstorableNamesAreSkipped()
+// Server files with names Android does not accept are renamed on the server.
+void TestSyncEngine::unstorableNamesAreRenamed()
 {
     writeLocal(QStringLiteral("DCIM/Camera/a.jpg"), "aaa");
     const QString odd = QStringLiteral("apple/2025/04/SharePic 2025-04-14 15:52:53 +0000.jpg");
+    const QString fixed = QStringLiteral("apple/2025/04/SharePic 2025-04-14 15-52-53 +0000.jpg");
     m_remote->put(odd, "odd");
-    m_remote->put(QStringLiteral("apple/2025/04/fine.jpg"), "fine");
+
+    const SyncResult r = sync();
+    QVERIFY2(r.success, qPrintable(r.errorMessage));
+    QCOMPARE(r.renamedFiles, 1);
+    QCOMPARE(r.skippedFiles, 0);
+    QCOMPARE(r.downloaded, 1);
+    QVERIFY(!m_remote->exists(odd));
+    QVERIFY(m_remote->exists(fixed));
+    QCOMPARE(localContent(fixed), QByteArray("odd"));
+
+    // The next run has nothing left to do.
+    const SyncResult again = sync();
+    QVERIFY(again.success);
+    QCOMPARE(again.renamedFiles + again.uploaded + again.downloaded, 0);
+}
+
+// A renamed file does not overwrite one that already has the new name.
+void TestSyncEngine::renameAvoidsExistingNames()
+{
+    writeLocal(QStringLiteral("x/12-30.jpg"), "local");
+    m_remote->put(QStringLiteral("x/12:30.jpg"), "remote");
+
+    const SyncResult r = sync();
+    QVERIFY2(r.success, qPrintable(r.errorMessage));
+    QCOMPARE(r.renamedFiles, 1);
+    QCOMPARE(localContent(QStringLiteral("x/12-30.jpg")), QByteArray("local"));
+    QCOMPARE(localContent(QStringLiteral("x/12-30 (2).jpg")), QByteArray("remote"));
+    QCOMPARE(m_remote->content(QStringLiteral("x/12-30.jpg")), QByteArray("local"));
+}
+
+// If the server refuses the rename, the file is skipped (no error).
+void TestSyncEngine::failedRenameIsSkipped()
+{
+    writeLocal(QStringLiteral("DCIM/Camera/a.jpg"), "aaa");
+    const QString odd = QStringLiteral("x/what?.jpg");
+    m_remote->put(odd, "odd");
+    m_remote->setRefuseMoves(true);
 
     const SyncResult r = sync();
     QVERIFY2(r.success, qPrintable(r.errorMessage));
     QCOMPARE(r.skippedFiles, 1);
-    QCOMPARE(r.downloaded, 1);
-    QCOMPARE(r.failedFiles, 0);
-    QVERIFY(!localExists(odd));
-    QVERIFY(m_remote->exists(odd));   // never deleted on the server
-
-    // Later runs skip it again and stay successful.
-    const SyncResult again = sync();
-    QVERIFY(again.success);
-    QCOMPARE(again.skippedFiles, 1);
-    QCOMPARE(again.deletedRemote, 0);
+    QCOMPARE(r.renamedFiles, 0);
     QVERIFY(m_remote->exists(odd));
+    QVERIFY(!localExists(QStringLiteral("x/what_.jpg")));
 }
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

@@ -106,38 +106,33 @@
         <source>Folders appear after the first sync.</source>
         <translation>Die Ordner erscheinen nach dem ersten Sync.</translation>
     </message>
-    <message numerus="yes">
-        <location filename="../dashboardpage.cpp" line="446" />
-        <source>%n file(s) in Nextcloud stay on the server only: their names contain characters that Android does not allow (such as : ? * " &lt; &gt; |). Rename them in Nextcloud to get them onto the phone. The history lists them.</source>
-        <translation><numerusform>%n Datei in der Nextcloud bleibt nur auf dem Server: Ihr Name enthält Zeichen, die Android nicht erlaubt (z. B. : ? * " &lt; &gt; |). Benenne sie in der Nextcloud um, damit sie aufs Telefon kommt. Der Verlauf listet sie auf.</numerusform><numerusform>%n Dateien in der Nextcloud bleiben nur auf dem Server: Ihre Namen enthalten Zeichen, die Android nicht erlaubt (z. B. : ? * " &lt; &gt; |). Benenne sie in der Nextcloud um, damit sie aufs Telefon kommen. Der Verlauf listet sie auf.</numerusform></translation>
-    </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="506" />
+        <location filename="../dashboardpage.cpp" line="511" />
         <source>Stop</source>
         <translation>Stopp</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="506" />
+        <location filename="../dashboardpage.cpp" line="511" />
         <source>Sync now</source>
         <translation>Jetzt synchronisieren</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="511" />
+        <location filename="../dashboardpage.cpp" line="516" />
         <source>Starting…</source>
         <translation>Starte…</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="523" />
+        <location filename="../dashboardpage.cpp" line="528" />
         <source>%1 of %2 files</source>
         <translation>%1 von %2 Dateien</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="524" />
+        <location filename="../dashboardpage.cpp" line="529" />
         <source>%1 of %2: %3</source>
         <translation>%1 von %2: %3</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="542" />
+        <location filename="../dashboardpage.cpp" line="547" />
         <source>Stopping…</source>
         <translation>Wird gestoppt…</translation>
     </message>
@@ -192,33 +187,43 @@
         <source>Last sync %1: %2 up, %3 down, %4 deleted.</source>
         <translation>Letzter Sync %1: %2 hoch, %3 runter, %4 gelöscht.</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../dashboardpage.cpp" line="446" />
+        <source>%n file(s) in Nextcloud were renamed because their names contained characters that Android does not allow (such as : ? * " &lt; &gt; |); ":" became "-". The history lists them.</source>
+        <translation><numerusform>%n Datei in der Nextcloud wurde umbenannt, weil ihr Name Zeichen enthielt, die Android nicht erlaubt (z. B. : ? * " &lt; &gt; |); aus „:“ wurde „-“. Der Verlauf listet sie auf.</numerusform><numerusform>%n Dateien in der Nextcloud wurden umbenannt, weil ihre Namen Zeichen enthielten, die Android nicht erlaubt (z. B. : ? * " &lt; &gt; |); aus „:“ wurde „-“. Der Verlauf listet sie auf.</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../dashboardpage.cpp" line="452" />
+        <source>%n file(s) in Nextcloud stay on the server only: their names contain characters that Android does not allow and the server refused to rename them. The history lists them.</source>
+        <translation><numerusform>%n Datei in der Nextcloud bleibt nur auf dem Server: Ihr Name enthält Zeichen, die Android nicht erlaubt, und der Server hat das Umbenennen abgelehnt. Der Verlauf listet sie auf.</numerusform><numerusform>%n Dateien in der Nextcloud bleiben nur auf dem Server: Ihre Namen enthalten Zeichen, die Android nicht erlaubt, und der Server hat das Umbenennen abgelehnt. Der Verlauf listet sie auf.</numerusform></translation>
+    </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="454" />
+        <location filename="../dashboardpage.cpp" line="459" />
         <source>Waiting deletions (warning sign):</source>
         <translation>Wartende Löschungen (Warndreieck):</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="455" />
+        <location filename="../dashboardpage.cpp" line="460" />
         <source>These files were deleted on one side. PicSync passes deletions on only at the next sync, so that a file deleted by mistake can still be restored. Until then the copy on the other side is locked. If you restore the file before the next sync (gallery trash or Nextcloud trash bin), the deletion is cancelled.</source>
         <translation>Diese Dateien wurden auf einer Seite gelöscht. PicSync überträgt Löschungen erst beim nächsten Sync, damit du versehentlich gelöschte Dateien noch retten kannst. Bis dahin ist die Kopie auf der anderen Seite gesperrt. Stellst du die Datei vorher wieder her (Papierkorb der Galerie oder der Nextcloud), wird die Löschung abgebrochen.</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="467" />
+        <location filename="../dashboardpage.cpp" line="472" />
         <source>deleted on the phone, will be deleted in Nextcloud</source>
         <translation>auf dem Handy gelöscht, wird in der Nextcloud gelöscht</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="468" />
+        <location filename="../dashboardpage.cpp" line="473" />
         <source>deleted in Nextcloud, will be deleted on the phone</source>
         <translation>in der Nextcloud gelöscht, wird auf dem Handy gelöscht</translation>
     </message>
     <message numerus="yes">
-        <location filename="../dashboardpage.cpp" line="472" />
+        <location filename="../dashboardpage.cpp" line="477" />
         <source>… and %n more</source>
         <translation><numerusform>… und %n weitere</numerusform><numerusform>… und %n weitere</numerusform></translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="499" />
+        <location filename="../dashboardpage.cpp" line="504" />
         <source>Synchronisation status</source>
         <translation>Status der Synchronisation</translation>
     </message>
@@ -232,7 +237,7 @@
     </message>
     <message>
         <location filename="../historypage.cpp" line="43" />
-        <location filename="../historypage.cpp" line="99" />
+        <location filename="../historypage.cpp" line="101" />
         <source>Clear history</source>
         <translation>Verlauf löschen</translation>
     </message>
@@ -263,11 +268,16 @@
     </message>
     <message numerus="yes">
         <location filename="../historypage.cpp" line="71" />
+        <source>  ✎ %n renamed</source>
+        <translation><numerusform>  ✎ %n umbenannt</numerusform><numerusform>  ✎ %n umbenannt</numerusform></translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../historypage.cpp" line="73" />
         <source>  – %n server only</source>
         <translation><numerusform>  – %n nur auf Server</numerusform><numerusform>  – %n nur auf Server</numerusform></translation>
     </message>
     <message>
-        <location filename="../historypage.cpp" line="99" />
+        <location filename="../historypage.cpp" line="101" />
         <source>Delete the sync history?</source>
         <translation>Den Sync-Verlauf löschen?</translation>
     </message>
@@ -592,22 +602,22 @@
         <translation>Der Nextcloud-Ordner ist verschwunden. Es wurde nichts gelöscht; setze die Synchronisation in den Einstellungen zurück, um neu zu beginnen.</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="141" />
+        <location filename="../../core/syncengine.cpp" line="155" />
         <source>Synchronising</source>
         <translation>Synchronisiere</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="147" />
+        <location filename="../../core/syncengine.cpp" line="161" />
         <source>Stopped by user</source>
         <translation>Vom Benutzer gestoppt</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="265" />
+        <location filename="../../core/syncengine.cpp" line="296" />
         <source>File vanished before upload</source>
         <translation>Datei vor dem Hochladen verschwunden</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="286" />
+        <location filename="../../core/syncengine.cpp" line="317" />
         <source>Downloaded file is missing</source>
         <translation>Heruntergeladene Datei fehlt</translation>
     </message>

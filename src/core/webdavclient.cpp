@@ -445,6 +445,29 @@ bool WebDavClient::remove(const QString &relativePath, QString &error)
     return false;
 }
 
+// Renames/moves a remote file with WebDAV MOVE (never overwrites).
+bool WebDavClient::move(const QString &fromPath, const QString &toPath, RemoteFile &result,
+                        QString &error)
+{
+    if (!ensureFolder(PathUtils::parentPath(toPath), error))
+        return false;
+    QNetworkRequest request = makeRequest(PathUtils::join(m_remoteFolder, fromPath));
+    const QUrl destination = PathUtils::davUrl(m_filesRoot, PathUtils::join(m_remoteFolder, toPath));
+    request.setRawHeader("Destination", destination.toEncoded());
+    request.setRawHeader("Overwrite", "F");
+    const HttpResult reply = send(request, "MOVE");
+    if (!isSuccess(reply.status)) {
+        error = describe(reply);
+        return false;
+    }
+    QString ignored;
+    if (!statRemote(toPath, result, ignored)) {
+        result = RemoteFile();
+        result.relativePath = PathUtils::normalizeRelative(toPath);
+    }
+    return true;
+}
+
 // Queries the storage quota of the account.
 bool WebDavClient::quota(QuotaInfo &info, QString &error)
 {

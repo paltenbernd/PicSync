@@ -33,6 +33,10 @@ public:
     // Deletes a file from the folder.
     bool remove(const QString &relativePath, QString &error) override;
 
+    // Renames a file in the folder (never overwrites).
+    bool move(const QString &fromPath, const QString &toPath, PicSync::RemoteFile &result,
+              QString &error) override;
+
     // Reports a fixed quota.
     bool quota(PicSync::QuotaInfo &info, QString &error) override;
 
@@ -54,6 +58,9 @@ public:
     // Makes every following request fail (simulates a network outage).
     void setOffline(bool offline);
 
+    // Makes renames fail (simulates a server that refuses MOVE).
+    void setRefuseMoves(bool refuse);
+
     // Number of uploads performed so far.
     int uploads = 0;
 
@@ -69,4 +76,5 @@ private:
 
     QString m_root;
     bool m_offline = false;
+    bool m_refuseMoves = false;
 };

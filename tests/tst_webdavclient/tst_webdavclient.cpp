@@ -35,6 +35,8 @@ public:
 
     // Number of requests that carried a cookie.
     int requestsWithCookie = 0;
+    QString moveDestination;   ///< Destination header of the last MOVE.
+    QString moveOverwrite;     ///< Overwrite header of the last MOVE.
 
 private Q_SLOTS:
     // Accepts a new client connection.
@@ -80,7 +82,16 @@ private Q_SLOTS:
             socket->flush();
             return;
         }
-        if (path.startsWith("/remote.php/dav/")) {
+        if (method == "MOVE") {
+            for (const QByteArray &line : header.split('\n')) {
+                const QByteArray lower = line.toLower();
+                if (lower.startsWith("destination:"))
+                    moveDestination = QString::fromLatin1(line.mid(12).trimmed());
+                if (lower.startsWith("overwrite:"))
+                    moveOverwrite = QString::fromLatin1(line.mid(10).trimmed());
+            }
+            status = "201 Created";
+        } else if (path.startsWith("/remote.php/dav/")) {
             status = "401 Unauthorized";
         } else if (method == "PROPFIND" && path == "/remote.php/webdav/") {
             status = "207 Multi-Status";
@@ -124,6 +135,8 @@ private Q_SLOTS:
     void fallsBackToLegacyAddress();
     // Reports a readable error when the server cannot be reached.
     void unreachableServer();
+    // Renaming uses MOVE with an encoded destination and never overwrites.
+    void moveRenamesWithoutOverwriting();
 };
 
 // Falls back to /remote.php/webdav/ when the modern address is refused.
@@ -158,6 +171,30 @@ void TestWebDavClient::unreachableServer()
     QString error;
     QVERIFY(!client.testConnection(error));
     QVERIFY(!error.isEmpty());
+}
+
+// Renaming uses MOVE with an encoded destination and never overwrites.
+void TestWebDavClient::moveRenamesWithoutOverwriting()
+{
+    MockDavServer server;
+    WebDavClient client(server.url() + QStringLiteral("/remote.php/webdav"),
+                        QStringLiteral("120049"), QStringLiteral("secret"),
+                        QStringLiteral("PicSync/FP6"));
+    QString error;
+    QVERIFY2(client.testConnection(error), qPrintable(error));
+    RemoteFile moved;
+    QVERIFY2(client.move(QStringLiteral("Share 15:52.jpg"), QStringLiteral("Share 15-52.jpg"),
+                         moved, error),
+             qPrintable(error));
+    QCOMPARE(moved.relativePath, QStringLiteral("Share 15-52.jpg"));
+    QVERIFY2(server.moveDestination.endsWith(
+                 QStringLiteral("/remote.php/webdav/PicSync/FP6/Share%2015-52.jpg")),
+             qPrintable(server.moveDestination));
+    QCOMPARE(server.moveOverwrite, QStringLiteral("F"));
+    bool sawMove = false;
+    for (const QString &request : server.requests)
+        sawMove = sawMove || (request.startsWith(QStringLiteral("MOVE ")) && request.contains(QStringLiteral("Share%2015")));
+    QVERIFY2(sawMove, qPrintable(server.requests.join(QStringLiteral(", "))));
 }
 
 QTEST_GUILESS_MAIN(TestWebDavClient)

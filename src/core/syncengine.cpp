@@ -118,16 +118,30 @@ SyncResult SyncEngine::run(bool manual, const QString &configFingerprint)
     }
 
     // Nextcloud accepts names Android cannot store (e.g. "12:30.jpg"). Such
-    // files stay on the server only; they are listed, but are no error.
-    for (auto it = remote.begin(); it != remote.end();) {
+    // files are renamed on the server ("12-30.jpg"); if that fails they stay
+    // on the server only. Either way this is no error.
+    QStringList unstorable;
+    for (auto it = remote.constBegin(); it != remote.constEnd(); ++it) {
         if (!local.contains(it.key()) && !m_state.entries().contains(it.key())
-            && !PathUtils::isStorableOnPhone(it.key())) {
-            ++result.skippedFiles;
-            note(result, QStringLiteral("– ") + it.key());
-            it = remote.erase(it);
+            && !PathUtils::isStorableOnPhone(it.key()))
+            unstorable << it.key();
+    }
+    for (const QString &oldPath : unstorable) {
+        const QString newPath = freePath(PathUtils::phoneSafePath(oldPath), local, remote);
+        RemoteFile moved;
+        QString moveError;
+        if (!m_stop && PathUtils::isStorableOnPhone(newPath)
+            && m_remote.move(oldPath, newPath, moved, moveError)) {
+            ++result.renamedFiles;
+            note(result, QStringLiteral("✎ ") + oldPath + QStringLiteral(" → ")
+                 + newPath.section(QLatin1Char('/'), -1));
+            moved.relativePath = newPath;
+            remote.insert(newPath, moved);
         } else {
-            ++it;
+            ++result.skippedFiles;
+            note(result, QStringLiteral("– ") + oldPath);
         }
+        remote.remove(oldPath);
     }
 
     const SyncPlan plan = SyncPlanner::plan(local, remote, m_state.entries(), m_state.pending());
@@ -182,6 +196,23 @@ SyncResult SyncEngine::run(bool manual, const QString &configFingerprint)
     result.success = !aborted && result.failedFiles == 0;
     result.finishedAt = QDateTime::currentSecsSinceEpoch();
     return result;
+}
+
+// Returns "path", or "name (2).ext", "name (3).ext", ... if it is already taken.
+QString SyncEngine::freePath(const QString &path, const LocalFileMap &local,
+                             const RemoteFileMap &remote) const
+{
+    const QString folder = PathUtils::parentPath(path);
+    const QString name = path.section(QLatin1Char('/'), -1);
+    const int dot = name.lastIndexOf(QLatin1Char('.'));
+    const QString base = dot > 0 ? name.left(dot) : name;
+    const QString suffix = dot > 0 ? name.mid(dot) : QString();
+    QString candidate = path;
+    for (int n = 2; local.contains(candidate) || remote.contains(candidate)
+                    || m_state.entries().contains(candidate); ++n) {
+        candidate = PathUtils::join(folder, base + QStringLiteral(" (%1)").arg(n) + suffix);
+    }
+    return candidate;
 }
 
 // Executes a single planned action; returns false if the file failed.

@@ -68,6 +68,10 @@ public:
     // Deletes a remote file (it goes to the Nextcloud trash bin).
     virtual bool remove(const QString &relativePath, QString &error) = 0;
 
+    // Renames/moves a remote file (never overwrites); "result" describes it afterwards.
+    virtual bool move(const QString &fromPath, const QString &toPath, RemoteFile &result,
+                      QString &error) = 0;
+
     // Queries the storage quota of the account.
     virtual bool quota(QuotaInfo &info, QString &error) = 0;
 

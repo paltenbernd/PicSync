@@ -44,6 +44,15 @@ INDEXED=$(adb shell content query --uri content://media/external/images/media \
           --projection _display_name | grep -c "Row:")
 echo "local photos: $LOCAL, indexed: $INDEXED" | tee "$OUT/counts.txt"
 
+# A file on the server whose name Android does not accept (":" like in
+# "SharePic 2025-04-14 15:52:53 +0000.jpg"): PicSync must rename it.
+for d in PicSync PicSync/e2e PicSync/e2e/apple PicSync/e2e/apple/2025 PicSync/e2e/apple/2025/04; do
+    curl -s -o /dev/null -u "$NC_USER:$NC_PASS" -X MKCOL "$NC/remote.php/dav/files/$NC_USER/$d/"
+done
+curl -s -o /dev/null -w "upload of odd name: %{http_code}\n" -u "$NC_USER:$NC_PASS" -T "photos/$(ls photos | head -1)" \
+    "$NC/remote.php/dav/files/$NC_USER/$FOLDER/apple/2025/04/SharePic%202025-04-14%2015:52:53%20+0000.jpg" \
+    | tee -a "$OUT/counts.txt"
+
 adb install -r -g PicSync.apk
 adb shell appops set $PKG MANAGE_EXTERNAL_STORAGE allow
 # Like a phone on which notifications were not allowed.
@@ -104,4 +113,13 @@ adb logcat -d -s default:* ActivityManager:* AndroidRuntime:* System.err:* JobSc
 
 FINAL=$(server_count)
 echo "final: $FINAL / $EXPECTED" | tee -a "$OUT/counts.txt"
-[ "$INDEXED" -gt 0 ] && [ "$FINAL" -ge "$EXPECTED" ] && [ "$FOREGROUND" -gt 0 ]
+
+APPLE=$(curl -s -u "$NC_USER:$NC_PASS" -X PROPFIND -H "Depth: 1" \
+        "$NC/remote.php/dav/files/$NC_USER/$FOLDER/apple/2025/04/")
+RENAMED=$(echo "$APPLE" | grep -c "15-52-53")
+ODD_LEFT=$(echo "$APPLE" | grep -c "15:52:53\|15%3a52\|15%3A52")
+ON_PHONE=$(adb shell ls /sdcard/apple/2025/04/ 2>/dev/null | grep -c "15-52-53")
+echo "renamed on server: $RENAMED, old name left: $ODD_LEFT, on phone: $ON_PHONE" | tee -a "$OUT/counts.txt"
+
+[ "$INDEXED" -gt 0 ] && [ "$FINAL" -ge "$EXPECTED" ] && [ "$FOREGROUND" -gt 0 ] \
+    && [ "$RENAMED" -gt 0 ] && [ "$ODD_LEFT" -eq 0 ] && [ "$ON_PHONE" -gt 0 ]

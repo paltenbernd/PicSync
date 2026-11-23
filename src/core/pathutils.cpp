@@ -61,6 +61,27 @@ bool isStorableOnPhone(const QString &relativePath)
     return !parts.isEmpty();
 }
 
+// Turns a path Android cannot store into one it can (see header).
+QString phoneSafePath(const QString &relativePath)
+{
+    static const QRegularExpression forbidden(QStringLiteral("[\"*<>?\\\\|\\x00-\\x1f\\x7f]"));
+    static const int maxBytes = 255 - int(QByteArrayLiteral(".picsync-part").size());
+    QStringList parts = normalizeRelative(relativePath).split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    for (QString &part : parts) {
+        part.replace(QLatin1Char(':'), QLatin1Char('-'));
+        part.replace(forbidden, QStringLiteral("_"));
+        if (part.toUtf8().size() > maxBytes) {
+            const int dot = part.lastIndexOf(QLatin1Char('.'));
+            const QString suffix = (dot > 0 && part.size() - dot <= 10) ? part.mid(dot) : QString();
+            QString base = part.left(part.size() - suffix.size());
+            while (!base.isEmpty() && (base + suffix).toUtf8().size() > maxBytes)
+                base.chop(1);
+            part = base.trimmed() + suffix;
+        }
+    }
+    return parts.join(QLatin1Char('/'));
+}
+
 // Turns a device name into a string that is safe as a single folder name.
 QString sanitizeFolderName(const QString &name)
 {

@@ -442,11 +442,16 @@ QString DashboardPage::statusDetails() const
                          .arg(Ui::timeText(last.finishedAt)).arg(last.uploaded)
                          .arg(last.downloaded).arg(last.deletedLocal + last.deletedRemote);
         }
+        if (last.renamedFiles > 0) {
+            parts << tr("%n file(s) in Nextcloud were renamed because their names contained "
+                        "characters that Android does not allow (such as : ? * \" < > |); "
+                        "\":\" became \"-\". The history lists them.",
+                        nullptr, last.renamedFiles);
+        }
         if (last.skippedFiles > 0) {
             parts << tr("%n file(s) in Nextcloud stay on the server only: their names contain "
-                        "characters that Android does not allow (such as : ? * \" < > |). "
-                        "Rename them in Nextcloud to get them onto the phone. The history "
-                        "lists them.", nullptr, last.skippedFiles);
+                        "characters that Android does not allow and the server refused to "
+                        "rename them. The history lists them.", nullptr, last.skippedFiles);
         }
     }
 

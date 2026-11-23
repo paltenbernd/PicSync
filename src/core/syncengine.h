@@ -43,6 +43,9 @@ Q_SIGNALS:
     void phaseChanged(const QString &phase);
 
 private:
+    // Returns "path", or "name (2).ext", "name (3).ext", ... if it is already taken.
+    QString freePath(const QString &path, const LocalFileMap &local,
+                     const RemoteFileMap &remote) const;
     // Executes a single planned action; returns false if the file failed.
     bool execute(const SyncAction &action, const LocalFileMap &local,
                  const RemoteFileMap &remote, SyncResult &result, QString &error);

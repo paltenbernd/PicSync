@@ -118,6 +118,23 @@ bool FakeRemoteStore::remove(const QString &relativePath, QString &error)
     return true;
 }
 
+// Renames a file in the folder (never overwrites).
+bool FakeRemoteStore::move(const QString &fromPath, const QString &toPath, RemoteFile &result,
+                           QString &error)
+{
+    if (m_offline || m_refuseMoves || !exists(fromPath) || exists(toPath)) {
+        error = QStringLiteral("cannot move");
+        return false;
+    }
+    QDir().mkpath(QFileInfo(path(toPath)).absolutePath());
+    if (!QFile::rename(path(fromPath), path(toPath))) {
+        error = QStringLiteral("rename failed");
+        return false;
+    }
+    result = describe(toPath);
+    return true;
+}
+
 // Reports a fixed quota.
 bool FakeRemoteStore::quota(QuotaInfo &info, QString &error)
 {
@@ -171,4 +188,10 @@ bool FakeRemoteStore::exists(const QString &relativePath) const
 void FakeRemoteStore::setOffline(bool offline)
 {
     m_offline = offline;
+}
+
+// Makes renames fail (simulates a server that refuses MOVE).
+void FakeRemoteStore::setRefuseMoves(bool refuse)
+{
+    m_refuseMoves = refuse;
 }

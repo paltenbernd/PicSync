@@ -164,6 +164,17 @@ void TestPathUtils::storableOnPhone()
     QVERIFY(!PathUtils::isStorableOnPhone(QStringLiteral("a/b|c.jpg")));
     QVERIFY(!PathUtils::isStorableOnPhone(QString(250, QLatin1Char('x')) + QStringLiteral(".jpg")));
     QVERIFY(!PathUtils::isStorableOnPhone(QString()));
+
+    // Making names storable.
+    QCOMPARE(PathUtils::phoneSafePath(QStringLiteral("a/SharePic 15:52:53 +0000.jpg")),
+             QStringLiteral("a/SharePic 15-52-53 +0000.jpg"));
+    QCOMPARE(PathUtils::phoneSafePath(QStringLiteral("a:b/w?h*a<t>\"|.png")),
+             QStringLiteral("a-b/w_h_a_t___.png"));
+    QCOMPARE(PathUtils::phoneSafePath(QStringLiteral("DCIM/Camera/IMG_1.jpg")),
+             QStringLiteral("DCIM/Camera/IMG_1.jpg"));
+    const QString longName = PathUtils::phoneSafePath(QString(300, QLatin1Char('x')) + QStringLiteral(".jpeg"));
+    QVERIFY(longName.endsWith(QStringLiteral(".jpeg")));
+    QVERIFY(PathUtils::isStorableOnPhone(longName));
 }
 
 QTEST_GUILESS_MAIN(TestPathUtils)

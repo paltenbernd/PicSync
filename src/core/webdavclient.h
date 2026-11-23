@@ -103,6 +103,10 @@ public:
     // Deletes a remote file (it goes to the Nextcloud trash bin).
     bool remove(const QString &relativePath, QString &error) override;
 
+    // Renames/moves a remote file with WebDAV MOVE (never overwrites).
+    bool move(const QString &fromPath, const QString &toPath, RemoteFile &result,
+              QString &error) override;
+
     // Queries the storage quota of the account.
     bool quota(QuotaInfo &info, QString &error) override;
 

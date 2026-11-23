@@ -33,6 +33,7 @@ QJsonObject toObject(const SyncResult &r)
     o.insert(QStringLiteral("pending"), r.pendingDeletions);
     o.insert(QStringLiteral("failed"), r.failedFiles);
     o.insert(QStringLiteral("skipped"), r.skippedFiles);
+    o.insert(QStringLiteral("renamed"), r.renamedFiles);
     o.insert(QStringLiteral("files"), QJsonArray::fromStringList(r.changedFiles));
     o.insert(QStringLiteral("qvalid"), r.quota.valid);
     o.insert(QStringLiteral("qused"), double(r.quota.usedBytes));
@@ -57,6 +58,7 @@ SyncResult fromObject(const QJsonObject &o)
     r.pendingDeletions = o.value(QStringLiteral("pending")).toInt();
     r.failedFiles = o.value(QStringLiteral("failed")).toInt();
     r.skippedFiles = o.value(QStringLiteral("skipped")).toInt();
+    r.renamedFiles = o.value(QStringLiteral("renamed")).toInt();
     const QJsonArray files = o.value(QStringLiteral("files")).toArray();
     for (const QJsonValue &v : files)
         r.changedFiles.append(v.toString());

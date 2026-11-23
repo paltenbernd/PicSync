@@ -67,6 +67,8 @@ void HistoryPage::refresh()
                 summary += tr("  ⚠ %n conflict(s)", nullptr, r.conflicts);
             if (r.pendingDeletions > 0)
                 summary += tr("  ⏳ %n waiting", nullptr, r.pendingDeletions);
+            if (r.renamedFiles > 0)
+                summary += tr("  ✎ %n renamed", nullptr, r.renamedFiles);
             if (r.skippedFiles > 0)
                 summary += tr("  – %n server only", nullptr, r.skippedFiles);
         } else {

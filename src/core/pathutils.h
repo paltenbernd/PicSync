@@ -24,6 +24,11 @@ bool isIgnored(const QString &relativePath);
 // the temporary ".picsync-part" ending). Nextcloud allows more, e.g. ":".
 bool isStorableOnPhone(const QString &relativePath);
 
+// Turns a path Android cannot store into one it can: ":" becomes "-", the other
+// forbidden characters "_", too long names are shortened (extension kept).
+// "x/12:30 ?.jpg" -> "x/12-30 _.jpg". Paths that are fine stay unchanged.
+QString phoneSafePath(const QString &relativePath);
+
 // Turns a device name into a string that is safe as a single folder name.
 QString sanitizeFolderName(const QString &name);
 
