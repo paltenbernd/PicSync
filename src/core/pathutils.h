@@ -19,6 +19,11 @@ bool isMediaFile(const QString &fileName);
 // Returns true for files PicSync must never synchronise (hidden, temporary, ...).
 bool isIgnored(const QString &relativePath);
 
+// Returns true if Android's shared storage accepts this path as a file name:
+// no "*:<>?\| or control characters and at most 255 bytes per name (including
+// the temporary ".picsync-part" ending). Nextcloud allows more, e.g. ":".
+bool isStorableOnPhone(const QString &relativePath);
+
 // Turns a device name into a string that is safe as a single folder name.
 QString sanitizeFolderName(const QString &name);
 

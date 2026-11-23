@@ -106,33 +106,38 @@
         <source>Folders appear after the first sync.</source>
         <translation>Folders appear after the first sync.</translation>
     </message>
+    <message numerus="yes">
+        <location filename="../dashboardpage.cpp" line="446" />
+        <source>%n file(s) in Nextcloud stay on the server only: their names contain characters that Android does not allow (such as : ? * " &lt; &gt; |). Rename them in Nextcloud to get them onto the phone. The history lists them.</source>
+        <translation><numerusform>%n file in Nextcloud stays on the server only: its name contains characters that Android does not allow (such as : ? * " &lt; &gt; |). Rename it in Nextcloud to get it onto the phone. The history lists it.</numerusform><numerusform>%n files in Nextcloud stay on the server only: their names contain characters that Android does not allow (such as : ? * " &lt; &gt; |). Rename them in Nextcloud to get them onto the phone. The history lists them.</numerusform></translation>
+    </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="500" />
+        <location filename="../dashboardpage.cpp" line="506" />
         <source>Stop</source>
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="500" />
+        <location filename="../dashboardpage.cpp" line="506" />
         <source>Sync now</source>
         <translation>Sync now</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="505" />
+        <location filename="../dashboardpage.cpp" line="511" />
         <source>Starting…</source>
         <translation>Starting…</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="517" />
+        <location filename="../dashboardpage.cpp" line="523" />
         <source>%1 of %2 files</source>
         <translation>%1 of %2 files</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="518" />
+        <location filename="../dashboardpage.cpp" line="524" />
         <source>%1 of %2: %3</source>
         <translation>%1 of %2: %3</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="536" />
+        <location filename="../dashboardpage.cpp" line="542" />
         <source>Stopping…</source>
         <translation>Stopping…</translation>
     </message>
@@ -188,32 +193,32 @@
         <translation>Last sync %1: %2 up, %3 down, %4 deleted.</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="448" />
+        <location filename="../dashboardpage.cpp" line="454" />
         <source>Waiting deletions (warning sign):</source>
         <translation>Waiting deletions (warning sign):</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="449" />
+        <location filename="../dashboardpage.cpp" line="455" />
         <source>These files were deleted on one side. PicSync passes deletions on only at the next sync, so that a file deleted by mistake can still be restored. Until then the copy on the other side is locked. If you restore the file before the next sync (gallery trash or Nextcloud trash bin), the deletion is cancelled.</source>
         <translation>These files were deleted on one side. PicSync passes deletions on only at the next sync, so that a file deleted by mistake can still be restored. Until then the copy on the other side is locked. If you restore the file before the next sync (gallery trash or Nextcloud trash bin), the deletion is cancelled.</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="461" />
+        <location filename="../dashboardpage.cpp" line="467" />
         <source>deleted on the phone, will be deleted in Nextcloud</source>
         <translation>deleted on the phone, will be deleted in Nextcloud</translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="462" />
+        <location filename="../dashboardpage.cpp" line="468" />
         <source>deleted in Nextcloud, will be deleted on the phone</source>
         <translation>deleted in Nextcloud, will be deleted on the phone</translation>
     </message>
     <message numerus="yes">
-        <location filename="../dashboardpage.cpp" line="466" />
+        <location filename="../dashboardpage.cpp" line="472" />
         <source>… and %n more</source>
         <translation><numerusform>… and %n more</numerusform><numerusform>… and %n more</numerusform></translation>
     </message>
     <message>
-        <location filename="../dashboardpage.cpp" line="493" />
+        <location filename="../dashboardpage.cpp" line="499" />
         <source>Synchronisation status</source>
         <translation>Synchronisation status</translation>
     </message>
@@ -227,7 +232,7 @@
     </message>
     <message>
         <location filename="../historypage.cpp" line="43" />
-        <location filename="../historypage.cpp" line="97" />
+        <location filename="../historypage.cpp" line="99" />
         <source>Clear history</source>
         <translation>Clear history</translation>
     </message>
@@ -256,8 +261,13 @@
         <source>  ⏳ %n waiting</source>
         <translation><numerusform>  ⏳ %n waiting</numerusform><numerusform>  ⏳ %n waiting</numerusform></translation>
     </message>
+    <message numerus="yes">
+        <location filename="../historypage.cpp" line="71" />
+        <source>  – %n server only</source>
+        <translation><numerusform>  – %n server only</numerusform><numerusform>  – %n server only</numerusform></translation>
+    </message>
     <message>
-        <location filename="../historypage.cpp" line="97" />
+        <location filename="../historypage.cpp" line="99" />
         <source>Delete the sync history?</source>
         <translation>Delete the sync history?</translation>
     </message>
@@ -582,22 +592,22 @@
         <translation>The Nextcloud folder has disappeared. Nothing was deleted; reset the synchronisation in the settings to start over.</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="128" />
+        <location filename="../../core/syncengine.cpp" line="141" />
         <source>Synchronising</source>
         <translation>Synchronising</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="134" />
+        <location filename="../../core/syncengine.cpp" line="147" />
         <source>Stopped by user</source>
         <translation>Stopped by user</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="252" />
+        <location filename="../../core/syncengine.cpp" line="265" />
         <source>File vanished before upload</source>
         <translation>File vanished before upload</translation>
     </message>
     <message>
-        <location filename="../../core/syncengine.cpp" line="273" />
+        <location filename="../../core/syncengine.cpp" line="286" />
         <source>Downloaded file is missing</source>
         <translation>Downloaded file is missing</translation>
     </message>

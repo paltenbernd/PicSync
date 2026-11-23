@@ -107,6 +107,7 @@ struct SyncResult
     int conflicts = 0;
     int pendingDeletions = 0;
     int failedFiles = 0;
+    int skippedFiles = 0;       ///< Server files whose names Android does not accept.
     QStringList changedFiles;   ///< Human readable list, capped in length.
     QuotaInfo quota;            ///< Account usage measured at the end of the run.
 };

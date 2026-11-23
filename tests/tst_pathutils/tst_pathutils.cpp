@@ -32,6 +32,8 @@ private Q_SLOTS:
     // Folders are grouped into albums for the folder overview.
     void galleryGroups_data();
     void galleryGroups();
+    // Names Android's shared storage rejects are recognised.
+    void storableOnPhone();
 };
 
 // Checks which file names count as gallery media.
@@ -148,6 +150,20 @@ void TestPathUtils::galleryGroups()
     QFETCH(QString, folder);
     QFETCH(QString, group);
     QCOMPARE(PathUtils::galleryGroup(folder), group);
+}
+
+// Names Android's shared storage rejects are recognised.
+void TestPathUtils::storableOnPhone()
+{
+    QVERIFY(PathUtils::isStorableOnPhone(QStringLiteral("DCIM/Camera/IMG_1.jpg")));
+    QVERIFY(PathUtils::isStorableOnPhone(QStringLiteral("apple/2025/04/Ä ö + [1].jpg")));
+    QVERIFY(!PathUtils::isStorableOnPhone(
+        QStringLiteral("apple/2025/04/SharePic 2025-04-14 15:52:53 +0000.jpg")));
+    QVERIFY(!PathUtils::isStorableOnPhone(QStringLiteral("a/what?.jpg")));
+    QVERIFY(!PathUtils::isStorableOnPhone(QStringLiteral("a\"b/c.jpg")));
+    QVERIFY(!PathUtils::isStorableOnPhone(QStringLiteral("a/b|c.jpg")));
+    QVERIFY(!PathUtils::isStorableOnPhone(QString(250, QLatin1Char('x')) + QStringLiteral(".jpg")));
+    QVERIFY(!PathUtils::isStorableOnPhone(QString()));
 }
 
 QTEST_GUILESS_MAIN(TestPathUtils)

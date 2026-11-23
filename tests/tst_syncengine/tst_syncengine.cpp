@@ -61,6 +61,8 @@ private Q_SLOTS:
     void statePersists();
     // A file missing from the media index but present on disk is not "deleted".
     void unindexedFileIsKept();
+    // Server files with names Android does not accept are skipped, not errors.
+    void unstorableNamesAreSkipped();
 
 private:
     // Writes a file into the phone's gallery.
@@ -427,6 +429,30 @@ void TestSyncEngine::unindexedFileIsKept()
         QCOMPARE(r.deletedRemote, 0);
     }
     QVERIFY(m_remote->exists(QStringLiteral("DCIM/a.jpg")));
+}
+
+// Server files with names Android does not accept are skipped, not errors.
+void TestSyncEngine::unstorableNamesAreSkipped()
+{
+    writeLocal(QStringLiteral("DCIM/Camera/a.jpg"), "aaa");
+    const QString odd = QStringLiteral("apple/2025/04/SharePic 2025-04-14 15:52:53 +0000.jpg");
+    m_remote->put(odd, "odd");
+    m_remote->put(QStringLiteral("apple/2025/04/fine.jpg"), "fine");
+
+    const SyncResult r = sync();
+    QVERIFY2(r.success, qPrintable(r.errorMessage));
+    QCOMPARE(r.skippedFiles, 1);
+    QCOMPARE(r.downloaded, 1);
+    QCOMPARE(r.failedFiles, 0);
+    QVERIFY(!localExists(odd));
+    QVERIFY(m_remote->exists(odd));   // never deleted on the server
+
+    // Later runs skip it again and stay successful.
+    const SyncResult again = sync();
+    QVERIFY(again.success);
+    QCOMPARE(again.skippedFiles, 1);
+    QCOMPARE(again.deletedRemote, 0);
+    QVERIFY(m_remote->exists(odd));
 }
 
 QTEST_GUILESS_MAIN(TestSyncEngine)

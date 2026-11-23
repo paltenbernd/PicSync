@@ -117,6 +117,19 @@ SyncResult SyncEngine::run(bool manual, const QString &configFingerprint)
         remote.clear();
     }
 
+    // Nextcloud accepts names Android cannot store (e.g. "12:30.jpg"). Such
+    // files stay on the server only; they are listed, but are no error.
+    for (auto it = remote.begin(); it != remote.end();) {
+        if (!local.contains(it.key()) && !m_state.entries().contains(it.key())
+            && !PathUtils::isStorableOnPhone(it.key())) {
+            ++result.skippedFiles;
+            note(result, QStringLiteral("– ") + it.key());
+            it = remote.erase(it);
+        } else {
+            ++it;
+        }
+    }
+
     const SyncPlan plan = SyncPlanner::plan(local, remote, m_state.entries(), m_state.pending());
 
     int total = 0;

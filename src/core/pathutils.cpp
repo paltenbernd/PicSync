@@ -48,6 +48,19 @@ bool isIgnored(const QString &relativePath)
     return relativePath.endsWith(QLatin1String(".picsync-part"));
 }
 
+// Returns true if Android's shared storage accepts this path as a file name.
+bool isStorableOnPhone(const QString &relativePath)
+{
+    static const QRegularExpression forbidden(QStringLiteral("[\"*:<>?\\\\|\\x00-\\x1f\\x7f]"));
+    static const int partSuffix = int(QByteArrayLiteral(".picsync-part").size());
+    const QStringList parts = relativePath.split(QLatin1Char('/'), Qt::SkipEmptyParts);
+    for (const QString &part : parts) {
+        if (part.contains(forbidden) || part.toUtf8().size() + partSuffix > 255)
+            return false;
+    }
+    return !parts.isEmpty();
+}
+
 // Turns a device name into a string that is safe as a single folder name.
 QString sanitizeFolderName(const QString &name)
 {
