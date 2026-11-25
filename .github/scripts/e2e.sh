@@ -59,8 +59,7 @@ adb shell appops set $PKG MANAGE_EXTERNAL_STORAGE allow
 adb shell pm revoke $PKG android.permission.POST_NOTIFICATIONS
 
 adb shell "am start -W -n $PKG/org.qtproject.qt.android.bindings.QtActivity --es applicationArguments '--test-config=http://10.0.2.2:8080|$NC_USER|$NC_PASS|$FOLDER --test-sync'"
-# The periodic job (scheduled at start) usually runs at once; the "Sync now"
-# of the test hook (after 4 s) must turn it into a foreground run.
+# The test hook presses "Sync now" after 4 s (manual sync as foreground service).
 sleep 12
 shot 01-sync-started
 echo "server after start: $(server_count)" | tee -a "$OUT/counts.txt"
@@ -114,6 +113,16 @@ adb logcat -d -s default:* ActivityManager:* AndroidRuntime:* System.err:* JobSc
 FINAL=$(server_count)
 echo "final: $FINAL / $EXPECTED" | tee -a "$OUT/counts.txt"
 
+# Opening the app again must not start a sync by itself.
+adb shell am force-stop $PKG
+sleep 2
+adb shell am start -n $PKG/org.qtproject.qt.android.bindings.QtActivity > /dev/null
+sleep 20
+AUTO_SYNC=$(adb shell pidof $PKG:sync | wc -w)
+adb shell dumpsys jobscheduler | grep -A3 "JOB #.*$PKG" > "$OUT/jobs.txt" || true
+echo "sync process after reopening: $AUTO_SYNC" | tee -a "$OUT/counts.txt"
+shot 08-reopened
+
 APPLE=$(curl -s -u "$NC_USER:$NC_PASS" -X PROPFIND -H "Depth: 1" \
         "$NC/remote.php/dav/files/$NC_USER/$FOLDER/apple/2025/04/")
 RENAMED=$(echo "$APPLE" | grep -c "15-52-53")
@@ -122,4 +131,5 @@ ON_PHONE=$(adb shell ls /sdcard/apple/2025/04/ 2>/dev/null | grep -c "15-52-53")
 echo "renamed on server: $RENAMED, old name left: $ODD_LEFT, on phone: $ON_PHONE" | tee -a "$OUT/counts.txt"
 
 [ "$INDEXED" -gt 0 ] && [ "$FINAL" -ge "$EXPECTED" ] && [ "$FOREGROUND" -gt 0 ] \
-    && [ "$RENAMED" -gt 0 ] && [ "$ODD_LEFT" -eq 0 ] && [ "$ON_PHONE" -gt 0 ]
+    && [ "$RENAMED" -gt 0 ] && [ "$ODD_LEFT" -eq 0 ] && [ "$ON_PHONE" -gt 0 ] \
+    && [ "$AUTO_SYNC" -eq 0 ]

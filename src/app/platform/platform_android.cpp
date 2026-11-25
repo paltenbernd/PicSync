@@ -227,12 +227,24 @@ void requestNotificationPermission()
     activity.callMethod<void>("startActivity", "(Landroid/content/Intent;)V", intent.object());
 }
 
-// Registers (or replaces) the periodic background synchronisation.
+// Registers (or replaces) the periodic background synchronisation. An
+// identical job that already exists is kept: replacing it would make Android
+// run it at once, i.e. start a sync every time the app is opened.
 void scheduleSync(const AppSettings &settings)
 {
     QJniObject scheduler = Jni::systemService("jobscheduler");
     if (!scheduler.isValid())
         return;
+    const jlong interval = jlong(settings.intervalMinutes) * 60 * 1000;
+    const jint network = settings.wifiOnly ? kNetworkUnmetered : kNetworkAny;
+    const QJniObject pending = scheduler.callObjectMethod(
+        "getPendingJob", "(I)Landroid/app/job/JobInfo;", kJobId);
+    if (pending.isValid()
+        && pending.callMethod<jlong>("getIntervalMillis") == interval
+        && pending.callMethod<jint>("getNetworkType") == network
+        && pending.callMethod<jboolean>("isRequireCharging") == jboolean(settings.chargingOnly)) {
+        return;
+    }
     const QJniObject component(
         "android/content/ComponentName", "(Landroid/content/Context;Ljava/lang/String;)V",
         Jni::context().object(),
@@ -240,10 +252,13 @@ void scheduleSync(const AppSettings &settings)
     QJniObject builder("android/app/job/JobInfo$Builder", "(ILandroid/content/ComponentName;)V",
                        kJobId, component.object());
     constexpr char self[] = "Landroid/app/job/JobInfo$Builder;";
-    builder.callObjectMethod("setPeriodic", QByteArray("(J)").append(self).constData(),
-                             jlong(settings.intervalMinutes) * 60 * 1000);
+    // The flex window places each run at the end of its period, so a new or
+    // changed schedule does not start a sync right away.
+    const jlong flex = qMax<jlong>(5 * 60 * 1000, interval / 4);
+    builder.callObjectMethod("setPeriodic", QByteArray("(JJ)").append(self).constData(),
+                             interval, flex);
     builder.callObjectMethod("setRequiredNetworkType", QByteArray("(I)").append(self).constData(),
-                             settings.wifiOnly ? kNetworkUnmetered : kNetworkAny);
+                             network);
     builder.callObjectMethod("setRequiresCharging", QByteArray("(Z)").append(self).constData(),
                              jboolean(settings.chargingOnly));
     builder.callObjectMethod("setPersisted", QByteArray("(Z)").append(self).constData(),
