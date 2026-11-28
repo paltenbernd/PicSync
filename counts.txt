@@ -1,0 +1,14 @@
+local photos: 150, indexed: 150
+upload of odd name: 201
+server after start: 4
+foreground service: 1, job service present: 0
+t=10s server responses: 45 / 151
+t=20s server responses: 63 / 151
+t=30s server responses: 81 / 151
+t=40s server responses: 97 / 151
+t=50s server responses: 115 / 151
+t=60s server responses: 133 / 151
+t=70s server responses: 151 / 151
+final: 151 / 151
+sync process after reopening: 0
+renamed on server: 1, old name left: 0, on phone: 1

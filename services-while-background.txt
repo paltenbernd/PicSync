@@ -1,0 +1,21 @@
+ACTIVITY MANAGER SERVICES (dumpsys activity services)
+  User 0 active services:
+  * ServiceRecord{bf0db80 u0 de.altenbernd.picsync/.PicSyncService}
+    intent={cmp=de.altenbernd.picsync/.PicSyncService}
+    packageName=de.altenbernd.picsync
+    processName=de.altenbernd.picsync:sync
+    baseDir=/data/app/~~rbNZILg4K07Ra-O9toK54Q==/de.altenbernd.picsync-ESVNDS7PE4lbPRjO127n0g==/base.apk
+    dataDir=/data/user/0/de.altenbernd.picsync
+    app=ProcessRecord{9f61abd 6094:de.altenbernd.picsync:sync/u0a192}
+    mAllowWhileInUsePermissionInFgsReason=PROC_STATE_TOP
+    allowUiJobScheduling=true
+    recentCallingPackage=de.altenbernd.picsync
+    recentCallingUid=10192
+    allowStartForeground=PROC_STATE_TOP
+    startForegroundCount=1
+    infoAllowStartForeground=[callingPackage: de.altenbernd.picsync; callingUid: 10192; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { cmp=de.altenbernd.picsync/.PicSyncService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+    isForeground=true foregroundId=1 types=00000001 foregroundNoti=Notification(channel=picsync_sync shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x4a color=0x00000000 vis=PRIVATE)
+    createTime=-14s264ms startingBgTimeout=--
+    lastActivity=-14s130ms restartTime=-14s130ms createdFromFg=true
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=1
+ startCommandResult=1

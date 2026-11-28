@@ -1,0 +1,3 @@
+  * ServiceRecord{bf0db80 u0 de.altenbernd.picsync/.PicSyncService}
+    isForeground=true foregroundId=1 types=00000001 foregroundNoti=Notification(channel=picsync_sync shortcut=null contentView=null vibrate=null sound=null defaults=0x0 flags=0x4a color=0x00000000 vis=PRIVATE)
+    startRequested=true delayedStop=false stopIfKilled=false callStart=true lastStartId=1

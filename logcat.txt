@@ -1,0 +1,535 @@
+--------- beginning of system
+11-28 09:07:19.101   522   608 D ActivityManager: freezing 3730 com.google.android.rkpdapp
+--------- beginning of main
+11-28 09:07:19.816  5184  5184 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-28 09:07:19.828  5184  5184 I AndroidRuntime: Using default boot image
+11-28 09:07:19.828  5184  5184 I AndroidRuntime: Leaving lock profiling enabled
+11-28 09:07:19.962  5184  5184 D AndroidRuntime: Calling main entry com.android.commands.content.Content
+11-28 09:07:20.815  5184  5184 D AndroidRuntime: Shutting down VM
+11-28 09:07:21.644   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.645   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.647   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.659   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.660   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.661   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.674   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.675   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.676   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.688   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.689   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.690   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.701   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.702   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.703   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.714   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.714   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.715   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.726   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.727   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.728   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.739   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.740   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.741   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.753   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.754   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.755   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.767   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.767   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.768   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.779   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.780   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.781   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.792   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.792   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.793   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.806   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.806   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.808   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.821   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.821   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.822   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.834   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.834   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.836   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.847   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.847   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.848   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.860   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.860   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.861   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.873   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.873   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.874   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.886   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.886   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.888   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.900   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.900   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.901   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.913   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.913   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.914   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.926   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.926   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.927   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.940   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.940   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.942   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.954   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.954   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.955   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.967   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.967   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.968   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.979   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.979   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.980   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:21.992   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:21.992   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:21.993   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.004   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.005   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.006   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.017   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.018   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.019   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.032   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.032   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.033   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.045   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.045   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.046   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.057   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.058   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.059   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.070   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.071   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.072   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.083   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.083   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.084   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.096   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.096   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.097   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.110   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.110   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.111   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.122   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.122   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.123   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.135   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.135   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.136   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.148   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.148   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.149   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.161   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.161   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.162   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.176   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.176   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.177   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.189   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.189   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.191   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.203   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.204   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.205   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.217   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.217   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.218   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.230   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.230   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.231   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.246   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.246   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.247   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.260   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.261   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.262   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.275   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.275   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.276   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.288   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.288   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.290   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.302   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.302   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.303   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.316   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.316   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.317   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.329   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.330   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.331   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.343   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.343   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.344   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.356   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.357   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.357   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.369   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.370   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.371   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.382   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.383   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.384   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.396   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.396   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.397   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.410   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.410   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.411   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.423   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.423   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.424   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.437   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.438   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.439   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.451   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.451   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.452   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.464   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.464   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.465   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.477   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.477   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.479   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.491   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.491   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.492   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.504   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.504   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.505   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.517   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.517   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.519   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.530   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.531   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.532   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.544   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.544   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.545   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.557   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.557   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.558   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.571   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.571   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.572   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.584   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.584   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.585   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.597   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.598   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.598   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.611   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.611   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.612   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.624   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.625   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.626   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.638   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.638   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.639   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.652   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.652   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.653   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.665   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.666   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.667   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.679   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.680   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.681   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.695   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.695   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.696   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.709   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.710   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.711   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.724   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.724   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.725   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.737   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.737   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.738   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.750   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.750   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.752   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.764   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.764   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.765   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.777   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.777   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.778   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.790   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.791   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.791   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.803   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.803   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.804   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.816   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.816   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.817   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.829   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.829   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.830   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.842   522   904 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.842   522   904 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.843   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.855   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.855   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.856   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.869   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.869   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.871   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.877   522   608 D ActivityManager: freezing 2777 com.android.chrome
+11-28 09:07:22.883   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.884   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.885   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.897   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.897   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.899   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.911   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.911   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.912   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.925   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.925   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.926   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.939   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.939   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.940   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.953   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.953   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.954   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.967   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.967   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.969   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.982   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.983   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.983   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:22.995   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:22.995   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:22.997   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.011   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.012   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.012   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.025   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.027   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.027   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.040   522  2592 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.040   522  2592 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.041   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.054   522  2592 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.054   522  2592 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.055   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.067   522  2592 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.067   522  2592 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.068   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.080   522  2592 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.080   522  2592 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.081   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.093   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.094   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.094   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.106   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.107   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.107   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.119   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.119   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.121   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.133   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.133   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.134   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.146   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.146   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.147   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.159   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.159   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.160   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.173   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.173   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.174   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.186   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.186   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.187   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.200   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.200   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.201   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.214   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.215   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.216   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.228   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.228   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.229   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.242   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.242   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.243   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.255   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.255   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.257   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.269   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.269   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.270   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.283   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.283   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.284   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.296   522  2592 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.297   522  2592 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.298   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.310   522  2592 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.310   522  2592 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.311   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.327   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.327   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.328   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.341   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.341   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.342   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.354   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.355   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.356   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.381   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.382   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.383   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.395   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.396   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.397   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.409   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.410   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.410   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.422   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.422   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.424   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.437   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.437   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.439   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.452   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.452   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.454   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.466   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.466   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.467   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.480   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.480   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.481   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.494   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.494   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.496   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.509   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.509   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.510   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.524   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.524   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.525   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.538   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.538   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.539   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.550   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.550   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.552   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.564   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.565   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.566   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.579   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.579   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.580   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.591   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.592   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.593   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.605   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.605   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.606   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.618   522  1906 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.618   522  1906 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.619   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.632   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.632   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.633   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.645   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.645   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.646   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.658   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.659   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.660   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.672   522  1321 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.672   522  1321 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.673   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.686   522   535 I ActivityManager: Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+11-28 09:07:23.686   522   535 I ActivityManager: Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+11-28 09:07:23.687   522   539 I ActivityManager: Broadcast completed: result=0
+11-28 09:07:23.964   522   608 D ActivityManager: freezing 3197 com.google.android.gms.unstable
+11-28 09:07:24.061   522   608 D ActivityManager: freezing 2486 com.google.android.tts
+11-28 09:07:24.105   522   608 D ActivityManager: freezing 1683 com.google.android.apps.youtube.music
+11-28 09:07:24.123   522   608 D ActivityManager: freezing 1045 com.android.settings
+11-28 09:07:24.160   522   608 D ActivityManager: freezing 3922 com.google.android.googlequicksearchbox
+11-28 09:07:24.249   522   608 D ActivityManager: freezing 3707 com.google.android.projection.gearhead:shared
+11-28 09:07:24.387   522   608 D ActivityManager: freezing 1734 com.google.android.youtube
+11-28 09:07:25.349   522   535 W JobScheduler: Job didn't exist in JobStore: 8053bc3 #u0a155/7 com.google.android.contacts/com.google.android.apps.contacts.shortcut.ShortcutJobService
+11-28 09:07:30.671   522   601 D ActivityManager: sync unfroze 1734 com.google.android.youtube for 6
+11-28 09:07:30.709   522   601 D ActivityManager: sync unfroze 2777 com.android.chrome for 6
+11-28 09:07:30.717   522  2592 W JobScheduler: Job didn't exist in JobStore: 84a0df7 #u0a139/0 com.google.android.youtube/androidx.work.impl.background.systemjob.SystemJobService
+11-28 09:07:30.737   522  2592 W JobScheduler: Job didn't exist in JobStore: cfd5cbd #u0a132/-353 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+11-28 09:07:33.737  5978  5978 D AndroidRuntime: >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+11-28 09:07:33.739  5978  5978 I AndroidRuntime: Using default boot image
+11-28 09:07:33.739  5978  5978 I AndroidRuntime: Leaving lock profiling enabled
+11-28 09:07:33.791  5978  5978 D AndroidRuntime: Calling main entry com.android.commands.content.Content
+11-28 09:07:33.799  5978  5978 D AndroidRuntime: Shutting down VM
+11-28 09:07:34.726   522   608 D ActivityManager: freezing 2119 android.process.media
+11-28 09:07:34.748   522   608 D ActivityManager: freezing 4464 com.google.android.settings.intelligence
+11-28 09:07:39.149   522   608 D ActivityManager: freezing 3557 com.google.android.configupdater
+11-28 09:07:39.284   522   601 D ActivityManager: sync unfroze 1683 com.google.android.apps.youtube.music for 6
+11-28 09:07:39.392   522   551 I ActivityManager: Start proc 6021:de.altenbernd.picsync/u0a192 for next-top-activity {de.altenbernd.picsync/org.qtproject.qt.android.bindings.QtActivity}
+11-28 09:07:39.932   522  2592 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10192. pid: 6021
+11-28 09:07:40.088   522   535 I ActivityManager: Background started FGS: Allowed [callingPackage: com.google.android.apps.wellbeing; callingUid: 10119; uidState: BTOP; uidBFSL: [BFSL]; intent: Intent { cmp=com.google.android.apps.wellbeing/com.google.apps.tiktok.concurrent.InternalForegroundService (has extras) }; code:BACKGROUND_ACTIVITY_PERMISSION; tempAllowListReason:<null>; targetSdkVersion:33; callerTargetSdkVersion:33; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+11-28 09:07:40.720   522   608 D ActivityManager: freezing 1734 com.google.android.youtube
+11-28 09:07:45.448   522   600 I ActivityManager: Background started FGS: Allowed [callingPackage: de.altenbernd.picsync; callingUid: 10192; uidState: TOP ; uidBFSL: [BFSL]; intent: Intent { cmp=de.altenbernd.picsync/.PicSyncService }; code:PROC_STATE_TOP; tempAllowListReason:<null>; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null: isBindService:false]
+11-28 09:07:45.462  6021  6079 I default : PicSync: sync service requested
+11-28 09:07:45.464   522   551 I ActivityManager: Start proc 6094:de.altenbernd.picsync:sync/u0a192 for service {de.altenbernd.picsync/de.altenbernd.picsync.PicSyncService}
+11-28 09:07:45.705   522  1889 I ActivityManager: Flag disabled. Ignoring finishAttachApplication from uid: 10192. pid: 6094
+11-28 09:07:46.127  6094  6113 I default : PicSync: service run 1 (manual)
+11-28 09:07:46.163  6094  6113 I default : PicSync: sync service in the foreground (notification ok)
+11-28 09:07:49.326   522   608 D ActivityManager: freezing 2777 com.android.chrome
+11-28 09:07:49.604   522   550 D ActivityManager: sync unfroze 2376 com.google.android.apps.wallpaper for 3
+11-28 09:07:49.889   522   608 D ActivityManager: freezing 1683 com.google.android.apps.youtube.music
+11-28 09:07:50.123   522  2646 W JobScheduler: Job didn't exist in JobStore: ef01ba5 #u0a132/-49 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+11-28 09:07:50.334   522  2646 D ActivityManager: sync unfroze 2119 android.process.media for 7
+11-28 09:07:54.703   522  1886 D ActivityManager: quick sync unfreeze 1045 for 1
+11-28 09:07:54.711   522   542 D ActivityManager: sync unfroze 1045 com.android.settings for 1
+11-28 09:07:54.722   522   542 D ActivityManager: sync unfroze 4464 com.google.android.settings.intelligence for 1
+11-28 09:07:55.454   522   608 D ActivityManager: freezing 2290 com.google.android.contacts
+11-28 09:07:55.475   522   608 D ActivityManager: freezing 3684 com.google.android.gm
+11-28 09:07:59.554   522   918 W JobScheduler: Job didn't exist in JobStore: 4b753ad #u0a132/-1000007 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+11-28 09:07:59.709   522   608 D ActivityManager: freezing 2376 com.google.android.apps.wallpaper
+11-28 09:08:05.421   522   536 D ActivityManager: sync unfroze 3197 com.google.android.gms.unstable for 6
+11-28 09:08:05.549   522  1344 D ActivityManager: sync unfroze 3730 com.google.android.rkpdapp for 6
+11-28 09:08:06.753   522   601 D ActivityManager: sync unfroze 2290 com.google.android.contacts for 6
+11-28 09:08:06.756   522   608 D ActivityManager: freezing 1940 com.google.android.as.oss
+11-28 09:08:06.769   522  1891 W JobScheduler: Job didn't exist in JobStore: fe708cd #u0a155/7 com.google.android.contacts/com.google.android.apps.contacts.shortcut.ShortcutJobService
+11-28 09:08:10.968  6021  6079 W default : makeCurrent(): no EGLSurface, likely Surface destroyed by Android.
+11-28 09:08:10.968  6021  6079 W default : QRhiGles2: Failed to make context current. Expect bad things to happen.
+11-28 09:08:15.593   522   608 D ActivityManager: freezing 3730 com.google.android.rkpdapp
+11-28 09:08:15.999   522   608 D ActivityManager: freezing 3197 com.google.android.gms.unstable
+11-28 09:08:16.735   522  1877 W JobScheduler: Job didn't exist in JobStore: ab09328 #u0a155/7 com.google.android.contacts/com.google.android.apps.contacts.shortcut.ShortcutJobService
+11-28 09:08:33.046   522   892 W JobScheduler: Job didn't exist in JobStore: 2b28c05 #u0a132/-1000006 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+11-28 09:08:33.122   522   892 W JobScheduler: Job didn't exist in JobStore: e014062 #u0a132/-353 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+11-28 09:08:35.276   522   608 D ActivityManager: freezing 2290 com.google.android.contacts
+11-28 09:08:36.905   522   612 W ActivityManager: Unable to start service Intent { act=com.google.android.gms.drive.ApiService.RESET_AFTER_BOOT flg=0x4 cmp=com.google.android.gms/.drive.api.ApiService (has extras) } U=0: not found
+11-28 09:08:38.763   522   608 D ActivityManager: freezing 832 com.google.android.permissioncontroller
+11-28 09:08:50.560   522   892 W JobScheduler: Job didn't exist in JobStore: 550c862 #u0a132/-1000008 com.google.android.googlequicksearchbox/com.google.android.apps.gsa.tasks.BackgroundTasksJobService
+11-28 09:08:58.673   522  1889 D ActivityManager: sync unfroze 3197 com.google.android.gms.unstable for 6
+11-28 09:09:06.224   522  1727 D ActivityManager: sync unfroze 3730 com.google.android.rkpdapp for 6
+11-28 09:09:10.957  6021  6079 W default : makeCurrent(): no EGLSurface, likely Surface destroyed by Android.
+11-28 09:09:10.957  6021  6079 W default : QRhiGles2: Failed to make context current. Expect bad things to happen.
+11-28 09:09:16.249   522   608 D ActivityManager: freezing 3730 com.google.android.rkpdapp
+11-28 09:09:16.583   522   608 D ActivityManager: freezing 3197 com.google.android.gms.unstable
+11-28 09:09:18.667   522   550 D ActivityManager: sync unfroze 3922 com.google.android.googlequicksearchbox for 3
+11-28 09:09:28.718   522   608 D ActivityManager: freezing 3922 com.google.android.googlequicksearchbox
+11-28 09:09:28.796  6094  6113 I default : main() returned 0
+11-28 09:09:28.835   522  1691 I ActivityManager: Process de.altenbernd.picsync:sync (pid 6094) has died: fg  SVC 
+11-28 09:09:37.676   522   608 D ActivityManager: freezing 1695 com.google.process.gservices
+11-28 09:09:37.676   522   608 D ActivityManager: freezing 1777 android.process.acore
+11-28 09:09:37.677   522   608 D ActivityManager: freezing 1909 com.google.process.gapps
+11-28 09:09:37.677   522   608 D ActivityManager: freezing 2119 android.process.media
+11-28 09:09:46.659   522   608 D ActivityManager: freezing 1045 com.android.settings
+11-28 09:09:46.660   522   608 D ActivityManager: freezing 4464 com.google.android.settings.intelligence
+11-28 09:09:46.660   522   608 D ActivityManager: freezing 1493 com.google.android.apps.wellbeing
