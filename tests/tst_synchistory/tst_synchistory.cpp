@@ -22,6 +22,8 @@ private Q_SLOTS:
     void jsonRoundTrip();
     // Uses the device name for the default folder and validates the interval.
     void settingsDefaults();
+    // Recognises a successful run shortly before (back-to-back background runs).
+    void recentSuccess();
 };
 
 // Appends runs, keeps the newest first and caps the length.
@@ -94,6 +96,32 @@ void TestSyncHistory::settingsDefaults()
 
     settings.setValue(QStringLiteral("sync/interval"), 7);
     QCOMPARE(AppSettings::load(settings, QString()).intervalMinutes, 60);
+}
+
+// Recognises a successful run shortly before (back-to-back background runs).
+void TestSyncHistory::recentSuccess()
+{
+    QTemporaryDir dir;
+    SyncHistory history(dir.filePath(QStringLiteral("history.json")));
+    QVERIFY(history.load());
+    QVERIFY(!history.succeededWithin(10000, 1800));   // empty history
+
+    SyncResult ok;
+    ok.success = true;
+    ok.finishedAt = 10000;
+    QVERIFY(history.append(ok));
+    QVERIFY(history.succeededWithin(10000 + 600, 1800));    // 10 min later
+    QVERIFY(!history.succeededWithin(10000 + 1800, 1800));  // a full gap later
+
+    // A later failed run does not hide the successful one before it.
+    SyncResult failed;
+    failed.errorMessage = QStringLiteral("offline");
+    failed.finishedAt = 10300;
+    QVERIFY(history.append(failed));
+    QVERIFY(history.succeededWithin(10000 + 600, 1800));
+
+    // Clock set back: no skipping.
+    QVERIFY(!history.succeededWithin(9000, 1800));
 }
 
 QTEST_GUILESS_MAIN(TestSyncHistory)

@@ -30,6 +30,11 @@ public:
     // Removes all stored runs.
     bool clear();
 
+    // Returns true if a successful run finished less than "minGapSecs" before "now"
+    // (seconds since the epoch). Used to skip background runs that Android
+    // starts back to back (e.g. when catching up after battery saving).
+    bool succeededWithin(qint64 now, qint64 minGapSecs) const;
+
     // Converts a result to JSON bytes (one entry).
     static QByteArray toJson(const SyncResult &result);
 

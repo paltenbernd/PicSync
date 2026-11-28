@@ -253,28 +253,28 @@
     </message>
     <message>
         <location filename="../historypage.cpp" line="64" />
-        <source>↑ %1  ↓ %2  ✕ %3</source>
-        <translation>↑ %1  ↓ %2  ✕ %3</translation>
+        <source>↑ %1  ↓ %2  × %3</source>
+        <translation>↑ %1  ↓ %2  × %3</translation>
     </message>
     <message numerus="yes">
         <location filename="../historypage.cpp" line="67" />
-        <source>  ⚠ %n conflict(s)</source>
-        <translation><numerusform>  ⚠ %n conflict</numerusform><numerusform>  ⚠ %n conflicts</numerusform></translation>
+        <source>  · %n conflict(s)</source>
+        <translation><numerusform>  · %n conflict</numerusform><numerusform>  · %n conflicts</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../historypage.cpp" line="69" />
-        <source>  ⏳ %n waiting</source>
-        <translation><numerusform>  ⏳ %n waiting</numerusform><numerusform>  ⏳ %n waiting</numerusform></translation>
+        <source>  · %n waiting</source>
+        <translation><numerusform>  · %n waiting</numerusform><numerusform>  · %n waiting</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../historypage.cpp" line="71" />
-        <source>  ✎ %n renamed</source>
-        <translation><numerusform>  ✎ %n renamed</numerusform><numerusform>  ✎ %n renamed</numerusform></translation>
+        <source>  · %n renamed</source>
+        <translation><numerusform>  · %n renamed</numerusform><numerusform>  · %n renamed</numerusform></translation>
     </message>
     <message numerus="yes">
         <location filename="../historypage.cpp" line="73" />
-        <source>  – %n server only</source>
-        <translation><numerusform>  – %n server only</numerusform><numerusform>  – %n server only</numerusform></translation>
+        <source>  · %n server only</source>
+        <translation><numerusform>  · %n server only</numerusform><numerusform>  · %n server only</numerusform></translation>
     </message>
     <message>
         <location filename="../historypage.cpp" line="101" />
@@ -521,22 +521,22 @@
         <translation>Another synchronisation is already running.</translation>
     </message>
     <message>
-        <location filename="../syncsession.cpp" line="95" />
+        <location filename="../syncsession.cpp" line="105" />
         <source>PicSync is not set up yet. Enter server, user and folder.</source>
         <translation>PicSync is not set up yet. Enter server, user and folder.</translation>
     </message>
     <message>
-        <location filename="../syncsession.cpp" line="97" />
+        <location filename="../syncsession.cpp" line="107" />
         <source>No app password stored. Enter it in the settings.</source>
         <translation>No app password stored. Enter it in the settings.</translation>
     </message>
     <message>
-        <location filename="../syncsession.cpp" line="99" />
+        <location filename="../syncsession.cpp" line="109" />
         <source>PicSync needs "All files access" to synchronise the gallery.</source>
         <translation>PicSync needs "All files access" to synchronise the gallery.</translation>
     </message>
     <message>
-        <location filename="../syncsession.cpp" line="125" />
+        <location filename="../syncsession.cpp" line="135" />
         <source>Stopped by user</source>
         <translation>Stopped by user</translation>
     </message>
@@ -549,32 +549,32 @@
         <translation>Synchronisation</translation>
     </message>
     <message>
-        <location filename="../platform/platform_android.cpp" line="269" />
+        <location filename="../platform/platform_android.cpp" line="284" />
         <source>Synchronising %1 of %2</source>
         <translation>Synchronising %1 of %2</translation>
     </message>
     <message>
-        <location filename="../platform/platform_android.cpp" line="292" />
+        <location filename="../platform/platform_android.cpp" line="307" />
         <source>Synchronisation finished</source>
         <translation>Synchronisation finished</translation>
     </message>
     <message>
-        <location filename="../platform/platform_android.cpp" line="293" />
+        <location filename="../platform/platform_android.cpp" line="308" />
         <source>%1 up, %2 down, %3 deleted, %4 conflicts</source>
         <translation>%1 up, %2 down, %3 deleted, %4 conflicts</translation>
     </message>
     <message>
-        <location filename="../platform/platform_android.cpp" line="297" />
+        <location filename="../platform/platform_android.cpp" line="312" />
         <source>Synchronisation failed</source>
         <translation>Synchronisation failed</translation>
     </message>
     <message>
-        <location filename="../platform/platform_android.cpp" line="358" />
+        <location filename="../platform/platform_android.cpp" line="373" />
         <source>Synchronising</source>
         <translation>Synchronising</translation>
     </message>
     <message>
-        <location filename="../platform/platform_android.cpp" line="359" />
+        <location filename="../platform/platform_android.cpp" line="374" />
         <source>PicSync is synchronising your gallery.</source>
         <translation>PicSync is synchronising your gallery.</translation>
     </message>

@@ -133,7 +133,7 @@ SyncResult SyncEngine::run(bool manual, const QString &configFingerprint)
         if (!m_stop && PathUtils::isStorableOnPhone(newPath)
             && m_remote.move(oldPath, newPath, moved, moveError)) {
             ++result.renamedFiles;
-            note(result, QStringLiteral("✎ ") + oldPath + QStringLiteral(" → ")
+            note(result, QStringLiteral("~ ") + oldPath + QStringLiteral(" → ")
                  + newPath.section(QLatin1Char('/'), -1));
             moved.relativePath = newPath;
             remote.insert(newPath, moved);
@@ -241,7 +241,7 @@ bool SyncEngine::execute(const SyncAction &action, const LocalFileMap &local,
         m_state.removeEntry(path);
         m_state.removePending(path);
         ++result.deletedLocal;
-        note(result, QStringLiteral("✕ ") + path);
+        note(result, QStringLiteral("× ") + path);
         return true;
 
     case ActionType::DeleteRemote:
@@ -250,7 +250,7 @@ bool SyncEngine::execute(const SyncAction &action, const LocalFileMap &local,
         m_state.removeEntry(path);
         m_state.removePending(path);
         ++result.deletedRemote;
-        note(result, QStringLiteral("✕ ") + path);
+        note(result, QStringLiteral("× ") + path);
         return true;
 
     case ActionType::MarkLocalDeleted:
@@ -261,7 +261,7 @@ bool SyncEngine::execute(const SyncAction &action, const LocalFileMap &local,
                                                                          : Side::Remote;
         deletion.detectedAt = QDateTime::currentSecsSinceEpoch();
         m_state.setPending(deletion);
-        note(result, QStringLiteral("⏳ ") + path);
+        note(result, QStringLiteral("… ") + path);
         return true;
     }
 
@@ -273,7 +273,7 @@ bool SyncEngine::execute(const SyncAction &action, const LocalFileMap &local,
         if (!doConflict(path, error))
             return false;
         ++result.conflicts;
-        note(result, QStringLiteral("⚠ ") + path);
+        note(result, QStringLiteral("! ") + path);
         return true;
 
     case ActionType::Adopt:

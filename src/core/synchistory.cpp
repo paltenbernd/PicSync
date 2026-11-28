@@ -110,6 +110,16 @@ const QList<SyncResult> &SyncHistory::entries() const
     return m_entries;
 }
 
+// Returns true if a successful run finished less than "minGapSecs" before "now".
+bool SyncHistory::succeededWithin(qint64 now, qint64 minGapSecs) const
+{
+    for (const SyncResult &r : m_entries) {
+        if (r.success)
+            return r.finishedAt <= now && now - r.finishedAt < minGapSecs;
+    }
+    return false;
+}
+
 // Removes all stored runs.
 bool SyncHistory::clear()
 {

@@ -89,6 +89,16 @@ SyncResult SyncSession::run(bool manual)
     SyncHistory history(historyFilePath());
     history.load();
 
+    // Android sometimes starts the periodic job several times in a row (after
+    // battery saving or a retry). Background runs that follow a successful
+    // sync too closely are skipped silently (no history entry).
+    const qint64 minGapSecs = qMax<qint64>(10 * 60, qint64(settings.intervalMinutes) * 60 / 2);
+    if (!manual && history.succeededWithin(result.startedAt, minGapSecs)) {
+        result.success = true;
+        result.finishedAt = QDateTime::currentSecsSinceEpoch();
+        return result;
+    }
+
     QString password;
     const std::unique_ptr<CredentialStore> credentials = Platform::createCredentialStore();
     if (!settings.isComplete()) {

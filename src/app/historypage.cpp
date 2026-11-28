@@ -61,16 +61,16 @@ void HistoryPage::refresh()
                 + (r.manual ? tr("manual") : tr("automatic"));
         QString summary;
         if (r.success) {
-            summary = tr("↑ %1  ↓ %2  ✕ %3").arg(r.uploaded).arg(r.downloaded)
+            summary = tr("↑ %1  ↓ %2  × %3").arg(r.uploaded).arg(r.downloaded)
                           .arg(r.deletedLocal + r.deletedRemote);
             if (r.conflicts > 0)
-                summary += tr("  ⚠ %n conflict(s)", nullptr, r.conflicts);
+                summary += tr("  · %n conflict(s)", nullptr, r.conflicts);
             if (r.pendingDeletions > 0)
-                summary += tr("  ⏳ %n waiting", nullptr, r.pendingDeletions);
+                summary += tr("  · %n waiting", nullptr, r.pendingDeletions);
             if (r.renamedFiles > 0)
-                summary += tr("  ✎ %n renamed", nullptr, r.renamedFiles);
+                summary += tr("  · %n renamed", nullptr, r.renamedFiles);
             if (r.skippedFiles > 0)
-                summary += tr("  – %n server only", nullptr, r.skippedFiles);
+                summary += tr("  · %n server only", nullptr, r.skippedFiles);
         } else {
             summary = r.errorMessage;
         }
